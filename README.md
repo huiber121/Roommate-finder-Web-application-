@@ -15,7 +15,7 @@
 
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
+| William Zhong|wzhong@mail.sfsu.edu|wzhong1     |
 | member2      |               |                 |
 | member3      |               |                 |
 | member4      |               |                 |
