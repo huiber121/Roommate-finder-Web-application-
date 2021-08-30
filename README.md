@@ -17,7 +17,7 @@
 |    :---:     |     :---:     |     :---:       |
 | William Zhong|wzhong@mail.sfsu.edu|wzhong1     |
 | Zhiling Huang|zhuang21@mail.sfsu.edu|ZhilingHuang21|
-| member3      |               |                 |
+| Sai Swetha C      |    schiguruvada@mail.sfsu.edu           |  swethac-1130        |
 | member4      |               |                 |
 | member5      |               |                 |
 | member6      |               |                 |
