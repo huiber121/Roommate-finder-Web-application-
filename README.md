@@ -18,7 +18,7 @@
 | William Zhong|wzhong@mail.sfsu.edu|wzhong1     |
 | Zhiling Huang|zhuang21@mail.sfsu.edu|ZhilingHuang21|
 | Sai Swetha C      |    schiguruvada@mail.sfsu.edu           |  swethac-1130        |
-| member4      |               |                 |
+| Sanket Naik  |  sanketnaik99@gmail.com  | sanketnaik99  |
 | member5      |               |                 |
 | member6      |               |                 |
 
