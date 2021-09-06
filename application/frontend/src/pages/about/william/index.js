@@ -2,7 +2,7 @@ import React from "react";
 import William from "../../../assets/images/William.jpg";
 import "./William.css";
 
-William = () => {
+const William = () => {
   return (
   <div>
       <div className="header-row row center-xs center-sm center-md center-lg">
