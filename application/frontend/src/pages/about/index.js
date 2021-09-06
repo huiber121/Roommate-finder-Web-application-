@@ -2,6 +2,7 @@ import React from "react";
 import "./about.css";
 import Sanket from "../../assets/images/sanket.png";
 import Swetha from "../../assets/images/swetha.png";
+import Gabriel from "../../assets/images/Gabriel.jpg";
 import Placeholder from "../../assets/images/placeholder.png";
 import { useHistory } from "react-router";
 
@@ -83,7 +84,7 @@ export const About = () => {
           onClick={() => navigate("gabriel")}
         >
           <div className="card">
-            <img src={Placeholder} alt="Gabriel Pena" className="card-image" />
+            <img src={Gabriel} alt="Gabriel Pena" className="card-image" />
             <h1 className="card-title">Gabriel Pena</h1>
             <p className="card-description">Database Administrator</p>
           </div>
