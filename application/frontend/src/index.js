@@ -8,7 +8,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { About } from "./pages/about";
 import Sanket from "./pages/about/sanket";
 import Georgina from "./pages/about/georgina";
-import Shwetha from "./pages/about/shwetha";
+import Swetha from "./pages/about/swetha";
 import Zhiling from "./pages/about/zhiling";
 import William from "./pages/about/william";
 import Gabriel from "./pages/about/gabriel";
@@ -21,8 +21,8 @@ ReactDOM.render(
         <Route path="/about/georgina" exact>
           <Georgina />
         </Route>
-        <Route path="/about/shwetha" exact>
-          <Shwetha />
+        <Route path="/about/swetha" exact>
+          <Swetha />
         </Route>
         <Route path="/about/zhiling" exact>
           <Zhiling />

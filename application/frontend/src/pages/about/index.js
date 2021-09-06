@@ -1,6 +1,7 @@
 import React from "react";
 import "./about.css";
 import Sanket from "../../assets/images/sanket.png";
+import Swetha from "../../assets/images/swetha.png";
 import Placeholder from "../../assets/images/placeholder.png";
 import { useHistory } from "react-router";
 
@@ -35,10 +36,10 @@ export const About = () => {
         {/* Swetha C */}
         <div
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
-          onClick={() => navigate("shwetha")}
+          onClick={() => navigate("swetha")}
         >
           <div className="card">
-            <img src={Placeholder} alt="Shwetha C" className="card-image" />
+            <img src={Swetha} alt="Swetha C" className="card-image" />
             <h1 className="card-title">Swetha C</h1>
             <p className="card-description">Backend Developer</p>
           </div>
