@@ -3,10 +3,10 @@ import "./about.css";
 import Sanket from "../../assets/images/sanket.png";
 import Swetha from "../../assets/images/swetha.png";
 import Gabriel from "../../assets/images/Gabriel.jpg";
-import Georgina from "../../assets/images/Georgina.JPG";
+import Georgina from "../../assets/images/Georgina.jpg";
 import Zhiling from "../../assets/images/Zhiling.png";
 import William from "../../assets/images/William.jpg";
-import Placeholder from "../../assets/images/placeholder.png";
+import Eanguy from "../../assets/images/eanguy-card.png";
 import { useHistory } from "react-router";
 
 export const About = () => {
@@ -95,7 +95,7 @@ export const About = () => {
           onClick={() => navigate("eanguy")}
         >
           <div className="card">
-            <img src={Placeholder} alt="Eanguy Eng" className="card-image" />
+            <img src={Eanguy} alt="Eanguy Eng" className="card-image" />
             <h1 className="card-title">Eanguy Eng</h1>
             <p className="card-description">Database Administrator</p>
           </div>
