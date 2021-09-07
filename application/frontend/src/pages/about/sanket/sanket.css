@@ -1,4 +1,5 @@
 .header-image {
+  width: 100%;
   max-width: 300px;
 }
 .header-row {
@@ -28,4 +29,5 @@
   position: relative;
   bottom: 0px;
   margin: 0;
+  padding: 0px;
 }

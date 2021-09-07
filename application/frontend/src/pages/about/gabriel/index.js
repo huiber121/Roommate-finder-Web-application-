@@ -1,13 +1,13 @@
 import React from "react";
-import Gabriel from "../../assets/images/Gabriel.jpg";
-import "../about/sanket/sanket.css"
+import GabrielImage from "../../../assets/images/Gabriel.jpg";
+import "../sanket/sanket.css"
 
 const Gabriel = () => {
   return (
     <div>
       <div className="header-row row center-xs center-sm center-md center-lg">
         <div className="col-xs-8 col-sm-6 col-md-3 col-lg-3">
-          <img src={Gabriel} alt="Gabriel Pena" className="header-image" />
+          <img src={GabrielImage} alt="Gabriel Pena" className="header-image" />
         </div>
       </div>
       <div className="row header-row center-xs center-sm center-md center-lg">

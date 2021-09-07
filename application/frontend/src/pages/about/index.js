@@ -3,8 +3,9 @@ import "./about.css";
 import Sanket from "../../assets/images/sanket.png";
 import Swetha from "../../assets/images/swetha.png";
 import Gabriel from "../../assets/images/Gabriel.jpg";
+import Georgina from "../../assets/images/Georgina.JPG";
 import Zhiling from "../../assets/images/Zhiling.png";
-
+import William from "../../assets/images/William.jpg";
 import Placeholder from "../../assets/images/placeholder.png";
 import { useHistory } from "react-router";
 
@@ -12,11 +13,12 @@ export const About = () => {
   let history = useHistory();
 
   const navigate = (path) => {
+    window.scrollTo(0, 0);
     history.push(`/about/${path}`);
   };
 
   return (
-    <div>
+    <div className="about-container">
       <div className="header-container">
         <h1 className="title">Team 04</h1>
       </div>
@@ -27,11 +29,7 @@ export const About = () => {
           onClick={() => navigate("georgina")}
         >
           <div className="card">
-            <img
-              src={Placeholder}
-              alt="Georgina Shirazi"
-              className="card-image"
-            />
+            <img src={Georgina} alt="Georgina Shirazi" className="card-image" />
             <h1 className="card-title">Georgina Shirazi</h1>
             <p className="card-description">Leader & Github Master</p>
           </div>
@@ -64,7 +62,7 @@ export const About = () => {
           onClick={() => navigate("william")}
         >
           <div className="card">
-            <img src={Placeholder} alt="William Zhong" className="card-image" />
+            <img src={William} alt="William Zhong" className="card-image" />
             <h1 className="card-title">William Zhong</h1>
             <p className="card-description">Frontend Developer</p>
           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import William from "../../../assets/images/William.jpg";
+import WilliamImage from "../../../assets/images/William.jpg";
 import "./William.css";
 
 const William = () => {
@@ -7,7 +7,7 @@ const William = () => {
     <div>
       <div className="header-row row center-xs center-sm center-md center-lg">
         <div className="col-xs-8 col-sm-6 col-md-3 col-lg-3">
-          <img src={William} alt="William Zhong" className="header-image" />
+          <img src={WilliamImage} alt="William Zhong" className="header-image" />
         </div>
       </div>
       <div className="row header-row center-xs center-sm center-md center-lg">
