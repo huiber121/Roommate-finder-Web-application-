@@ -4,7 +4,7 @@ import "./index.css";
 import "flexboxgrid/css/flexboxgrid.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { About } from "./pages/about";
 import Sanket from "./pages/about/sanket";
 import Georgina from "./pages/about/georgina";
@@ -43,7 +43,7 @@ ReactDOM.render(
           <About />
         </Route>
         <Route path="/">
-          <App />
+          <Redirect to="/about" />
         </Route>
       </Switch>
     </BrowserRouter>

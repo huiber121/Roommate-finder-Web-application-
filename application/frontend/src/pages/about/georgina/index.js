@@ -1,9 +1,9 @@
 import React from "react";
 import GeorginaImage from "../../../assets/images/Georgina.JPG";
-import "./sanket.css";
+import "../sanket/sanket.css";
 
 const Georgina = () => {
-  <div>
+  return (<div>
       <div className="header-row row center-xs center-sm center-md center-lg">
         <div className="col-xs-8 col-sm-6 col-md-3 col-lg-3">
           <img src={GeorginaImage} alt="Georgina Shirazi" className="header-image" />
@@ -39,7 +39,7 @@ const Georgina = () => {
           ></path>
         </svg>
       </div>
-    </div>
+    </div>);
 };
 
 export default Georgina;
