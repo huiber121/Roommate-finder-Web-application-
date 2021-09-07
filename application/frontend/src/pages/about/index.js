@@ -3,7 +3,7 @@ import "./about.css";
 import Sanket from "../../assets/images/sanket.png";
 import Swetha from "../../assets/images/swetha.png";
 import Gabriel from "../../assets/images/Gabriel.jpg";
-import Georgina from "../../assets/images/Georgina.JPG";
+import Georgina from "../../assets/images/Georgina.jpg";
 import Zhiling from "../../assets/images/Zhiling.png";
 import William from "../../assets/images/William.jpg";
 import Placeholder from "../../assets/images/placeholder.png";
