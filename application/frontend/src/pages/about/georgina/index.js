@@ -1,5 +1,5 @@
 import React from "react";
-import GeorginaImage from "../../../assets/images/Georgina.JPG";
+import GeorginaImage from "../../../assets/images/Georgina.jpg";
 import "../sanket/sanket.css";
 
 const Georgina = () => {
