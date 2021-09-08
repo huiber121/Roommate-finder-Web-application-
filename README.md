@@ -18,7 +18,7 @@
 | William Zhong|wzhong@mail.sfsu.edu|wzhong1     |
 | Zhiling Huang|zhuang21@mail.sfsu.edu|ZhilingHuang21|
 | Sai Swetha C      |    schiguruvada@mail.sfsu.edu           |  swethac-1130        |
-| Sanket Naik  |  sanketnaik99@gmail.com  | sanketnaik99  |
+| Sanket Naik  |  snaik@sfsu.edu  | sanketnaik99  |
 | Eanguy Eng      | eeng1@mail.sfsu.edu   |   eanguyeng    |
 | Georgina Shirazi      |      gshirazi@mail.sfsu.edu         |        PinkStruct         |
 | Gabriel Pena    | gpena2@mail.sfsu.edu | GabrielPena147 |
