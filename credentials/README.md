@@ -21,7 +21,7 @@
 SSH'ing into the server:
 * use the ssh command in a 'nix environment (to do)
 
-* using PuTTY:
+# using PuTTY:
 1. use PuTTY Key Generator to create a private key. Save this to a file.
 2. launch PuTTY. Go to Connection->SSH->Auth, and click "browse" for the private key. Use your private key.
 3. Go to Session (at the top). put the SSH hostname into the Host Name box. Port is 22. Click open to SSH into our EC2 instance.
