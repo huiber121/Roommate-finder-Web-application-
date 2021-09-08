@@ -11,7 +11,7 @@
 2. SSH username: ubuntu@ec2-18-220-139-247.us-east-2.compute.amazonaws.com
 3. SSH password or key (this is the group_4.pem file in the credentials folder)
     <br> If a ssh key is used please upload the key to the credentials folder.
-4. Database URL or IP and port used.
+4. Database URL or IP and port used: group4-db.czpwr5igmvey.us-west-1.rds.amazonaws.com
     <br><strong> NOTE THIS DOES NOT MEAN YOUR DATABASE NEEDS A PUBLIC FACING PORT.</strong> But knowing the IP and port number will help with SSH tunneling into the database. The default port is more than sufficient for this class.
 5. Database username: admin
 6. Database password: admin1234
