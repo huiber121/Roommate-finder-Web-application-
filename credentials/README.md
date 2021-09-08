@@ -8,8 +8,8 @@
 # Below is a list of items required. Missing items will causes points to be deducted from multiple milestone submissions.
 
 1. Server URL or IP: 
-2. SSH username: 
-3. SSH password or key
+2. SSH username: ubuntu@ec2-18-220-139-247.us-east-2.compute.amazonaws.com
+3. SSH password or key (this is the group_4.pem file in the credentials folder)
     <br> If a ssh key is used please upload the key to the credentials folder.
 4. Database URL or IP and port used.
     <br><strong> NOTE THIS DOES NOT MEAN YOUR DATABASE NEEDS A PUBLIC FACING PORT.</strong> But knowing the IP and port number will help with SSH tunneling into the database. The default port is more than sufficient for this class.
@@ -17,6 +17,15 @@
 6. Database password: admin1234
 7. Database name (basically the name that contains all your tables): group-4-db
 8. Instructions on how to use the above information.
+
+SSH'ing into the server:
+* use the ssh command in a 'nix environment (to do)
+
+* using PuTTY:
+1. use PuTTY Key Generator to create a private key. Save this to a file.
+2. launch PuTTY. Go to Connection->SSH->Auth, and click "browse" for the private key. Use your private key.
+3. Go to Session (at the top). put the SSH hostname into the Host Name box. Port is 22. Click open to SSH into our EC2 instance.
+
 
 # Most important things to Remember
 ## These values need to kept update to date throughout the semester. <br>
