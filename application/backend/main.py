@@ -1,8 +1,7 @@
 
 from flask import Flask,request,json
 import sys
-
-sys.path.append('/home/zhiling/Desktop/CSC648-fall21-02-team04/application/backend/Tags/')
+sys.path.append("./Tags")
 from Tags.TagFindRoomHandler import TagFindRoomHandler
 
 ##Todo  still missing the error handler
@@ -28,5 +27,5 @@ def RoomListing():
     return response
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=3000)
 

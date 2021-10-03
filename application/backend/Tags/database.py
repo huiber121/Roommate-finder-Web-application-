@@ -1,5 +1,4 @@
 import mysql.connector
-import jsons
 
 
 class database:
