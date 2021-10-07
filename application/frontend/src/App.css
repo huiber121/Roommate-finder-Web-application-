@@ -1,9 +1,35 @@
+.title-row {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title-app {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.title-class {
+  font-size: 2rem;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.title-team {
+  font-size: 1.8rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .search-row {
   margin-top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.search-title {
+  font-size: 2rem;
+  margin-top: 15px;
 }
 .submit-button {
   margin-left: 20px;
@@ -20,4 +46,28 @@
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 5px;
+}
+.form-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 10px;
+  align-items: flex-start;
+}
+.input-label {
+  color: #212121;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.search-input {
+  width: 100%;
+  font-size: 1rem;
+}
+.search-select {
+  font-size: 1rem;
 }
