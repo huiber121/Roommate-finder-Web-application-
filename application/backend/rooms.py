@@ -49,7 +49,6 @@ def get_all_rooms():
 def get_room_media(room_id):
     """Get room media for a given room id."""
     sql = 'SELECT * FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
-    print ('SQL to get room media: ',sql)
     result = dbinstance.get_data(sql)
     room_media = []
     for media in result:
