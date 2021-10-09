@@ -16,15 +16,14 @@ class Database:
                 user='admin',
                 password='admin1234',
                 )
+    # Get connection object from a pool            
+    connection_object = connection_pool.get_connection()            
 
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
-        try:
-        # Get connection object from a pool
-            connection_object = self.connection_pool.get_connection()
-
-            if connection_object.is_connected():
-                cursor = connection_object.cursor()
+        try:   
+            if self.connection_object.is_connected():
+                cursor = self.connection_object.cursor()
                 cursor.execute(sql)
                 record = cursor.fetchall()
                 #print ('Data from db ', record)
