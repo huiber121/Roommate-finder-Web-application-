@@ -5,7 +5,7 @@ from mysql.connector import pooling
 
 class Database:
 
-    '''This class is used to connect to DB from connections in the pool & grt the data'''
+    '''This class is used to connect to DB from connections in the pool & get the data'''
 
     connection_pool = pooling.MySQLConnectionPool(
         pool_name='db_pool',
