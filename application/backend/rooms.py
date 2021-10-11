@@ -6,16 +6,17 @@ import ast
 from flask import request
 """DB module"""
 from database import Database
+import logging
 
 dbinstance = Database()
-
+LOGGER = logging.getLogger(__name__)
 
 def get_all_rooms():
     """Get all rooms for the given search attributes."""
     req_body = request.get_data()
     body = json.loads(req_body)
     rjson = ast.literal_eval(json.dumps(body))
-    print ('JSON from frontend ', rjson)
+    LOGGER.info (' JSON from frontend ', rjson)
     filter = ""
     sql = 'SELECT * FROM Test1.RoomListing WHERE (Available=0) and '
     if 'zipcode' in rjson.keys():
@@ -38,9 +39,9 @@ def get_all_rooms():
     if 'numbedrooms' in rjson.keys():
         filter = filter + 'and (NumBedrooms=' + str(rjson['numbedrooms'
                 ]) + ')'
-    print ('Filter : ', filter)
+    LOGGER.info (' Filter to get rooms : ' + filter)
     sql = sql + filter
-    print ('SQL to get rooms: ', sql)
+    LOGGER.info (' SQL to get rooms: '+ sql)
     result = dbinstance.get_data(sql)
     result_json = get_room_json(result, rjson)
     return json.dumps(result_json)
@@ -49,6 +50,7 @@ def get_all_rooms():
 def get_room_media(room_id):
     """Get room media for a given room id."""
     sql = 'SELECT * FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
+    LOGGER.info (' SQL to get room media ' + sql)
     result = dbinstance.get_data(sql)
     room_media = []
     for media in result:

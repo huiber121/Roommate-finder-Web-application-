@@ -1,11 +1,14 @@
 """Mysql module"""
 from mysql.connector import Error
 from mysql.connector import pooling
+import logging
 
+LOGGER = logging.getLogger(__name__)
 
 class Database:
 
     '''This class is used to connect to DB from connections in the pool & get the data'''
+    
 
     connection_pool = pooling.MySQLConnectionPool(
         pool_name='db_pool',
@@ -23,7 +26,7 @@ class Database:
 
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
-
+        LOGGER.info(' Inside get data of database.py class')
         try:
             if self.connection_object.is_connected():
                 cursor = self.connection_object.cursor()
@@ -31,6 +34,6 @@ class Database:
                 record = cursor.fetchall()
                 return record
         except Error as error:
-            print ('Error while connecting to MySQL using Connection pool '
+            LOGGER.error (' Error while connecting to MySQL using Connection pool '
                    , error)
             return None
