@@ -11,6 +11,8 @@ const App = () => {
   const [smokingSelect, setSmokingSelect] = useState("");
   // This stores and sets the room data value which is received from the Flask API.
   const [roomData, setRoomData] = useState([]);
+  // Loading boolean flag.
+  const [isLoading, setLoading] = useState(true);
 
   // This function calls the `getRooms` API endpoint and passes the search query to
   const fetchData = async () => {
@@ -30,12 +32,14 @@ const App = () => {
       ...(petSelect !== "" && { pets: petSelect }),
       ...(smokingSelect !== "" && { smoking: smokingSelect }),
     };
+    setLoading(true);
     const data = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/getRooms`,
       queryObj
     );
-    console.log(data.data);
+    // console.log(data.data);
     setRoomData(data.data);
+    setLoading(false);
   };
 
   // Handle Form submission and pass the data to the fetchData request.
@@ -102,37 +106,41 @@ const App = () => {
           </button>
         </form>
       </div>
-      <div className="room-cards">
-        {roomData.length > 0 ? (
-          roomData.map((room) => (
-            <div key={room.room_id} className="room-card">
-              <div
-                className="room-card-image-container"
-                style={{
-                  backgroundImage: `url(${room.roommedia[0]})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center center",
-                }}
-              ></div>
-              <div className="room-data-container">
-                <h3 className="room-location">
-                  {room.location} - {room.zipcode}
-                </h3>
-                <p className="room-description">{room.description}</p>
-                <p className="room-bed-bath">
-                  {room.numbedrooms} Bed | {room.numbathrooms} Bath
-                </p>
+      {isLoading ? (
+        <div className="loading-message">Loading...</div>
+      ) : (
+        <div className="room-cards">
+          {roomData.length > 0 ? (
+            roomData.map((room) => (
+              <div key={room.room_id} className="room-card">
+                <div
+                  className="room-card-image-container"
+                  style={{
+                    backgroundImage: `url(${room.roommedia[0]})`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                  }}
+                ></div>
+                <div className="room-data-container">
+                  <h3 className="room-location">
+                    {room.location} - {room.zipcode}
+                  </h3>
+                  <p className="room-description">{room.description}</p>
+                  <p className="room-bed-bath">
+                    {room.numbedrooms} Bed | {room.numbathrooms} Bath
+                  </p>
+                </div>
+                <p className="room-price">Rent - ${room.price}</p>
               </div>
-              <p className="room-price">Rent - ${room.price}</p>
+            ))
+          ) : (
+            <div className="no-room-message">
+              No Rooms found. Please update your search preferences.
             </div>
-          ))
-        ) : (
-          <div className="no-room-message">
-            No Rooms found. Please update your search preferences.
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
