@@ -13,11 +13,12 @@ code {
 }
 
 .container {
-  min-width: 100%;
-  margin: 0px;
-  padding: 5px;
+  max-width: 100%;
+  margin: auto;
+  padding: 5px 0px;
   text-align: center;
-  vertical-align: middle;
+  min-width: 100%;
+  overflow-x: hidden;
   font-weight: bold;
   border-bottom: 1px dashed lightgray;
 }

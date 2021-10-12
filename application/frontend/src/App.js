@@ -31,10 +31,10 @@ const App = () => {
       ...(smokingSelect !== "" && { smoking: smokingSelect }),
     };
     const data = await axios.post(
-      "http://127.0.0.1:5000/api/getRooms",
+      `${process.env.REACT_APP_HOST_BASE}/api/getRooms`,
       queryObj
     );
-    // console.log(data.data);
+    console.log(data.data);
     setRoomData(data.data);
   };
 
@@ -50,7 +50,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="">
+    <div className="root-container">
       <div className="title-row">
         <h1 className="title-app">GatorRoomer</h1>
         <h2 className="title-class">CSC 648/848 Section 2</h2>
@@ -106,9 +106,25 @@ const App = () => {
         {roomData.length > 0
           ? roomData.map((room) => (
               <div key={room.room_id} className="room-card">
-                <h3>{room.location}</h3>
-                <p>{room.description}</p>
-                <p>$ {room.price}</p>
+                <div
+                  className="room-card-image-container"
+                  style={{
+                    backgroundImage: `url(${room.roommedia[0]})`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                  }}
+                ></div>
+                <div className="room-data-container">
+                  <h3 className="room-location">
+                    {room.location} - {room.zipcode}
+                  </h3>
+                  <p className="room-description">{room.description}</p>
+                  <p className="room-bed-bath">
+                    {room.numbedrooms} Bed | {room.numbathrooms} Bath
+                  </p>
+                </div>
+                <p className="room-price">Rent - ${room.price}</p>
               </div>
             ))
           : null}
