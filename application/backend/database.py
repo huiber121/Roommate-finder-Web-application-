@@ -20,20 +20,23 @@ class Database:
         password='admin1234',
         )
 
-    # Get connection object from a pool
-
-    connection_object = connection_pool.get_connection()
 
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
         LOGGER.info(' Inside get data of database.py class')
+        # Get connection object from a pool
         try:
-            if self.connection_object.is_connected():
-                cursor = self.connection_object.cursor()
+            connection_object = self.connection_pool.get_connection()
+            if connection_object.is_connected():
+                cursor = connection_object.cursor()
                 cursor.execute(sql)
                 record = cursor.fetchall()
+                LOGGER.info('Data from DB: '+ str(len(record)))
                 return record
         except Error as error:
             LOGGER.error (' Error while connecting to MySQL using Connection pool '
                    , error)
             return None
+        finally:
+            connection_object.close()
+
