@@ -110,3 +110,8 @@
   padding: 10px 10px;
   border-radius: 0px 0px 10px 10px;
 }
+.no-room-message {
+  color: red;
+  font-size: 1.1rem;
+  font-weight: 600;
+}

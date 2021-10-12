@@ -103,31 +103,35 @@ const App = () => {
         </form>
       </div>
       <div className="room-cards">
-        {roomData.length > 0
-          ? roomData.map((room) => (
-              <div key={room.room_id} className="room-card">
-                <div
-                  className="room-card-image-container"
-                  style={{
-                    backgroundImage: `url(${room.roommedia[0]})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                  }}
-                ></div>
-                <div className="room-data-container">
-                  <h3 className="room-location">
-                    {room.location} - {room.zipcode}
-                  </h3>
-                  <p className="room-description">{room.description}</p>
-                  <p className="room-bed-bath">
-                    {room.numbedrooms} Bed | {room.numbathrooms} Bath
-                  </p>
-                </div>
-                <p className="room-price">Rent - ${room.price}</p>
+        {roomData.length > 0 ? (
+          roomData.map((room) => (
+            <div key={room.room_id} className="room-card">
+              <div
+                className="room-card-image-container"
+                style={{
+                  backgroundImage: `url(${room.roommedia[0]})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
+                }}
+              ></div>
+              <div className="room-data-container">
+                <h3 className="room-location">
+                  {room.location} - {room.zipcode}
+                </h3>
+                <p className="room-description">{room.description}</p>
+                <p className="room-bed-bath">
+                  {room.numbedrooms} Bed | {room.numbathrooms} Bath
+                </p>
               </div>
-            ))
-          : null}
+              <p className="room-price">Rent - ${room.price}</p>
+            </div>
+          ))
+        ) : (
+          <div className="no-room-message">
+            No Rooms found. Please update your search preferences.
+          </div>
+        )}
       </div>
     </div>
   );
