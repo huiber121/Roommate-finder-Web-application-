@@ -16,6 +16,10 @@ import Eanguy from "./pages/about/eanguy";
 
 ReactDOM.render(
   <React.StrictMode>
+    <div className="container">
+      SFSU Software Engineering Project CSC 648-848, Fall 2021. For
+      Demonstration Only
+    </div>
     <BrowserRouter>
       <Switch>
         <Route path="/about/georgina" exact>
@@ -43,7 +47,7 @@ ReactDOM.render(
           <About />
         </Route>
         <Route path="/">
-          <Redirect to="/about" />
+          <App />
         </Route>
       </Switch>
     </BrowserRouter>
