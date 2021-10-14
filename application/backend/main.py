@@ -1,31 +1,43 @@
-
-from flask import Flask,request,json
+"""Importing necessary module"""
 import sys
-sys.path.append("./Tags")
-from Tags.TagFindRoomHandler import TagFindRoomHandler
+import logging
+import os.path
+from inspect import currentframe
+from inspect import getframeinfo
+from flask import Flask
+from flask_cors import CORS
+CONTROLLER_DIR = \
+    os.path.abspath(os.path.join(os.path.dirname(__file__))) \
+    + '/controller/'
+sys.path.append(CONTROLLER_DIR)
+sys.dont_write_bytecode = True
+import roomscontroller
+import userscontroller
 
-##Todo  still missing the error handler
 
-app =Flask(__name__)
+APP = Flask(__name__)  # name of the module
+APP.config['CORS_HEADERS'] = 'Content-Type'
+CORS(APP, resources={r"*": {'origins': r"*"}})
+FRAOMEINFO = getframeinfo(currentframe())
+LOGGER = logging.getLogger(__name__)
 
-@app.route("/RoomListing")
 
-def RoomListing():
-    word =request.args.get("Tags")
-    list =None
-    if(word.count(",") == 0):
-        list= [word]
-    else:
-        list=word.split(",")
-    
-    data = TagFindRoomHandler.findRoomListings(list)
-    response= app.response_class(
-        response = json.dumps(data),
-        status= 200,
-        mimetype = 'application/json'
-    )
-    return response
+@APP.route('/api/getRooms', methods=['POST'])
+def get_rooms():
+    """Endpoint to get all rooms for the given search conditions."""
+    LOGGER.info(' Inside /api/getRooms')
+    rooms_list = roomscontroller.get_all_rooms()
+    return rooms_list
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
 
+@APP.route('/api/getRoommates', methods=['POST'])
+def get_roommates():
+    """Endpoint to get all rooms for the given search conditions."""
+    LOGGER.info('Inside /api/getRoommates')
+    roommates_list = userscontroller.get_all_roommates()
+    return roommates_list
+
+if __name__ == '__main__':
+    logging.basicConfig(filename='backend.log', level=logging.INFO)
+    APP.run('0.0.0.0', port=5000)
+    APP.run(debug=True)
