@@ -22,12 +22,6 @@ CORS(APP, resources={r"*": {'origins': r"*"}})
 FRAOMEINFO = getframeinfo(currentframe())
 LOGGER = logging.getLogger(__name__)
 
-@APP.route('/api/addUser', methods= ['POST'])
-def add_user():
-    """Endpoint to get all rooms for the given search conditions."""
-    LOGGER.info(' Inside /api/addUser')
-    userscontroller.add_user()
-    return ""
 
 @APP.route('/api/getRooms', methods=['POST'])
 def get_rooms():
