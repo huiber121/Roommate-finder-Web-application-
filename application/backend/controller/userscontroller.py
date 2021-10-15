@@ -20,7 +20,7 @@ def get_all_roommates():
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
-    LOGGER.info('JSON from frontend '+ uijson) 
+    LOGGER.info(uijson) 
     sql = ""
     result_json = []
     if 'type' in uijson.keys():
@@ -48,11 +48,10 @@ def get_all_roommates():
     
 def get_sql(uijson, usertype):
   sql = ""
-  LOGGER.info('uijson '+ uijson)
   if usertype == 'student':
         userstudentfilter= ""
         studentsql = ""
-        if len(uijson.keys()) == 0 or ('school' in uijson.keys() and len(uijson.keys()) == 1) or 'type' in uijson.keys():
+        if len(uijson.keys()) == 0 or ('school' in uijson.keys() and len(uijson.keys()) == 1) :
           studentsql = " SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID "
         else:
           studentsql = " SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and " 

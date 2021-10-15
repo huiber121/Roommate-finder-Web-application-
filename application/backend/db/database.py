@@ -40,9 +40,8 @@ class Database:
                 LOGGER.info('Data from DB: ' + str(len(record)))
                 return record
         except Error as error:
-            LOGGER.error(' Error while connecting to MySQL using Connection pool '
-                         , error)
-            return None
+            LOGGER.error(error)
+            return []
         finally:
             connection_object.close()
 
