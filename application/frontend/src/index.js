@@ -13,15 +13,19 @@ import Zhiling from "./pages/about/zhiling";
 import William from "./pages/about/william";
 import Gabriel from "./pages/about/gabriel";
 import Eanguy from "./pages/about/eanguy";
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className="container">
+    <div className="tagline-container">
       SFSU Software Engineering Project CSC 648-848, Fall 2021. For
       Demonstration Only
     </div>
     <BrowserRouter>
       <Switch>
+        <Route path="/login" exact component={Login} />
+        <Route path="/register" exact component={Register} />
         <Route path="/about/georgina" exact>
           <Georgina />
         </Route>
