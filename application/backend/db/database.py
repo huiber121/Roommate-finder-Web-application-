@@ -1,7 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 """Importing necessary modules"""
-
 import logging
 import sys
 from mysql.connector import Error
@@ -38,18 +35,29 @@ class Database:
                 cursor.execute(sql)
                 record = cursor.fetchall()
                 LOGGER.info('Data from DB: ' + str(len(record)))
-                return record
+                if (len(record) == 0):
+                    return 0
+                else:
+                    return record    
         except Error as error:
             LOGGER.error(error)
             return []
         finally:
             connection_object.close()
 
-    def cursor(self):
+    def add_data(self,sql):
         connection_object = self.connection_pool.get_connection()
-        if connection_object.is_connected():
-                cursor = connection_object.cursor()
-                return cursor
+        try:
+            if connection_object.is_connected():
+                    cursor = connection_object.cursor()
+                    cursor.execute(sql)
+                    connection_object.commit()
+                    record = cursor.rowcount
+                    LOGGER.info('Data to DB: ' + str(record)+ " row")
+                    return "Successfully added "
+        except Error as error:
+            LOGGER.info(error)   
+            return "Error in adding "         
 
 
 
