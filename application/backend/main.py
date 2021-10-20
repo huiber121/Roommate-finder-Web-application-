@@ -27,6 +27,7 @@ app.secret_key = 'GATERROOM_SECRET_KEY'
 
 LOGGER = logging.getLogger(__name__)
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True

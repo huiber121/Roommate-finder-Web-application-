@@ -39,6 +39,7 @@ class Database:
                     return 0
                 else:
                     return record    
+                return record
         except Error as error:
             LOGGER.error(error)
             return []
@@ -57,6 +58,10 @@ class Database:
                     return "Successfully added "
         except Error as error:
             LOGGER.info(error)   
+
+                    return "Successfully added "
+        except Error as error:
+            LOGGER.error(error)   
             return "Error in adding "         
 
 
