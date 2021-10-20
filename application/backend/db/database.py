@@ -1,7 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 """Importing necessary modules"""
-
 import logging
 import sys
 from mysql.connector import Error
@@ -38,6 +35,10 @@ class Database:
                 cursor.execute(sql)
                 record = cursor.fetchall()
                 LOGGER.info('Data from DB: ' + str(len(record)))
+                if (len(record) == 0):
+                    return 0
+                else:
+                    return record    
                 return record
         except Error as error:
             LOGGER.error(error)
@@ -51,6 +52,13 @@ class Database:
             if connection_object.is_connected():
                     cursor = connection_object.cursor()
                     cursor.execute(sql)
+                    connection_object.commit()
+                    record = cursor.rowcount
+                    LOGGER.info('Data to DB: ' + str(record)+ " row")
+                    return "Successfully added "
+        except Error as error:
+            LOGGER.info(error)   
+
                     return "Successfully added "
         except Error as error:
             LOGGER.error(error)   
