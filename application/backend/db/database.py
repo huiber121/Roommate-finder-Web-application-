@@ -58,8 +58,7 @@ class Database:
                     return "Successfully added "
         except Error as error:
             LOGGER.info(error)   
-
-                    return "Successfully added "
+            return "Successfully added "
         except Error as error:
             LOGGER.error(error)   
             return "Error in adding "         
