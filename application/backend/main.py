@@ -31,7 +31,7 @@ LOGGER = logging.getLogger(__name__)
 @app.before_request
 def make_session_permanent():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=10)
+    app.permanent_session_lifetime = timedelta(minutes=1440)
 
 @app.route('/api/addUser', methods= ['POST'])
 def add_user():
