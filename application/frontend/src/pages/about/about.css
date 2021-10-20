@@ -17,12 +17,12 @@
   margin-bottom: 30px;
 }
 
-.card-row {
+.about-card-row {
   width: 100%;
   margin: 0;
 }
 
-.card {
+.about-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   max-width: 300px;
   border-radius: 15px;
@@ -31,12 +31,12 @@
   text-align: center;
   margin-bottom: 60px;
 }
-.card-image {
+.about-card-image {
   width: 100%;
   border-radius: 15px 15px 0px 0px;
 }
 
-.card-title {
+.about-card-title {
   color: #212121;
   font-weight: 700;
   font-size: 2rem;
@@ -44,7 +44,7 @@
   padding: auto 4px;
 }
 
-.card-description {
+.about-card-description {
   color: grey;
   padding-bottom: 20px;
   font-size: 1rem;
