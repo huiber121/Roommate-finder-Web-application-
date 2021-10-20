@@ -13,13 +13,14 @@ from flask import request, session
 
 LOGGER = logging.getLogger(__name__)
 
-def create_session():
+def create_session(userid):
     """This method creates a new session for that particular username."""
     
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     session['loginid'] = uijson['loginid']
+    session['userid'] = userid
     LOGGER.info ( 'In create_session ' +str(session))
 
 
