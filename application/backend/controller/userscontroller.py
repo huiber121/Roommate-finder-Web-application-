@@ -41,6 +41,8 @@ def get_all_roommates():
         sql = get_sql(uijson, uijson['type'])
         LOGGER.info('SQL statement: ' + sql)
         result = DBINSTANCE.get_data(sql)
+        if result == 0:
+            return {}
         result_json.append(get_roommate_json(result, uijson['type']))
     else:
         LOGGER.info('When UI JSON is empty')
@@ -116,7 +118,6 @@ def get_sql(uijson, usertype):
                     + '( gender like ' + "'%" + str(uijson['gender']) \
                     + "%') "
         if 'userscore' in uijson.keys():
-            print (check_param, param_len)
             check_param = check_param + 1
             if check_param < param_len:
                 userstudentfilter = userstudentfilter \
@@ -148,7 +149,6 @@ def get_sql(uijson, usertype):
         proffilter = ''
         check_param = 1
         param_len = len(uijson)
-        print (param_len, uijson)
         if 'age' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
@@ -166,7 +166,6 @@ def get_sql(uijson, usertype):
                 proffilter = proffilter + '( gender like ' + "'%" \
                     + str(uijson['gender']) + "%') "
         if 'userscore' in uijson.keys():
-            print ('userscore', check_param, param_len)
             check_param = check_param + 1
             if check_param < param_len:
                 proffilter = proffilter + '( userscore = ' \
@@ -175,7 +174,6 @@ def get_sql(uijson, usertype):
                 proffilter = proffilter + '( userscore = ' \
                     + str(uijson['userscore']) + ') '
         if 'joblocation' in uijson.keys():
-            print (check_param, param_len)
             check_param = check_param + 1
             if check_param < param_len:
                 proffilter = proffilter + '( joblocation like ' + "'%" \
