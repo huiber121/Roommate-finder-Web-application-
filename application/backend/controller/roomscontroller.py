@@ -57,10 +57,10 @@ def get_room_media(room_id, dbinstance):
         sql = 'SELECT RoomPic FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
         result = dbinstance.get_data(sql)
         room_media = []
-        if len(result)!=0:
-            room_media.append(result[0][0])
+        if result==0:
+            room_media.append("")   
         else: 
-            room_media.append("")
+            room_media.append(result[0][0])
         return room_media
 
 
