@@ -15,6 +15,7 @@ import Gabriel from "./pages/about/gabriel";
 import Eanguy from "./pages/about/eanguy";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
+import Navbar from "./components/navbar";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,7 +23,9 @@ ReactDOM.render(
       SFSU Software Engineering Project CSC 648-848, Fall 2021. For
       Demonstration Only
     </div>
+
     <BrowserRouter>
+      <Navbar />
       <Switch>
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
