@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./search-rooms.css";
 import RoomCard from "../../components/search/room-card";
 import NoRoomsFound from "../../assets/images/no-rooms-found.png";
+import FilterPanel from "../../components/search/filter-panel";
 
 const SearchRooms = () => {
   // This stores and sets the search input field's value
@@ -203,192 +204,130 @@ const SearchRooms = () => {
               </p>
               {/* TODO: REFACTOR THIS */}
               {currentTab === "type" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={typeSelect}
-                        onChange={(event) => setTypeSelect(event.target.value)}
-                      >
-                        <option value="">None</option>
-                        <option value="Apartment">Apartment</option>
-                        <option value="House">House</option>
-                        <option value="Mobile Home">Mobile Home</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={typeSelect}
+                  setSelect={setTypeSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "Apartment", name: "Apartment" },
+                    { value: "House", name: "House" },
+                    { value: "Mobile Home", name: "Mobile Home" },
+                  ]}
+                />
               ) : currentTab === "bedrooms" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={bedroomSelect}
-                        onChange={(event) =>
-                          setBedroomSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6+</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={bedroomSelect}
+                  setSelect={setBedroomSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "1", name: "1" },
+                    { value: "2", name: "2" },
+                    { value: "3", name: "3" },
+                    { value: "4", name: "4" },
+                    { value: "5", name: "5" },
+                    { value: "6", name: "6+" },
+                  ]}
+                />
               ) : currentTab === "bathrooms" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={bathroomSelect}
-                        onChange={(event) =>
-                          setBathroomSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4+</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={bathroomSelect}
+                  setSelect={setBathroomSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "1", name: "1" },
+                    { value: "2", name: "2" },
+                    { value: "3", name: "3" },
+                    { value: "4", name: "4+" },
+                  ]}
+                />
               ) : currentTab === "smoking" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={smokingSelect}
-                        onChange={(event) =>
-                          setSmokingSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="no smoking">No Smoking</option>
-                        <option value="yes smoking">Smoking Friendly</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={smokingSelect}
+                  setSelect={setSmokingSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "no smoking", name: "No Smoking" },
+                    { value: "yes smoking", name: "Smoking Friendly" },
+                  ]}
+                />
               ) : currentTab === "pets" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={petSelect}
-                        onChange={(event) => setPetSelect(event.target.value)}
-                      >
-                        <option value="">None</option>
-                        <option value="no pets">No Pets</option>
-                        <option value="yes pets">Pet Friendly</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={petSelect}
+                  setSelect={setPetSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "no pets", name: "No Pets" },
+                    { value: "yes pets", name: "Pet Friendly" },
+                  ]}
+                />
               ) : currentTab === "parking" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={parkingSelect}
-                        onChange={(event) =>
-                          setParkingSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="no parking">No Parking</option>
-                        <option value="yes parking">Parking Included</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={parkingSelect}
+                  setSelect={setParkingSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    { value: "no parking", name: "No Parking" },
+                    { value: "yes parking", name: "Parking Included" },
+                  ]}
+                />
               ) : currentTab === "college" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={collegeSelect}
-                        onChange={(event) =>
-                          setCollegeSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="no college oriented">
-                          Not College Oriented
-                        </option>
-                        <option value="yes college oriented">
-                          College Oriented
-                        </option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={collegeSelect}
+                  setSelect={setCollegeSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    {
+                      value: "no college oriented",
+                      name: "Not College Oriented",
+                    },
+                    { value: "yes college oriented", name: "College Oriented" },
+                  ]}
+                />
               ) : currentTab === "disability" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={disabilitySelect}
-                        onChange={(event) =>
-                          setDisabilitySelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="yes disability friendly">
-                          Disability Friendly
-                        </option>
-                        <option value="no disability friendly">
-                          Not Disability Friendly
-                        </option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={disabilitySelect}
+                  setSelect={setDisabilitySelect}
+                  options={[
+                    { value: "", name: "None" },
+                    {
+                      value: "yes disability friendly",
+                      name: "Disability Friendly",
+                    },
+                    {
+                      value: "no disability friendly",
+                      name: "Not Disability Friendly",
+                    },
+                  ]}
+                />
               ) : currentTab === "negotiation" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={negotiationSelect}
-                        onChange={(event) =>
-                          setNegotiationSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="no negotiable">
-                          Rent Not Negotiable
-                        </option>
-                        <option value="yes negotiable">Rent Negotiable</option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={negotiationSelect}
+                  setSelect={setNegotiationSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    {
+                      value: "no negotiable",
+                      name: "Rent Not Negotiable",
+                    },
+                    { value: "yes negotiable", name: "Rent Negotiable" },
+                  ]}
+                />
               ) : currentTab === "restroom" ? (
-                <div>
-                  <a className="panel-block is-active is-flex is-flex-direction-row is-justify-content-center pb-5 pt-5">
-                    <div className="select">
-                      <select
-                        value={restroomSelect}
-                        onChange={(event) =>
-                          setRestroomSelect(event.target.value)
-                        }
-                      >
-                        <option value="">None</option>
-                        <option value="yes private restroom">
-                          Private Restroom
-                        </option>
-                        <option value="no private restroom">
-                          No Private Restroom
-                        </option>
-                      </select>
-                    </div>
-                  </a>
-                </div>
+                <FilterPanel
+                  select={restroomSelect}
+                  setSelect={setRestroomSelect}
+                  options={[
+                    { value: "", name: "None" },
+                    {
+                      value: "yes private restroom",
+                      name: "Private Restroom",
+                    },
+                    {
+                      value: "no private restroom",
+                      name: "No Private Restroom",
+                    },
+                  ]}
+                />
               ) : null}
               {currentTab !== "" ? (
                 <div>
