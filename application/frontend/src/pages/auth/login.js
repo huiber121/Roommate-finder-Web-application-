@@ -1,5 +1,7 @@
+import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import { useState } from "react/cjs/react.development";
 import { string } from "yup";
 import { object } from "yup";
 import "./login.css";
@@ -15,6 +17,23 @@ const Login = () => {
       .min(2, "Please enter a valid password.")
       .max(50, "Please enter a valid password."),
   });
+
+  const [loginMessage, setLoginMessage] = useState("");
+  const [loginStatus, setLoginStatus] = useState(null);
+
+  const submitLoginForm = async (values) => {
+    const requestData = await axios.post(
+      `${process.env.REACT_APP_HOST_BASE}/api/login`,
+      { ...values }
+    );
+    if (requestData.data.message) {
+      setLoginStatus("SUCCESS");
+      setLoginMessage(requestData.data.message);
+    } else {
+      setLoginStatus("ERROR");
+      setLoginMessage("Error Logging in. Please try again.");
+    }
+  };
 
   return (
     <div className="login-root-container">
@@ -33,6 +52,7 @@ const Login = () => {
             validationSchema={loginValidationSchema}
             onSubmit={(values) => {
               console.log(values);
+              submitLoginForm(values);
             }}
           >
             {({ errors, touched }) => (
@@ -83,7 +103,7 @@ const Login = () => {
                 <button className="button is-link is-medium">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="submit-icon"
+                    className="login-submit-icon"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -95,8 +115,20 @@ const Login = () => {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  Submit
+                  Login
                 </button>
+                {loginStatus ? (
+                  <div
+                    className={[
+                      "has-text-weight-semibold is-size-5 mt-4",
+                      loginStatus === "SUCCESS"
+                        ? "has-text-success"
+                        : "has-text-danger",
+                    ].join(" ")}
+                  >
+                    {loginMessage}
+                  </div>
+                ) : null}
               </Form>
             )}
           </Formik>

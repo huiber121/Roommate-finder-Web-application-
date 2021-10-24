@@ -19,46 +19,49 @@ import Navbar from "./components/navbar";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className="tagline-container">
-      SFSU Software Engineering Project CSC 648-848, Fall 2021. For
-      Demonstration Only
-    </div>
+    <div className="root">
+      <div className="tagline-container">
+        SFSU Software Engineering Project CSC 648-848, Fall 2021. For
+        Demonstration Only
+      </div>
 
-    <BrowserRouter>
-      <Navbar />
-      <Switch>
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
-        <Route path="/about/georgina" exact>
-          <Georgina />
-        </Route>
-        <Route path="/about/swetha" exact>
-          <Swetha />
-        </Route>
-        <Route path="/about/zhiling" exact>
-          <Zhiling />
-        </Route>
-        <Route path="/about/william" exact>
-          <William />
-        </Route>
-        <Route path="/about/sanket" exact>
-          <Sanket />
-        </Route>
-        <Route path="/about/gabriel" exact>
-          <Gabriel />
-        </Route>
-        <Route path="/about/eanguy" exact>
-          <Eanguy />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/">
-          <App />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Navbar />
+        <Switch>
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
+          <Route path="/about/georgina" exact>
+            <Georgina />
+          </Route>
+          <Route path="/about/swetha" exact>
+            <Swetha />
+          </Route>
+          <Route path="/about/zhiling" exact>
+            <Zhiling />
+          </Route>
+          <Route path="/about/william" exact>
+            <William />
+          </Route>
+          <Route path="/about/sanket" exact>
+            <Sanket />
+          </Route>
+          <Route path="/about/gabriel" exact>
+            <Gabriel />
+          </Route>
+          <Route path="/about/eanguy" exact>
+            <Eanguy />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/">
+            <App />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </div>
   </React.StrictMode>,
+
   document.getElementById("root")
 );
 
