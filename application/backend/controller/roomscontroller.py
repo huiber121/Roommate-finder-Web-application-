@@ -1,15 +1,16 @@
-"""JSON module"""
+
+"""Importing necessary modules"""
 import json
 import ast
-from flask import request
+from flask import request,session
 import logging
 import sys, os.path
-db_dir = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-+ '/db/')
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(db_dir)
 sys.dont_write_bytecode = True
-from database import Database
-
+from db.database import Database
+from model.roomhandler import roomhandler
+import sessioncontroller
 LOGGER = logging.getLogger(__name__)
       
 
@@ -104,5 +105,119 @@ def get_room_json(room_data, input_tags, dbinstance):
                 room_json = ast.literal_eval(json.dumps(room_dict))
                 room_list.append(room_json)
         return room_list
+
+
+def add_room():
+    checker=sessioncontroller.check_loggedin()
+    roomhandle = roomhandler()
+
+    if(checker):
+        req_body =request.form.get('json')
+        body = json.loads(req_body)
+        rjson = ast.literal_eval(json.dumps(body))
+        rjson["Lister"]=session["userid"]
+        id = session["userid"]
+        checkdup = roomhandle.check_no_dup(rjson)
+        if(checkdup == 0):
+            LOGGER.info(' JSON from frontend {}'.format(rjson))
+            id=roomhandle.add_new_room(rjson)
+            if(id > 0):
+                LOGGER.info(f'Add Json Info to RoomID{id}')
+                filemessage="None"
+                
+                if('files' in request.files):
+                    req_files = request.files.getlist("files")
+                    if(len(req_files) >0):
+                        for file in req_files:
+                            name=file.filename
+                            LOGGER.info(f'Upload File {name} to RoomId : {id}')
+                            filemessage = roomhandle.add_media(id,file)
+                    return {"Roominfo": "success added room info","Roomfile": filemessage}
+                else:
+                    LOGGER.info(f'Successfully Add Json info to Room_ID {id}')
+                    return "successfuly add room"
+            elif(id == 0):
+                LOGGER.error(f'Faild Add Json info to Room_ID {id}')
+                return "faild to adding room"
+            elif(id == -1):
+                LOGGER.error(f'Faild Add Room info to Room_ID{id}')
+                return "You have created many same Rooms"
+        else:
+            LOGGER.error("Have same id and info in RoomListing")
+            return "You have created a same Room"
+           
+    else:
+        return "please login first"
+
+def delete_room():
+    checker=sessioncontroller.check_loggedin()
+    if(checker):
+        req_id = request.args.get("RoomID")
+        LOGGER.info(f"Delete Room_ID {req_id} INFO")
+        delete=roomhandler()
+        deletemedia= delete.delet_media(req_id)
+        deleteroom= delete.delete_room(req_id)
+        return {"Room" : deleteroom ," Media" : deletemedia }
+    else:
+        return "please login first"
+
+def update_a_room():
+    checker=sessioncontroller.check_loggedin()
+    update =roomhandler()
+    if(checker):
+        id = request.args.get("RoomID")
+        updatemessage="None"
+        if('json' in request.form):
+            req_body =request.form.get('json')
+            body = json.loads(req_body)
+            rjson = ast.literal_eval(json.dumps(body))
+            LOGGER.info(f"Update Room_ID {id} INFO with {rjson}")
+            updatemessage= update.update_room(id,rjson)
+        filemessage="None"
+        if('files' in request.files):
+            req_files = request.files.getlist('files')
+            if(len(req_files) >0):
+                for file in req_files:
+                    name=file.filename
+                    LOGGER.info(f'Upload File {name} to RoomId : {id}')
+                    filemessage = update.add_media(id,file)
+        return { "json" : updatemessage, "update s3 and db":filemessage} 
+    else:
+        return "please login first"
+
+# delete one pic, use in update room info
+def delete_One_Media():
+    checker=sessioncontroller.check_loggedin()
+    if(checker):
+        url =request.get_data()
+        body = json.loads(url)
+        rjson = ast.literal_eval(json.dumps(body))
+        picurl = rjson["RoomPic"]
+        message= roomhandler().delete_one_pic(picurl)
+        return message
+    else:
+        return "please login first"
+
+# show one room
+def show_a_room():
+    roomid= request.args.get("RoomID")
+    output=roomhandler().show_room(roomid)
+    return output
+# get login user all rooms info
+def show_user_room():
+    checker=sessioncontroller.check_loggedin()
+    getroom = roomhandler()
+    if(checker):
+        id = session["userid"]
+        user_rooms=getroom.get_user_all_roomsid(id)
+        room_list=[]
+        for roomid in user_rooms:
+            room_list.append(getroom.show_room(roomid))
+        return json.dumps(room_list) 
+
+    else:
+        return "please login"
+
+
 
 
