@@ -10,3 +10,6 @@
   font-weight: bold;
   border-bottom: 1px dashed lightgray;
 }
+.root {
+  max-width: 100%;
+}

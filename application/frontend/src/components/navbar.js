@@ -35,7 +35,9 @@ const Navbar = () => {
           <Link to="/" className="navbar-item">
             Home
           </Link>
-
+          <Link to="/find-roommates" className="navbar-item">
+            Find Roommates
+          </Link>
           <Link to="/about" className="navbar-item">
             About
           </Link>
