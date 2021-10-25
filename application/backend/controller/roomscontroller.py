@@ -48,8 +48,11 @@ def get_all_rooms():
         sql = sql + filter
         LOGGER.info(' SQL to get rooms: {}'.format(sql))
         result = dbinstance.get_data(sql)
-        result_json = get_room_json(result, uijson, dbinstance)
-        return json.dumps(result_json)
+        if(result == 0):
+            return {}
+        else:
+            result_json = get_room_json(result, uijson, dbinstance)
+            return json.dumps(result_json)
 
 
 def get_room_media(room_id, dbinstance):
