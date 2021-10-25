@@ -53,9 +53,12 @@ def show_all_bookmark_rooms():
         id = session["userid"]
         boommark_room=bookmark_modle.get_all_roomBookmark(id)
         bookmark_room_list=[]
-        for roomid in boommark_room:
-            bookmark_room_list.append(getroom.show_room(roomid))
-        return json.dumps(bookmark_room_list) 
+        if(boommark_room==0):
+            return {}
+        else:
+            for roomid in boommark_room:
+                bookmark_room_list.append(getroom.show_room(roomid))
+            return json.dumps(bookmark_room_list) 
 
     else:
         return "please login"

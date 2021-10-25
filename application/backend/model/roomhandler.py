@@ -110,6 +110,8 @@ class roomhandler:
         sql = f"SELECT R.Room_ID FROM Test1.RoomListing R WHERE Lister={userid};"
         result=self.dbinstall.get_data(sql)
         rooms_ids=[]
+        if result == 0 :
+            return 0
         for roomid in result:
             rooms_ids.append(roomid[0])
         return rooms_ids

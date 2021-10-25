@@ -8,15 +8,22 @@ import logging
 sys.dont_write_bytecode = True
 DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(DB_DIR)
+sys.dont_write_bytecode = True
 from flask import render_template, request, session
 from db.database import Database
 import schoolcontroller
 import sessioncontroller    
 import profcontroller
 
-
-
 DBINSTANCE = Database()
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) 
+sys.path.append(db_dir)
+sys.dont_write_bytecode = True
+from flask import render_template, request
+from db.database import Database
+
+
+dbinstance = Database()
 LOGGER = logging.getLogger(__name__)
 
 

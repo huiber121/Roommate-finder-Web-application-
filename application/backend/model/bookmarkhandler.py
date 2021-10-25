@@ -51,6 +51,8 @@ class bookmarkhandler:
         sql= f"SELECT B.RoomBookmarked FROM Test1.Bookmark_Room B WHERE UserId = {userid};"
         result = self.dbinstall.get_data(sql)
         bookmark_room=[]
+        if(result==0):
+            return 0
         for roomid in result:
             bookmark_room.append(roomid[0])
         return bookmark_room

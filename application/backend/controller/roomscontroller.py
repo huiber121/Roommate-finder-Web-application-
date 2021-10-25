@@ -57,12 +57,13 @@ def get_all_rooms():
 
 def get_room_media(room_id, dbinstance):
         """Get room media for a given room id."""
-
-        sql = 'SELECT * FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
+        sql = 'SELECT RoomPic FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
         result = dbinstance.get_data(sql)
         room_media = []
-        for media in result:
-            room_media.append(media[1])
+        if result==0:
+            room_media.append("")   
+        else: 
+            room_media.append(result[0][0])
         return room_media
 
 
@@ -215,9 +216,12 @@ def show_user_room():
         id = session["userid"]
         user_rooms=getroom.get_user_all_roomsid(id)
         room_list=[]
-        for roomid in user_rooms:
-            room_list.append(getroom.show_room(roomid))
-        return json.dumps(room_list) 
+        if(user_rooms == 0):
+            return {}
+        else:
+            for roomid in user_rooms:
+                room_list.append(getroom.show_room(roomid))
+            return json.dumps(room_list) 
 
     else:
         return "please login"
