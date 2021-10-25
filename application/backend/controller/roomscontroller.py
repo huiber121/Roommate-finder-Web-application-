@@ -29,7 +29,8 @@ def get_all_rooms():
             filter = filter + '( location like ' + "'%" + uijson['location'] \
                 + "%') "
         if 'type' in uijson.keys():
-            filter = filter + 'and (Type=' + str(uijson['type']) + ')'
+            filter = filter + 'and (Type like ' + "'%" + uijson['type'] \
+                + "%') " 
         if 'desc' in uijson.keys():
             filter = filter + 'and (Description like ' + "'%" + uijson['desc'
                     ] + "%') "

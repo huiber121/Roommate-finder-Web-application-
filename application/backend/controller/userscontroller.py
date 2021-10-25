@@ -67,7 +67,7 @@ def get_sql(uijson, usertype):
             studentsql = \
                 ' SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and hidden = 0 and '
         schooljoin = \
-            'INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID '
+            ' INNER JOIN Test1.Schools on Schools.SchoolID = Student_User.SchoolID '
         check_param = 1
         param_len = len(uijson) - 1
         if 'major' in uijson.keys():
@@ -126,8 +126,10 @@ def get_sql(uijson, usertype):
                     + "'%" + str(uijson['school']) + "%') "
         LOGGER.info('Filter : ' + userstudentfilter)
         studentsql = studentsql + userstudentfilter + schooljoin
+        if len(uijson.keys()) == 1 and 'type' in uijson.keys():
+            studentsql = \
+                ' SELECT distinct Base_User.UserID ,Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User join Student_User on Base_User.UserID = Student_User.StudentID join Schools on Student_User.SchoolID = Schools.SchoolID'
         sql = studentsql
-
     if usertype == 'professor':
         profsql = ''
         if len(uijson) == 1:
