@@ -8,15 +8,22 @@ import logging
 sys.dont_write_bytecode = True
 DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(DB_DIR)
+sys.dont_write_bytecode = True
 from flask import render_template, request, session
 from db.database import Database
 import schoolcontroller
 import sessioncontroller    
 import profcontroller
 
-
-
 DBINSTANCE = Database()
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) 
+sys.path.append(db_dir)
+sys.dont_write_bytecode = True
+from flask import render_template, request
+from db.database import Database
+
+
+dbinstance = Database()
 LOGGER = logging.getLogger(__name__)
 
 
@@ -32,6 +39,8 @@ def get_all_roommates():
         sql = get_sql(uijson, uijson['type'])
         LOGGER.info('SQL statement: ' + sql)
         result = DBINSTANCE.get_data(sql)
+        if result == 0:
+            return {}
         result_json.append(get_roommate_json(result, uijson['type']))
     else:
         LOGGER.info('When UI JSON is empty')
@@ -107,7 +116,7 @@ def get_sql(uijson, usertype):
                     + '( gender like ' + "'%" + str(uijson['gender']) \
                     + "%') "
         if 'userscore' in uijson.keys():
-            print (check_param, param_len)
+            
             check_param = check_param + 1
             if check_param < param_len:
                 userstudentfilter = userstudentfilter \
@@ -141,7 +150,7 @@ def get_sql(uijson, usertype):
         proffilter = ''
         check_param = 1
         param_len = len(uijson)
-        print (param_len, uijson)
+     
         if 'age' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
@@ -159,7 +168,7 @@ def get_sql(uijson, usertype):
                 proffilter = proffilter + '( gender like ' + "'%" \
                     + str(uijson['gender']) + "%') "
         if 'userscore' in uijson.keys():
-            print ('userscore', check_param, param_len)
+            
             check_param = check_param + 1
             if check_param < param_len:
                 proffilter = proffilter + '( userscore = ' \
@@ -168,7 +177,6 @@ def get_sql(uijson, usertype):
                 proffilter = proffilter + '( userscore = ' \
                     + str(uijson['userscore']) + ') '
         if 'joblocation' in uijson.keys():
-            print (check_param, param_len)
             check_param = check_param + 1
             if check_param < param_len:
                 proffilter = proffilter + '( joblocation like ' + "'%" \
@@ -301,7 +309,7 @@ def add_user():
                                  + uijson['loginid'] + "'")
         LOGGER.info('Uid ' + str(uid[0][0]))
         schoolid = schoolcontroller.add_school(uijson)
-        print(schoolid)
+    
         LOGGER.info('School id ' + str(schoolid))
         finalres = schoolcontroller.add_student(uijson, uid, schoolid) \
             + ' ' + uijson['loginid']
