@@ -73,6 +73,8 @@ class roomhandler:
     def delet_media(self,id):
         getfileSql = f"SELECT M.RoomPic FROM Test1.RoomMedia M WHERE RoomID ={id};"
         Medianame = self.dbinstall.get_data(getfileSql)
+        if Medianame == 0:
+            return "no meidafile in db"
         for filename in Medianame:
             url=filename[0]
             pathtofilename=url.replace(AWS_BUCKET_HEAD,"")

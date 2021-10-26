@@ -22,7 +22,11 @@ import bookmarkcontroller
 app = Flask(__name__)  # name of the module
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DEBUG'] = True
-CORS(app, resources={r"*": {'origins': r"*"}})
+CORS(app, 
+     resources={r"*": {'origins': r"*"}}, 
+     headers=['Content-Type'], 
+     expose_headers=['Access-Control-Allow-Origin'], 
+     supports_credentials=True)
 FRAOMEINFO = getframeinfo(currentframe())
 app.secret_key = 'GATERROOM_SECRET_KEY'
 
