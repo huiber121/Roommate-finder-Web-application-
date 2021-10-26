@@ -49,8 +49,8 @@ def add_user():
 def login():
     """Endpoint for user login."""
     LOGGER.info(' Inside /api/login')
-    message = userscontroller.login()
-    return {"message":message}
+    response = userscontroller.login()
+    return response
 
 @app.route('/api/getRooms', methods=['POST'])
 def get_rooms():

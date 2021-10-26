@@ -350,7 +350,7 @@ def login():
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
-    sql = "SELECT Password, UserID FROM Test1.Base_User where LoginId='" \
+    sql = "SELECT Password,Admin, UserID FROM Test1.Base_User where LoginId='" \
         + uijson['loginid'] + "';"
     LOGGER.info(' SQL to check logged in user ' + sql)
     result = DBINSTANCE.get_data(sql)
@@ -359,7 +359,9 @@ def login():
         return 'Incorrect credentials'
     else:    
         if uijson['password'] == result[0][0]:
-            sessioncontroller.create_session(result[0][1])
-            return 'Logged in successfully ' + uijson['loginid']
+            sessioncontroller.create_session(result[0][2])
+            response = {"message":"Logged in successfully'" + uijson['loginid'], 
+                        "roleid":result[0][1]}
+            return response
        
     
