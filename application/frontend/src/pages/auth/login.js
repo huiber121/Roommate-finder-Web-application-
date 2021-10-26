@@ -24,8 +24,10 @@ const Login = () => {
   const submitLoginForm = async (values) => {
     const requestData = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/login`,
-      { ...values }
+      { ...values },
+      { withCredentials: true }
     );
+    console.log(requestData.headers);
     if (requestData.data.message) {
       setLoginStatus("SUCCESS");
       setLoginMessage(requestData.data.message);
