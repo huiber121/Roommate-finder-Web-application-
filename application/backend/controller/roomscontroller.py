@@ -30,7 +30,7 @@ def get_all_rooms():
                 + "%') "
         if 'type' in uijson.keys():
             filter = filter + 'and (Type like ' + "'%" + uijson['type'] \
-                + "%') " 
+                + "%') "
         if 'desc' in uijson.keys():
             filter = filter + 'and (Description like ' + "'%" + uijson['desc'
                     ] + "%') "
@@ -48,9 +48,9 @@ def get_all_rooms():
         sql = sql + filter
         LOGGER.info(' SQL to get rooms: {}'.format(sql))
         result = dbinstance.get_data(sql)
-        if(result == 0):
+        if result == 0:
             return {}
-        else:
+        else:    
             result_json = get_room_json(result, uijson, dbinstance)
             return json.dumps(result_json)
 

@@ -116,7 +116,6 @@ def get_sql(uijson, usertype):
                     + '( gender like ' + "'%" + str(uijson['gender']) \
                     + "%') "
         if 'userscore' in uijson.keys():
-            
             check_param = check_param + 1
             if check_param < param_len:
                 userstudentfilter = userstudentfilter \
@@ -150,7 +149,6 @@ def get_sql(uijson, usertype):
         proffilter = ''
         check_param = 1
         param_len = len(uijson)
-     
         if 'age' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
@@ -168,7 +166,6 @@ def get_sql(uijson, usertype):
                 proffilter = proffilter + '( gender like ' + "'%" \
                     + str(uijson['gender']) + "%') "
         if 'userscore' in uijson.keys():
-            
             check_param = check_param + 1
             if check_param < param_len:
                 proffilter = proffilter + '( userscore = ' \
