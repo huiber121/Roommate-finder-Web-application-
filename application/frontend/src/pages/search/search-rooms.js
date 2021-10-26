@@ -202,7 +202,6 @@ const SearchRooms = () => {
                   </a>
                 ) : null}
               </p>
-              {/* TODO: REFACTOR THIS */}
               {currentTab === "type" ? (
                 <FilterPanel
                   select={typeSelect}
@@ -266,8 +265,11 @@ const SearchRooms = () => {
                   setSelect={setParkingSelect}
                   options={[
                     { value: "", name: "None" },
-                    { value: "no parking", name: "No Parking" },
-                    { value: "yes parking", name: "Parking Included" },
+                    { value: "no parking availability", name: "No Parking" },
+                    {
+                      value: "yes parking availability",
+                      name: "Parking Included",
+                    },
                   ]}
                 />
               ) : currentTab === "college" ? (
@@ -335,7 +337,7 @@ const SearchRooms = () => {
                     className="panel-block is-flex is-flex-direction-row is-justify-content-end pb-2 pt-2"
                     onClick={() => clearAllFilters()}
                   >
-                    <button class="button is-danger">Clear All</button>
+                    <button className="button is-danger">Clear All</button>
                   </a>
                 </div>
               ) : null}
