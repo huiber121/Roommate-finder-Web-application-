@@ -9,6 +9,7 @@ const SearchRoommates = () => {
   // This stores and sets the search input field's value
   const [inputField, setInputField] = useState("");
   // Store the filters values.
+
   const [typeSelect, setTypeSelect] = useState("");
   const [genderSelect, setGenderSelect] = useState("");
   const [majorSelect, setMajorSelect] = useState("");
@@ -35,6 +36,7 @@ const SearchRoommates = () => {
     // The QueryObject is passed as to the getRooms API endpoint.
     const queryObj = {
       ...(hasProvidedZipCode === true && { zipcode: inputField }),
+
       ...(!hasProvidedZipCode &&
         inputField !== "" && { joblocation: inputField }),
       ...(typeSelect !== "" && { type: typeSelect }),
@@ -46,6 +48,7 @@ const SearchRoommates = () => {
     console.log(queryObj);
     setLoading(true);
     const data = await axios.post(
+
       `${process.env.REACT_APP_HOST_BASE}/api/getRoommates`,
       queryObj
     );
@@ -276,9 +279,13 @@ const SearchRoommates = () => {
       ) : (
         <div className="columns is-mobile is-centered is-multiline is-2">
           {/* <p className="m-5">{JSON.stringify(roommateData)}</p> */}
-          {roommateData[0].length > 0 ? (
+          {roommateData[0].length > 0 && typeSelect === "" ? (
             roommateData[0].map((roommate) => (
               <RoommateCard key={roommate.username} roommate={roommate[0]} />
+            ))
+          ) : roommateData[0].length > 0 && typeSelect !== "" ? (
+            roommateData[0].map((roommate) => (
+              <RoommateCard key={roommate.username} roommate={roommate} />
             ))
           ) : (
             <div>

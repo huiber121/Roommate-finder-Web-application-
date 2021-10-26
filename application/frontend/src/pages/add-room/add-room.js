@@ -68,32 +68,60 @@ const AddRoom = () => {
       }
     }
     const queryObj = {
-      json: `{
-        "Location": "${values.Location}",
-        "ZipCode": ${values.ZipCode},
-        "Type": "${values.Type}",
-        "Description": "${values.Description}",
-        "Price": ${values.Price},
-        "Size": ${values.Size},
-        "NumBathrooms": ${values.NumBathrooms},
-        "NumBedrooms": ${values.NumBedrooms},
-        "Tags": "${tags.join(", ")}",
-        "Available": 0,
-      }`,
+      json: {
+        Location: `${values.Location}`,
+        ZipCode: 94130,
+        Type: `${values.Type}`,
+        Description: `${values.Description}`,
+        Price: 12.0,
+        Size: 1700.0,
+        NumBathrooms: 2,
+        NumBedrooms: 4,
+        Tags: `${tags.join(", ")}`,
+        Available: 0,
+      },
       files: images,
     };
     console.log(tags);
     console.log(queryObj);
+    var formData = new FormData();
+    formData.append(
+      "json",
+      `{"Location": "${values.Location}","ZipCode": "${
+        values.ZipCode
+      }","Type": "${values.Type}","Description": "${
+        values.Description
+      }","Price": "${values.Price}","Size": "${values.Size}","NumBathrooms": "${
+        values.NumBathrooms
+      }","NumBedrooms": "${values.NumBedrooms}","Tags": "${tags.join(
+        ", "
+      )}","Available": "0"}`
+    );
+    for (let i in images) {
+      formData.append("files", images[i], images[i].name);
+    }
 
+    console.log(formData.get("files"));
+    setLoading(false);
     const data = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/addRoom`,
-      queryObj
+      formData,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+        // headers: {
+        //   "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Credentials": true,
+        //   "Content-Type": "application/json",
+        // },
+      }
     );
     console.log(data);
     if (data.data.message.Roominfo === "success added room info") {
       setLoading(false);
       setStatus("SUCCESS");
     } else {
+      setLoading(false);
       setStatus("ERROR");
     }
   };
@@ -601,7 +629,7 @@ const AddRoom = () => {
                     </div>
                   ))}
                 </div>
-                {/* {isLoading ? (
+                {isLoading ? (
                   <div className="sk-circle">
                     <div className="sk-circle1 sk-child"></div>
                     <div className="sk-circle2 sk-child"></div>
@@ -616,25 +644,28 @@ const AddRoom = () => {
                     <div className="sk-circle11 sk-child"></div>
                     <div className="sk-circle12 sk-child"></div>
                   </div>
-                ) : ( */}
-                <button className="button is-link is-medium mt-5" type="submit">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="login-submit-icon"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                ) : (
+                  <button
+                    className="button is-link is-medium mt-5"
+                    type="submit"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                  Add Room
-                </button>
-                {/* )} */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="login-submit-icon"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                      />
+                    </svg>
+                    Add Room
+                  </button>
+                )}
                 {uploadStatus === "SUCCESS" ? (
                   <div className="m-3 text-success">
                     Room Added Successfully

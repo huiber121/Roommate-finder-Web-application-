@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useState } from "react/cjs/react.development";
 import React from "react";
 import { Formik, Form, Field} from 'formik';
 import * as Yup from "yup";
@@ -55,6 +57,44 @@ const Register = () => {
     .required("Please enter your zip code.")
   });
 
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const submitForm = async (values) => {
+    const requestData = await axios.post(
+      `${process.env.REACT_APP_HOST_BASE}/api/users`,
+      { username: this.username, 
+        email: this.email, 
+        password: this.password, 
+        confirmPassword: this.confirmPassword, 
+        terms: this.terms, 
+        accountType: this.accountType, 
+        firstName: this.firstName, 
+        lastName: this.lastName,
+        middleName: this.middleName,
+        gender: this.gender,
+        ssn: this.ssn,
+        school: this.school,
+        gradeLevel: this.gradeLevel,
+        major: this.major,
+        location: this.location,
+        zipCode: this.zipCode
+      },{ withCredentials: true }
+      ).then((response) => {
+        console.log(response)
+      })
+      .catch((error) =>{
+        console.log(error)
+      })
+    if (requestData.data.message) {
+      setSubmitStatus("SUCCESS");
+      setSubmitMessage(requestData.data.message);
+    } else {
+      setSubmitStatus("ERROR");
+      setSubmitMessage("Error signing up. Please try again.");
+    }
+  };
+
   return (
     <div className="register-root-container">
       <div className="columns is-mobile is-centered is-gapless">
@@ -89,10 +129,11 @@ const Register = () => {
             validationSchema={registrationValidationSchema}
             onSubmit={(values) => {
               console.log(values);
+              submitForm(values);
             }}
             >
               {({errors, touched}) => (
-                <Form>
+                <Form >
                   <div className="field is-horizontal">
                     <div className="field-label is-normal">
                       <label className="label">Username</label>
@@ -441,6 +482,18 @@ const Register = () => {
                   </svg>
                   Sign up
                 </button>
+                {submitStatus ? (
+                  <div
+                    className={[
+                      "has-text-weight-semibold is-size-5 mt-4",
+                      submitStatus === "SUCCESS"
+                        ? "has-text-success"
+                        : "has-text-danger",
+                    ].join(" ")}
+                  >
+                    {submitMessage}
+                  </div>
+                ) : null}
                 </Form>
               )}
           </Formik>
@@ -450,4 +503,5 @@ const Register = () => {
   );
 };
 
-export default Register;
+
+export default Register

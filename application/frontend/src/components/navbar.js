@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { atom, useRecoilState } from "recoil";
 
 const Navbar = () => {
   const [isNavBarActive, setNavbarActive] = useState(false);
+
+  const loginState = atom({
+    key: "loginState",
+    default: false,
+  });
+
+  const [login, setLogin] = useRecoilState(loginState);
+
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -38,9 +47,11 @@ const Navbar = () => {
           <Link to="/find-roommates" className="navbar-item">
             Find Roommates
           </Link>
-          <Link to="/add-room" className="navbar-item">
-            Add Room
-          </Link>
+          {login === true ? (
+            <Link to="/room-bookmarks" className="navbar-item">
+              Bookmarks
+            </Link>
+          ) : null}
           <Link to="/about" className="navbar-item">
             About
           </Link>
@@ -60,14 +71,22 @@ const Navbar = () => {
 
         <div className="navbar-end">
           <div className="navbar-item">
-            <div className="buttons">
-              <Link to="/register" className="button is-link">
-                <strong>Register</strong>
-              </Link>
-              <Link to="/login" className="button is-light">
-                Log in
-              </Link>
-            </div>
+            {login === false ? (
+              <div className="buttons">
+                <Link to="/register" className="button is-link">
+                  <strong>Register</strong>
+                </Link>
+                <Link to="/login" className="button is-light">
+                  Log in
+                </Link>
+              </div>
+            ) : (
+              <div className="buttons">
+                <Link to="/add-room" className="button is-link">
+                  <strong>Add Room</strong>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
