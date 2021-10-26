@@ -16,6 +16,8 @@ import Eanguy from "./pages/about/eanguy";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import Navbar from "./components/navbar";
+import SearchRoommates from "./pages/search/search-roommates";
+import AddRoom from "./pages/add-room/add-room";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -30,6 +32,8 @@ ReactDOM.render(
         <Switch>
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
+          <Route path="/find-roommates" exact component={SearchRoommates} />
+          <Route path="/add-room" exact component={AddRoom} />
           <Route path="/about/georgina" exact>
             <Georgina />
           </Route>

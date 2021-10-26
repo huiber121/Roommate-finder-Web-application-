@@ -62,9 +62,30 @@ const Register = () => {
 
   const submitForm = async (values) => {
     const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/register`,
-      { ...values }
-    );
+      `${process.env.REACT_APP_HOST_BASE}/api/users`,
+      { username: this.username, 
+        email: this.email, 
+        password: this.password, 
+        confirmPassword: this.confirmPassword, 
+        terms: this.terms, 
+        accountType: this.accountType, 
+        firstName: this.firstName, 
+        lastName: this.lastName,
+        middleName: this.middleName,
+        gender: this.gender,
+        ssn: this.ssn,
+        school: this.school,
+        gradeLevel: this.gradeLevel,
+        major: this.major,
+        location: this.location,
+        zipCode: this.zipCode
+      },{ withCredentials: true }
+      ).then((response) => {
+        console.log(response)
+      })
+      .catch((error) =>{
+        console.log(error)
+      })
     if (requestData.data.message) {
       setSubmitStatus("SUCCESS");
       setSubmitMessage(requestData.data.message);

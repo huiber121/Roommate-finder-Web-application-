@@ -38,6 +38,9 @@ const Navbar = () => {
           <Link to="/find-roommates" className="navbar-item">
             Find Roommates
           </Link>
+          <Link to="/add-room" className="navbar-item">
+            Add Room
+          </Link>
           <Link to="/about" className="navbar-item">
             About
           </Link>
