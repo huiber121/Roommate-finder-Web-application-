@@ -3,13 +3,11 @@ import ast
 import sys
 import os.path
 import logging
-sys.dont_write_bytecode = True
-db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) \
-    + '/backend/db/'
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(db_dir)
 sys.dont_write_bytecode = True
 from flask import render_template, request
-from database import Database
+from db.database import Database
 
 
 LOGGER = logging.getLogger(__name__)

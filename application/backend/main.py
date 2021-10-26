@@ -16,12 +16,17 @@ sys.dont_write_bytecode = True
 import roomscontroller
 import userscontroller
 import sessioncontroller
+import bookmarkcontroller
 
 
 app = Flask(__name__)  # name of the module
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DEBUG'] = True
-CORS(app, resources={r"*": {'origins': r"*"}})
+CORS(app, 
+     resources={r"*": {'origins': r"*"}}, 
+     headers=['Content-Type'], 
+     expose_headers=['Access-Control-Allow-Origin'], 
+     supports_credentials=True)
 FRAOMEINFO = getframeinfo(currentframe())
 app.secret_key = 'GATERROOM_SECRET_KEY'
 
@@ -70,6 +75,77 @@ def logout():
     session.pop('loginid',None)
     LOGGER.info('After popping '+str(session))
     return {"message":"Logged out successfully"}
+
+# Room
+
+@app.route('/api/addRoom',methods = ['POST'])
+def addRoom():
+    LOGGER.info(' Inside /api/addRoom')
+    message = roomscontroller.add_room()
+    return {"message":  message}
+
+@app.route("/api/deleteRoom", methods=["DELETE"])
+def deleteRoom():
+    LOGGER.info('Inside /api/deleteRoom')
+    message = roomscontroller.delete_room()
+    return {"message": message}
+
+@app.route("/api/updateRoom", methods=['PUT'])
+def updateRoom():
+    LOGGER.info('Inside /api/updateRoom')
+    output = roomscontroller.update_a_room()
+    return {"message" : output}
+
+@app.route('/api/deleteOnepic',methods = ['DELETE'])
+def deleteOnepic():
+    LOGGER.info('Inside /api/deleteOnepic')
+    message = roomscontroller.delete_One_Media()
+    return {"message" : message}
+
+@app.route('/api/showRoom', methods=['GET'])
+def showRoom():
+    LOGGER.info('Inside /api/showRoom')
+    output=roomscontroller.show_a_room()
+    return output
+
+@app.route('/api/getuserRooms', methods=['GET'])
+def getuserRooms():
+    LOGGER.info('Inside /api/getuserRooms')
+    output = roomscontroller.show_user_room()
+    return output
+
+
+
+# Bookmark
+
+@app.route('/api/bookmarkRoom', methods = ['POST'])
+def bookmarkRoom():
+    LOGGER.info('Inside /api/bookmarkRoom')
+    message = bookmarkcontroller.room_bookmark()
+    return {"message": message}
+@app.route('/api/deletebookmarkRoom', methods =['DELETE'])
+def deletebookmarkRoom():
+    LOGGER.info('Inside /api/deletebookmarkRoom')
+    message = bookmarkcontroller.delete_room_bookmark()
+    return {"message":message}
+@app.route('/api/bookmarkUser', methods = ['POST'])
+def bookmarkUser():
+    LOGGER.info('Inside /api/bookmarkUser')
+    message = bookmarkcontroller.user_bookmark()
+    return {"message": message}
+@app.route('/api/deletebookmarkUser', methods =['DELETE'])
+def deletebookmarkUser():
+    LOGGER.info('Inside /api/deletebookmarkUser')
+    message = bookmarkcontroller.delete_user_bookmark()
+    return {"message":message}
+
+@app.route('/api/showAllRoomBookmark', methods = ['GET'])
+def showAllRoomBookmark():
+    LOGGER.info('Inside /api/showAllRoomBookmark')
+    message=bookmarkcontroller.show_all_bookmark_rooms()
+    return message
+
+
 
 
 if __name__ == '__main__':

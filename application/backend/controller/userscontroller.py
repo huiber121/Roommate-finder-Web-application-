@@ -6,23 +6,21 @@ import sys
 import os.path
 import logging
 sys.dont_write_bytecode = True
-DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) \
-    + '/backend/db/'
+DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(DB_DIR)
 sys.dont_write_bytecode = True
 from flask import render_template, request, session
-from database import Database
+from db.database import Database
 import schoolcontroller
 import sessioncontroller    
 import profcontroller
 
 DBINSTANCE = Database()
-db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) \
-    + '/backend/db/'
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) 
 sys.path.append(db_dir)
 sys.dont_write_bytecode = True
 from flask import render_template, request
-from database import Database
+from db.database import Database
 
 
 dbinstance = Database()
@@ -308,7 +306,7 @@ def add_user():
                                  + uijson['loginid'] + "'")
         LOGGER.info('Uid ' + str(uid[0][0]))
         schoolid = schoolcontroller.add_school(uijson)
-        print(schoolid)
+    
         LOGGER.info('School id ' + str(schoolid))
         finalres = schoolcontroller.add_student(uijson, uid, schoolid) \
             + ' ' + uijson['loginid']

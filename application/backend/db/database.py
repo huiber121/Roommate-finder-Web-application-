@@ -55,13 +55,23 @@ class Database:
                     connection_object.commit()
                     record = cursor.rowcount
                     LOGGER.info('Data to DB: ' + str(record)+ " row")
-                    return "Successfully added "
+                    return "Successfully adding "
         except Error as error:
             LOGGER.info(error)   
             return "Successfully added "
         except Error as error:
             LOGGER.error(error)   
-            return "Error in adding "         
-
-
-
+            return "Error in adding "
+    def delete_data(self,sql):
+        connection_object = self.connection_pool.get_connection()
+        try:
+            if connection_object.is_connected():
+                    cursor = connection_object.cursor()
+                    cursor.execute(sql)
+                    connection_object.commit()
+                    record = cursor.rowcount
+                    LOGGER.info('Data to DB: ' + str(record)+ " row")
+                    return "Successfully deleting "
+        except Error as error:
+            LOGGER.error(error)   
+            return "Error in adding "  
