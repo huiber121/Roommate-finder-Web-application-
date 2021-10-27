@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react/cjs/react.development";
-import React from "react";
+// import { useState } from "react/cjs/react.development";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./register.css";

@@ -25,9 +25,11 @@ const SearchRooms = () => {
   const [roomData, setRoomData] = useState([]);
   // Loading boolean flag.
   const [isLoading, setLoading] = useState(false);
+  const [hasNotSearched, setNotSearched] = useState(true);
 
   // This function calls the `getRooms` API endpoint and passes the search query to
   const fetchData = async () => {
+    setNotSearched(false);
     // Regexp that only accepts numbers from 0-9
     const zipRegex = "^[0-9]*$";
     // This flag is used to pass either the location or zipCode based on the input.
@@ -387,10 +389,17 @@ const SearchRooms = () => {
         <div className="columns is-mobile is-centered is-multiline is-2">
           {roomData.length > 0 ? (
             roomData.map((room) => <RoomCard room={room} key={room.roomid} />)
+          ) : roomData.length === 0 && hasNotSearched ? (
+            <div>
+              <img src={NoRoomsFound} className="mt-5 mb-3" />
+              <div className="has-text-success has-text-centered has-text-weight-semibold is-size-5">
+                Enter a Location or ZipCode to Search.
+              </div>
+            </div>
           ) : (
             <div>
               <img src={NoRoomsFound} className="mt-5 mb-3" />
-              <div className="has-text-danger has-text-weight-semibold is-size-5">
+              <div className="has-text-danger has-text-centered	 has-text-weight-semibold is-size-5">
                 No Rooms found. Please update your search preferences.
               </div>
             </div>
