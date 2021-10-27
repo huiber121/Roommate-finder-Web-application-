@@ -4,7 +4,7 @@ import "./William.css";
 
 const William = () => {
   return (
-  <div>
+    <div>
       <div className="header-row row center-xs center-sm center-md center-lg">
         <div className="col-xs-8 col-sm-6 col-md-3 col-lg-3">
           <img src={WilliamImage} alt="William Zhong" className="header-image" />

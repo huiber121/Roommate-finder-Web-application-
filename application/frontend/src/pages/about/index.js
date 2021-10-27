@@ -22,16 +22,20 @@ export const About = () => {
       <div className="header-container">
         <h1 className="title">Team 04</h1>
       </div>
-      <div className="row center-xs card-row">
+      <div className="row center-xs about-card-row">
         {/* Georgina Shirazi */}
         <div
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("georgina")}
         >
-          <div className="card">
-            <img src={Georgina} alt="Georgina Shirazi" className="card-image" />
-            <h1 className="card-title">Georgina Shirazi</h1>
-            <p className="card-description">Leader & Github Master</p>
+          <div className="about-card">
+            <img
+              src={Georgina}
+              alt="Georgina Shirazi"
+              className="about-card-image"
+            />
+            <h1 className="about-card-title">Georgina Shirazi</h1>
+            <p className="about-card-description">Leader & Github Master</p>
           </div>
         </div>
         {/* Swetha C */}
@@ -39,10 +43,10 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("swetha")}
         >
-          <div className="card">
-            <img src={Swetha} alt="Swetha C" className="card-image" />
-            <h1 className="card-title">Swetha C</h1>
-            <p className="card-description">Backend Developer</p>
+          <div className="about-card">
+            <img src={Swetha} alt="Swetha C" className="about-card-image" />
+            <h1 className="about-card-title">Swetha C</h1>
+            <p className="about-card-description">Backend Developer</p>
           </div>
         </div>
         {/* Zhiling Huang */}
@@ -50,10 +54,14 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("zhiling")}
         >
-          <div className="card">
-            <img src={Zhiling} alt="Zhiling Huang" className="card-image" />
-            <h1 className="card-title">Zhiling Huang</h1>
-            <p className="card-description">Backend Developer</p>
+          <div className="about-card">
+            <img
+              src={Zhiling}
+              alt="Zhiling Huang"
+              className="about-card-image"
+            />
+            <h1 className="about-card-title">Zhiling Huang</h1>
+            <p className="about-card-description">Backend Developer</p>
           </div>
         </div>
         {/* William Zhong */}
@@ -61,10 +69,14 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("william")}
         >
-          <div className="card">
-            <img src={William} alt="William Zhong" className="card-image" />
-            <h1 className="card-title">William Zhong</h1>
-            <p className="card-description">Frontend Developer</p>
+          <div className="about-card">
+            <img
+              src={William}
+              alt="William Zhong"
+              className="about-card-image"
+            />
+            <h1 className="about-card-title">William Zhong</h1>
+            <p className="about-card-description">Frontend Developer</p>
           </div>
         </div>
         {/* Sanket Naik */}
@@ -72,10 +84,10 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("sanket")}
         >
-          <div className="card">
-            <img src={Sanket} alt="Sanket Naik" className="card-image" />
-            <h1 className="card-title">Sanket Naik</h1>
-            <p className="card-description">Frontend Developer</p>
+          <div className="about-card">
+            <img src={Sanket} alt="Sanket Naik" className="about-card-image" />
+            <h1 className="about-card-title">Sanket Naik</h1>
+            <p className="about-card-description">Frontend Developer</p>
           </div>
         </div>
         {/* Gabriel Pena */}
@@ -83,10 +95,14 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("gabriel")}
         >
-          <div className="card">
-            <img src={Gabriel} alt="Gabriel Pena" className="card-image" />
-            <h1 className="card-title">Gabriel Pena</h1>
-            <p className="card-description">Database Administrator</p>
+          <div className="about-card">
+            <img
+              src={Gabriel}
+              alt="Gabriel Pena"
+              className="about-card-image"
+            />
+            <h1 className="about-card-title">Gabriel Pena</h1>
+            <p className="about-card-description">Database Administrator</p>
           </div>
         </div>
         {/* Eanguy Eng */}
@@ -94,10 +110,10 @@ export const About = () => {
           className="col-xs-12 col-sm-6 col-md-4 col-lg-3"
           onClick={() => navigate("eanguy")}
         >
-          <div className="card">
-            <img src={Eanguy} alt="Eanguy Eng" className="card-image" />
-            <h1 className="card-title">Eanguy Eng</h1>
-            <p className="card-description">Database Administrator</p>
+          <div className="about-card">
+            <img src={Eanguy} alt="Eanguy Eng" className="about-card-image" />
+            <h1 className="about-card-title">Eanguy Eng</h1>
+            <p className="about-card-description">Database Administrator</p>
           </div>
         </div>
       </div>

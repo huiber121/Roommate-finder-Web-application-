@@ -13,45 +13,63 @@ import Zhiling from "./pages/about/zhiling";
 import William from "./pages/about/william";
 import Gabriel from "./pages/about/gabriel";
 import Eanguy from "./pages/about/eanguy";
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
+import Navbar from "./components/navbar";
+import SearchRoommates from "./pages/search/search-roommates";
+import AddRoom from "./pages/add-room/add-room";
+import { RecoilRoot } from "recoil";
+import RoomBookmarks from "./pages/room-bookmarks/room-bookmarks";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className="container">
-      SFSU Software Engineering Project CSC 648-848, Fall 2021. For
-      Demonstration Only
+    <div className="root">
+      <div className="tagline-container">
+        SFSU Software Engineering Project CSC 648-848, Fall 2021. For
+        Demonstration Only
+      </div>
+      <RecoilRoot>
+        <BrowserRouter>
+          <Navbar />
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/find-roommates" exact component={SearchRoommates} />
+            <Route path="/add-room" exact component={AddRoom} />
+            <Route path="/room-bookmarks" exact component={RoomBookmarks} />
+            <Route path="/about/georgina" exact>
+              <Georgina />
+            </Route>
+            <Route path="/about/swetha" exact>
+              <Swetha />
+            </Route>
+            <Route path="/about/zhiling" exact>
+              <Zhiling />
+            </Route>
+            <Route path="/about/william" exact>
+              <William />
+            </Route>
+            <Route path="/about/sanket" exact>
+              <Sanket />
+            </Route>
+            <Route path="/about/gabriel" exact>
+              <Gabriel />
+            </Route>
+            <Route path="/about/eanguy" exact>
+              <Eanguy />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/">
+              <App />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </RecoilRoot>
     </div>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/about/georgina" exact>
-          <Georgina />
-        </Route>
-        <Route path="/about/swetha" exact>
-          <Swetha />
-        </Route>
-        <Route path="/about/zhiling" exact>
-          <Zhiling />
-        </Route>
-        <Route path="/about/william" exact>
-          <William />
-        </Route>
-        <Route path="/about/sanket" exact>
-          <Sanket />
-        </Route>
-        <Route path="/about/gabriel" exact>
-          <Gabriel />
-        </Route>
-        <Route path="/about/eanguy" exact>
-          <Eanguy />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/">
-          <App />
-        </Route>
-      </Switch>
-    </BrowserRouter>
   </React.StrictMode>,
+
   document.getElementById("root")
 );
 
