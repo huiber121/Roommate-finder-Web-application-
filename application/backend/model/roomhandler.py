@@ -126,8 +126,9 @@ class roomhandler:
         mediasql = f"SELECT * FROM Test1.RoomMedia R WHERE RoomID={roomid};"
         result=self.dbinstall.get_data(mediasql)
         room_media = []
-        for media in result:
-            room_media.append(media[1])
+        if(result!=0):
+            for media in result:
+                room_media.append(media[1])
         room=output[0]
         room_dict = {
             'room_id': room[0],
