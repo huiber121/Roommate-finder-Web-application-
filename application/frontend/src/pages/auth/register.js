@@ -63,6 +63,7 @@ const Register = () => {
   const submitForm = async (values) => {
     const requestData = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/users`,
+      {...values},
       { username: this.username, 
         email: this.email, 
         password: this.password, 
