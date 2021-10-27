@@ -85,7 +85,7 @@ const SearchRooms = () => {
 
   // This function will run when the page loads - It should contain the initial fetch request which loads all the listings.
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
   return (
     <div className="mt-6">
