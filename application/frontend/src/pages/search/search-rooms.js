@@ -24,7 +24,7 @@ const SearchRooms = () => {
   // This stores and sets the room data value which is received from the Flask API.
   const [roomData, setRoomData] = useState([]);
   // Loading boolean flag.
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   // This function calls the `getRooms` API endpoint and passes the search query to
   const fetchData = async () => {
