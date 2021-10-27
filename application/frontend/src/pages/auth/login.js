@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
-import React from "react";
-import { useState } from "react/cjs/react.development";
+import React, { useState } from "react";
 import { atom, useRecoilState } from "recoil";
 import { string } from "yup";
 import { object } from "yup";
