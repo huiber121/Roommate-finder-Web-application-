@@ -57,7 +57,6 @@ def get_rooms():
     """Endpoint to get all rooms for the given search conditions."""
     LOGGER.info(' Inside /api/getRooms')
     rooms_list = roomscontroller.get_all_rooms()    
-    roomscontroller.get_all_rooms()
     return rooms_list
   
 @app.route('/api/getRoommates', methods=['POST'])

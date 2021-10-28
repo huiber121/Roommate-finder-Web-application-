@@ -25,7 +25,7 @@ class Database:
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
 
-        LOGGER.info(' Inside get data of database.py class')
+        #LOGGER.info(' Inside get data of database.py class')
 
         try:
             # Get connection object from a pool
@@ -34,12 +34,11 @@ class Database:
                 cursor = connection_object.cursor()
                 cursor.execute(sql)
                 record = cursor.fetchall()
-                LOGGER.info('Data from DB: ' + str(len(record)))
                 if (len(record) == 0):
+                    #LOGGER.info('Data from DB: ' + str(len(record)))
                     return 0
                 else:
                     return record    
-                return record
         except Error as error:
             LOGGER.error(error)
             return []
