@@ -276,6 +276,7 @@ def get_roommate_json(roommate_data, type):
                 'userscore': roomate[4],
                 'joblocation': roomate[5],
                 'zipcode': roomate[6],
+                'type':"professor"
                 }
             rjson = ast.literal_eval(json.dumps(roommate_son))
             roommate_list.append(rjson)
