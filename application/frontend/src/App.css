@@ -121,3 +121,8 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+.search-submit-icon {
+  height: 1.2rem;
+  width: 1.2rem;
+  margin-right: 10px;
+}
