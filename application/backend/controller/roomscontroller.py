@@ -22,7 +22,7 @@ def get_all_rooms():
         uijson = ast.literal_eval(json.dumps(body))
         LOGGER.info(' JSON from frontend {}'.format(uijson))
         filter = ''
-        sql = 'SELECT * FROM Test1.RoomListing WHERE (Available=0) and '
+        sql = 'SELECT * FROM RoomListing WHERE (Available=0) and '
         if 'zipcode' in uijson.keys():
             filter = filter + '( zipcode=' + str(uijson['zipcode']) + ' )  '
         if 'location' in uijson.keys():
@@ -57,7 +57,7 @@ def get_all_rooms():
 
 def get_room_media(room_id, dbinstance):
         """Get room media for a given room id."""
-        sql = 'SELECT RoomPic FROM Test1.RoomMedia WHERE RoomID = ' + str(room_id)
+        sql = 'SELECT RoomPic FROM RoomMedia WHERE RoomID = ' + str(room_id)
         result = dbinstance.get_data(sql)
         room_media = []
         if result==0:

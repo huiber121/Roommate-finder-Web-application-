@@ -76,7 +76,7 @@ def get_sql(uijson, usertype):
             studentsql = \
                 ' SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and hidden = 0 and '
         schooljoin = \
-            ' INNER JOIN Test1.Schools on Schools.SchoolID = Student_User.SchoolID '
+            ' INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID '
         check_param = 1
         param_len = len(uijson) - 1
         if 'major' in uijson.keys():
@@ -230,7 +230,6 @@ def get_prof_json(prof):
 
 def get_student_json(student):
     """This method returns the JSON of the student object"""
-
     student_list = []
     student_json = {
         'userid': student[0],
@@ -254,7 +253,7 @@ def get_roommate_json(roommate_data, type):
     roommate_list = []
     for roomate in roommate_data:
         if type == 'student':
-            roommate_son = {
+            roommate_json = {
                 'userid': roomate[0],
                 'username': roomate[1],
                 'type': roomate[2],
@@ -265,10 +264,10 @@ def get_roommate_json(roommate_data, type):
                 'major': roomate[7],
                 'school': roomate[8],
                 }
-            rjson = ast.literal_eval(json.dumps(roommate_son))
+            rjson = ast.literal_eval(json.dumps(roommate_json))
             roommate_list.append(rjson)
         if type == 'professor':
-            roommate_son = {
+            roommate_json = {
                 'userid': roomate[0],
                 'username': roomate[1],
                 'age': roomate[2],
@@ -278,7 +277,7 @@ def get_roommate_json(roommate_data, type):
                 'zipcode': roomate[6],
                 'type':"professor"
                 }
-            rjson = ast.literal_eval(json.dumps(roommate_son))
+            rjson = ast.literal_eval(json.dumps(roommate_json))
             roommate_list.append(rjson)
     return roommate_list
 
@@ -292,7 +291,7 @@ def add_user():
     LOGGER.info(uijson)
     if uijson['type'] == 'student':
         addusersql = \
-            "INSERT INTO Test1.Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
+            "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
             + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
@@ -303,7 +302,7 @@ def add_user():
         result = DBINSTANCE.add_data(addusersql)
         LOGGER.info('After adding to Base_User ' + result)
         uid = \
-            DBINSTANCE.get_data("SELECT UserID from Test1.Base_User where LoginId = '"
+            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"
                                  + uijson['loginid'] + "'")
         LOGGER.info('Uid ' + str(uid[0][0]))
         schoolid = schoolcontroller.add_school(uijson)
@@ -316,7 +315,7 @@ def add_user():
         return finalres
     elif uijson['type'] == 'professor':
         addusersql = \
-            "INSERT INTO Test1.Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
+            "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
             + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
@@ -325,13 +324,13 @@ def add_user():
             + uijson['loginid'] + "');"
         DBINSTANCE.add_data(addusersql)
         uid = \
-            DBINSTANCE.get_data("SELECT UserID from Test1.Base_User where LoginId = '"
+            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"
                                  + uijson['loginid'] + "'")
         result = profcontroller.add_prof(uijson)
         return result
     else:
         addusersql = \
-            "INSERT INTO Test1.Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
+            "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
             + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
@@ -351,7 +350,7 @@ def login():
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
-    sql = "SELECT Password,Admin, UserID FROM Test1.Base_User where LoginId='" \
+    sql = "SELECT Password,Admin, UserID FROM Base_User where LoginId='" \
         + uijson['loginid'] + "';"
     LOGGER.info(' SQL to check logged in user ' + sql)
     result = DBINSTANCE.get_data(sql)
@@ -366,3 +365,57 @@ def login():
             return response
        
     
+def get_user_profile():
+    req_body = request.get_data()
+    body = json.loads(req_body)
+    uijson = ast.literal_eval(json.dumps(body))
+    LOGGER.info(uijson)
+    sql = "SELECT Base_User.*,Student_User.Major, Student_User.Grad_Level,Schools.SchoolName, Schools.ZipCode as School_zipcode, Schools.Location, Professional_User.JobLocation, Professional_User.Zipcode as Job_zipcode "\
+        "FROM Test1.Base_User left join Test1.Student_User on Base_User.UserID = Student_User.StudentID left join Test1.Schools on Student_User.SchoolID = Schools.SchoolID "\
+        "left join Professional_User on Base_User.UserID = Professional_User.Prof_ID where Base_User.UserID ="+str(uijson['userid'])+";"
+    result = dbinstance.get_data(sql)
+    if result[0][8] == "student":
+        result = get_student_profile(result[0])
+    elif result[0][8] == "professor":    
+        result = get_prof_profile(result[0])
+    return result
+
+def get_student_profile(data):
+    for i in data:
+        profile = {
+          "userid":data[0],
+          "email":data[1],  
+          "name":data[3],
+          "age":data[4],
+          "userscore":data[6],
+          "gender":data[7],
+          "type":data[8],
+          "hidden":data[9],
+          "loginid":data[10],
+          "admin":data[11],
+          "major":data[12],
+          "gradlevel":data[13],
+          "school":data[14],
+          "school_zipcode":data[15],
+          "location":data[16]
+        }
+    return profile    
+
+
+def get_prof_profile(data):
+    for i in data:
+        profile = {
+          "userid":data[0],
+          "email":data[1],  
+          "name":data[3],
+          "age":data[4],
+          "userscore":data[6],
+          "gender":data[7],
+          "type":data[8],
+          "hidden":data[9],
+          "loginid":data[10],
+          "admin":data[11],
+          "job_zipcode":data[17],
+          "job_location":data[18]
+        }
+    return profile 

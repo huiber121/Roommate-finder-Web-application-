@@ -52,6 +52,22 @@ def login():
     response = userscontroller.login()
     return response
 
+@app.route('/api/getProfile', methods=['POST'])
+def get_profile():
+    """Endpoint to get user profile for the given id."""
+    LOGGER.info(' Inside /api/getProfile')
+    user_profile = userscontroller.get_user_profile()
+    return user_profile
+
+@app.route('/api/logout', methods= ['POST'])
+def logout():
+    """Endpoint to logout."""
+    LOGGER.info(' Inside /api/logout')
+    session.pop('loginid',None)
+    LOGGER.info('After popping '+str(session))
+    return {"message":"Logged out successfully"}
+
+
 @app.route('/api/getRooms', methods=['POST'])
 def get_rooms():
     """Endpoint to get all rooms for the given search conditions."""
@@ -65,15 +81,8 @@ def get_roommates():
     LOGGER.info(' Inside /api/getRoommates')
     roommates_list = userscontroller.get_all_roommates()
     return roommates_list
-    
 
-@app.route('/api/logout', methods= ['POST'])
-def logout():
-    """Endpoint to logout."""
-    LOGGER.info(' Inside /api/logout')
-    session.pop('loginid',None)
-    LOGGER.info('After popping '+str(session))
-    return {"message":"Logged out successfully"}
+
 
 # Room
 
