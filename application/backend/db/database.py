@@ -61,6 +61,7 @@ class Database:
         except Error as error:
             LOGGER.error(error)   
             return "Error in adding "
+            
     def delete_data(self,sql):
         connection_object = self.connection_pool.get_connection()
         try:
@@ -74,3 +75,8 @@ class Database:
         except Error as error:
             LOGGER.error(error)   
             return "Error in adding "  
+
+    def get_media(self):
+        sql = 'SELECT * FROM RoomMedia '
+        result = self.get_data(sql)
+        return result

@@ -1,34 +1,20 @@
-
 """Importing necessary modules"""
 import json
 import ast
-import sys
-import os.path
 import logging
-sys.dont_write_bytecode = True
-DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(DB_DIR)
-sys.dont_write_bytecode = True
-from flask import render_template, request, session
-from db.database import Database
+from flask import request
 import schoolcontroller
-import sessioncontroller    
+import sessioncontroller
 import profcontroller
+from db.database import Database
 
 DBINSTANCE = Database()
-db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) 
-sys.path.append(db_dir)
-sys.dont_write_bytecode = True
-from flask import render_template, request
-from db.database import Database
-
-
-dbinstance = Database()
 LOGGER = logging.getLogger(__name__)
 
 
 def get_all_roommates():
     """This method returns the list of JSON's for the roommates"""
+
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
@@ -37,7 +23,7 @@ def get_all_roommates():
     result_json = []
     if 'type' in uijson.keys():
         sql = get_sql(uijson, uijson['type'])
-        LOGGER.info('SQL statement: ' + sql)
+        LOGGER.info('SQL statement: {}'.format(sql))
         result = DBINSTANCE.get_data(sql)
         if result == 0:
             return {}
@@ -57,7 +43,6 @@ def get_all_roommates():
                                    uijson.values())
                     if checkval == True:
                         result_json.append(xval)
-
     return json.dumps(result_json)
 
 
@@ -132,7 +117,7 @@ def get_sql(uijson, usertype):
             else:
                 schooljoin = schooljoin + 'and (schoolname like ' \
                     + "'%" + str(uijson['school']) + "%') "
-        LOGGER.info('Filter : ' + userstudentfilter)
+        LOGGER.info('Filter: {}'.format(userstudentfilter))
         studentsql = studentsql + userstudentfilter + schooljoin
         if len(uijson.keys()) == 1 and 'type' in uijson.keys():
             studentsql = \
@@ -152,11 +137,9 @@ def get_sql(uijson, usertype):
         if 'age' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
-                proffilter = proffilter + '( age = ' + str(uijson['age'
-                        ]) + ') and '
+                proffilter = proffilter + '( age = ' + str(uijson['age']) + ') and '
             else:
-                proffilter = proffilter + '( age = ' + str(uijson['age'
-                        ]) + ') '
+                proffilter = proffilter + '( age = ' + str(uijson['age']) + ') '
         if 'gender' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
@@ -189,25 +172,28 @@ def get_sql(uijson, usertype):
             else:
                 proffilter = proffilter + '( zipcode = ' \
                     + str(uijson['zipcode']) + ') '
-        LOGGER.info('Filter ' + proffilter)
+        LOGGER.info('Filter: {}'.format(proffilter))
         profsql = profsql + proffilter
         sql = profsql
     return sql
 
+
 def get_data_for_no_filters():
-  result = []
-  allstudentsql = "SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID "
-  studentres = dbinstance.get_data(allstudentsql)
-  allstudentsresult = ast.literal_eval(json.dumps(studentres))
-  LOGGER.info(allstudentsresult)
-  for student in allstudentsresult:
-      result.append(get_student_json(student))
-  allprofsql = "SELECT Base_User.UserID, Base_User.Name, Base_User.age, Base_User.Gender, Base_User.UserScore, Professional_User.JobLocation, Professional_User.Zipcode FROM Base_User INNER JOIN Professional_User on Base_User.UserID = Professional_User.Prof_ID "
-  profres = dbinstance.get_data((allprofsql))
-  allprofresult = ast.literal_eval(json.dumps(profres))
-  for prof in allprofresult:
-      result.append(get_prof_json(prof))
-  return result
+    result = []
+    allstudentsql = \
+        'SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID '
+    studentres = DBINSTANCE.get_data(allstudentsql)
+    allstudentsresult = ast.literal_eval(json.dumps(studentres))
+    LOGGER.info(allstudentsresult)
+    for student in allstudentsresult:
+        result.append(get_student_json(student))
+    allprofsql = \
+        'SELECT Base_User.UserID, Base_User.Name, Base_User.age, Base_User.Gender, Base_User.UserScore, Professional_User.JobLocation, Professional_User.Zipcode FROM Base_User INNER JOIN Professional_User on Base_User.UserID = Professional_User.Prof_ID '
+    profres = DBINSTANCE.get_data(allprofsql)
+    allprofresult = ast.literal_eval(json.dumps(profres))
+    for prof in allprofresult:
+        result.append(get_prof_json(prof))
+    return result
 
 
 def get_prof_json(prof):
@@ -230,6 +216,7 @@ def get_prof_json(prof):
 
 def get_student_json(student):
     """This method returns the JSON of the student object"""
+
     student_list = []
     student_json = {
         'userid': student[0],
@@ -275,7 +262,7 @@ def get_roommate_json(roommate_data, type):
                 'userscore': roomate[4],
                 'joblocation': roomate[5],
                 'zipcode': roomate[6],
-                'type':"professor"
+                'type': 'professor',
                 }
             rjson = ast.literal_eval(json.dumps(roommate_json))
             roommate_list.append(rjson)
@@ -298,20 +285,18 @@ def add_user():
             + str(uijson['userscore']) + "'," + "'" + uijson['gender'] \
             + "'," + "'" + uijson['type'] + "'," + "'0', '" \
             + uijson['loginid'] + "');"
-        LOGGER.info('Base_User SQL ' + addusersql)
+        LOGGER.info('Base_User SQL: {}'.format(addusersql))
         result = DBINSTANCE.add_data(addusersql)
-        LOGGER.info('After adding to Base_User ' + result)
+        LOGGER.info('After adding to Base_User {}'.format(result))
         uid = \
-            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"
-                                 + uijson['loginid'] + "'")
-        LOGGER.info('Uid ' + str(uid[0][0]))
+            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"+ uijson['loginid'] + "'")
+        LOGGER.info('Uid {}'.format(str(uid[0][0])))
         schoolid = schoolcontroller.add_school(uijson)
-    
-        LOGGER.info('School id ' + str(schoolid))
+
+        LOGGER.info('School id '.format(str(schoolid)))
         finalres = schoolcontroller.add_student(uijson, uid, schoolid) \
             + ' ' + uijson['loginid']
-        LOGGER.info('Before returning from add student ' + finalres + ''
-                    )
+        LOGGER.info('Before returning from add student {}'.format(finalres))
         return finalres
     elif uijson['type'] == 'professor':
         addusersql = \
@@ -324,8 +309,7 @@ def add_user():
             + uijson['loginid'] + "');"
         DBINSTANCE.add_data(addusersql)
         uid = \
-            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"
-                                 + uijson['loginid'] + "'")
+            DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"+ uijson['loginid'] + "'")
         result = profcontroller.add_prof(uijson)
         return result
     else:
@@ -339,83 +323,84 @@ def add_user():
             + uijson['loginid'] + "');"
         result = DBINSTANCE.add_data(addusersql)
         result = result + ' ' + uijson['loginid']
-        LOGGER.info(' Before returning from add prof ' + result + ' '
-                    + type(result))
+        LOGGER.info(' Before returning from add prof {}'.format(result))
         return result + uijson['loginid']
 
 
 def login():
     """Login method."""
+
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
-    sql = "SELECT Password,Admin, UserID FROM Base_User where LoginId='" \
-        + uijson['loginid'] + "';"
-    LOGGER.info(' SQL to check logged in user ' + sql)
+    sql = "SELECT Password,Admin, UserID FROM Base_User where LoginId='"+ uijson['loginid'] + "';"
+    LOGGER.info(' SQL to check logged in user {}'.format(sql))
     result = DBINSTANCE.get_data(sql)
-    LOGGER.info("The userid is {}".format(result[0][1]))
+    LOGGER.info('The userid is {}'.format(str(result[0][1])))
     if result == 0:
         return 'Incorrect credentials'
-    else:    
-        if uijson['password'] == result[0][0]:
+    elif uijson['password'] == result[0][0]:
             sessioncontroller.create_session(result[0][2])
-            response = {"message":"Logged in successfully'" + uijson['loginid'], 
-                        "roleid":result[0][1]}
+            response = {'message': "Logged in successfully'"+ uijson['loginid'], 'roleid': result[0][1]}
             return response
-       
-    
+
 def get_user_profile():
+    """This method returns the user profile given the id"""
+
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
-    sql = "SELECT Base_User.*,Student_User.Major, Student_User.Grad_Level,Schools.SchoolName, Schools.ZipCode as School_zipcode, Schools.Location, Professional_User.JobLocation, Professional_User.Zipcode as Job_zipcode "\
-        "FROM Test1.Base_User left join Test1.Student_User on Base_User.UserID = Student_User.StudentID left join Test1.Schools on Student_User.SchoolID = Schools.SchoolID "\
-        "left join Professional_User on Base_User.UserID = Professional_User.Prof_ID where Base_User.UserID ="+str(uijson['userid'])+";"
-    result = dbinstance.get_data(sql)
-    if result[0][8] == "student":
+    sql = \
+        'SELECT Base_User.*,Student_User.Major, Student_User.Grad_Level,Schools.SchoolName, Schools.ZipCode as School_zipcode, Schools.Location, Professional_User.JobLocation, Professional_User.Zipcode as Job_zipcode FROM Test1.Base_User left join Test1.Student_User on Base_User.UserID = Student_User.StudentID left join Test1.Schools on Student_User.SchoolID = Schools.SchoolID left join Professional_User on Base_User.UserID = Professional_User.Prof_ID where Base_User.UserID =' \
+        + str(uijson['userid']) + ';'
+    result = DBINSTANCE.get_data(sql)
+    if result[0][8] == 'student':
         result = get_student_profile(result[0])
-    elif result[0][8] == "professor":    
+    elif result[0][8] == 'professor':
         result = get_prof_profile(result[0])
     return result
 
+
 def get_student_profile(data):
-    for i in data:
-        profile = {
-          "userid":data[0],
-          "email":data[1],  
-          "name":data[3],
-          "age":data[4],
-          "userscore":data[6],
-          "gender":data[7],
-          "type":data[8],
-          "hidden":data[9],
-          "loginid":data[10],
-          "admin":data[11],
-          "major":data[12],
-          "gradlevel":data[13],
-          "school":data[14],
-          "school_zipcode":data[15],
-          "location":data[16]
+    """This method returns user(student) profile given the id"""
+
+    profile = {
+        'userid': data[0],
+        'email': data[1],
+        'name': data[3],
+        'age': data[4],
+        'userscore': data[6],
+        'gender': data[7],
+        'type': data[8],
+        'hidden': data[9],
+        'loginid': data[10],
+        'admin': data[11],
+        'major': data[12],
+        'gradlevel': data[13],
+        'school': data[14],
+        'school_zipcode': data[15],
+        'location': data[16],
         }
-    return profile    
+    return profile
 
 
 def get_prof_profile(data):
-    for i in data:
-        profile = {
-          "userid":data[0],
-          "email":data[1],  
-          "name":data[3],
-          "age":data[4],
-          "userscore":data[6],
-          "gender":data[7],
-          "type":data[8],
-          "hidden":data[9],
-          "loginid":data[10],
-          "admin":data[11],
-          "job_zipcode":data[17],
-          "job_location":data[18]
+    """This method returns user(prof) profile given the id"""
+
+    profile = {
+        'userid': data[0],
+        'email': data[1],
+        'name': data[3],
+        'age': data[4],
+        'userscore': data[6],
+        'gender': data[7],
+        'type': data[8],
+        'hidden': data[9],
+        'loginid': data[10],
+        'admin': data[11],
+        'job_zipcode': data[17],
+        'job_location': data[18],
         }
-    return profile 
+    return profile

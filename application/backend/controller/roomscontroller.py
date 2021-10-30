@@ -2,6 +2,7 @@
 """Importing necessary modules"""
 import json
 import ast
+import time
 from flask import request,session
 import logging
 import sys, os.path
@@ -12,11 +13,11 @@ from db.database import Database
 from model.roomhandler import roomhandler
 import sessioncontroller
 LOGGER = logging.getLogger(__name__)
+DBINSTANCE = Database()
       
-
+rooms_media = DBINSTANCE.get_media()
 def get_all_rooms():
         """Get all rooms for the given search attributes."""
-        dbinstance = Database()  
         req_body = request.get_data()
         body = json.loads(req_body)
         uijson = ast.literal_eval(json.dumps(body))
@@ -47,29 +48,24 @@ def get_all_rooms():
         LOGGER.info(' Filter to get rooms: {}'.format(filter))
         sql = sql + filter
         LOGGER.info(' SQL to get rooms: {}'.format(sql))
-        result = dbinstance.get_data(sql)
+        result = DBINSTANCE.get_data(sql)
         if result == 0:
             return {}
         else:    
-            result_json = get_room_json(result, uijson, dbinstance)
+            result_json = get_room_json(result, uijson)
             return json.dumps(result_json)
 
+    
+def get_room_media(roomid):
+    media = []
+    for i in rooms_media:
+        if i[0] == roomid:
+            media.append(i[1])
+    return media
+       
 
-def get_room_media(room_id, dbinstance):
-        """Get room media for a given room id."""
-        sql = 'SELECT RoomPic FROM RoomMedia WHERE RoomID = ' + str(room_id)
-        result = dbinstance.get_data(sql)
-        room_media = []
-        if result==0:
-            room_media.append("")   
-        else: 
-            room_media.append(result[0][0])
-        return room_media
-
-
-def get_room_json(room_data, input_tags, dbinstance):
+def get_room_json(room_data, input_tags):
         """Construct JSON for the data fetched from DB"""
-
         if 'location' in input_tags.keys():
             input_tags.pop('location')
         if 'zipcode' in input_tags.keys():
@@ -90,7 +86,7 @@ def get_room_json(room_data, input_tags, dbinstance):
             tag_db_list = tags.split(',')
             check = all(item in tag_db_list for item in input_tags.values())
             if check is True and room[12] == 0:
-                room_media = get_room_media(room[0],dbinstance)
+                room_media = get_room_media(room[0])
                 room_dict = {
                     'room_id': room[0],
                     'lister': room[1],
@@ -109,6 +105,7 @@ def get_room_json(room_data, input_tags, dbinstance):
                     }
                 room_json = ast.literal_eval(json.dumps(room_dict))
                 room_list.append(room_json)
+
         return room_list
 
 
