@@ -76,7 +76,3 @@ class Database:
             LOGGER.error(error)   
             return "Error in adding "  
 
-    def get_media(self):
-        sql = 'SELECT * FROM RoomMedia '
-        result = self.get_data(sql)
-        return result

@@ -5,17 +5,13 @@ import ast
 import time
 from flask import request,session
 import logging
-import sys, os.path
-db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(db_dir)
-sys.dont_write_bytecode = True
 from db.database import Database
 from model.roomhandler import roomhandler
 import sessioncontroller
 LOGGER = logging.getLogger(__name__)
 DBINSTANCE = Database()
       
-rooms_media = DBINSTANCE.get_media()
+rooms_media = DBINSTANCE.get_data("SELECT * FROM RoomMedia")
 def get_all_rooms():
         """Get all rooms for the given search attributes."""
         req_body = request.get_data()
