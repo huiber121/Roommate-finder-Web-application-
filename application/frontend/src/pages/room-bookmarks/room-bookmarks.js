@@ -63,7 +63,7 @@ const RoomBookmarks = () => {
             <div>
               <img src={NoRoomsFound} className="mt-5 mb-3" />
               <div className="has-text-danger has-text-weight-semibold is-size-5">
-                No Rooms found. Please update your search preferences.
+                No Bookmarks found. Bookmark rooms to see them here.
               </div>
             </div>
           )}
