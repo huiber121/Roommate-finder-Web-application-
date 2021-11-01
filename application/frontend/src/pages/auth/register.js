@@ -38,8 +38,8 @@ const Register = () => {
     .required('Please indicate your gender'),
     ssn: Yup.string()
       .matches(/^[0-9]*$/, "Numbers only.")
-      .min(7, "SSN must be 7 digits long.")
-      .max(7, "SSN must be 7 digits long.")
+      .min(9, "SSN must be 9 digits long.")
+      .max(9, "SSN must be 9 digits long.")
       .required('Please enter your SSN.'),
     school: Yup.string(),
     gradeLevel: Yup.string(),
@@ -63,30 +63,26 @@ const Register = () => {
   const submitForm = async (values) => {
     const requestData = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/users`,
-      {...values},
-      { username: this.username, 
-        email: this.email, 
-        password: this.password, 
-        confirmPassword: this.confirmPassword, 
-        terms: this.terms, 
-        accountType: this.accountType, 
-        firstName: this.firstName, 
-        lastName: this.lastName,
-        middleName: this.middleName,
-        gender: this.gender,
-        ssn: this.ssn,
-        school: this.school,
-        gradeLevel: this.gradeLevel,
-        major: this.major,
-        location: this.location,
-        zipCode: this.zipCode
-      },{ withCredentials: true }
-      ).then((response) => {
-        console.log(response)
-      })
-      .catch((error) =>{
-        console.log(error)
-      })
+      { ...values},
+      {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        terms: values.terms,
+        accountType: values.accountType,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        middleName: values.middleName,
+        gender: values.gender,
+        ssn: values.ssn,
+        school: values.school,
+        gradeLevel: values.gradeLevel,
+        major: values.major,
+        location: values.location,
+        zipCode: values.zipCode
+      },
+      { withCredentials: true })
     if (requestData.data.message) {
       setSubmitStatus("SUCCESS");
       setSubmitMessage(requestData.data.message);
