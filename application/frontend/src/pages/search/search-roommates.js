@@ -279,9 +279,13 @@ const SearchRoommates = () => {
       ) : (
         <div className="columns is-mobile is-centered is-multiline is-2">
           {/* <p className="m-5">{JSON.stringify(roommateData)}</p> */}
-          {roommateData[0].length > 0 ? (
+          {roommateData[0].length > 0 && typeSelect === "" ? (
             roommateData[0].map((roommate) => (
               <RoommateCard key={roommate.username} roommate={roommate[0]} />
+            ))
+          ) : roommateData[0].length > 0 && typeSelect !== "" ? (
+            roommateData[0].map((roommate) => (
+              <RoommateCard key={roommate.username} roommate={roommate} />
             ))
           ) : (
             <div>

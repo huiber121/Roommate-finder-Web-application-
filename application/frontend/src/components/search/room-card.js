@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import RoomPlaceholder from "../../assets/images/room-placeholder.png";
 
 const RoomCard = ({ room }) => {
@@ -12,9 +13,17 @@ const RoomCard = ({ room }) => {
     );
     console.log(data);
   };
+  let history = useHistory();
+
+  const handleClick = (roomID) => {
+    history.push(`/room/${roomID}`);
+  };
 
   return (
-    <div className="m-3 column is-fullscreen-mobile is-half-tablet is-one-quarter-desktop card">
+    <div
+      className="m-3 column is-fullscreen-mobile is-half-tablet is-one-quarter-desktop card"
+      onClick={() => handleClick(room.room_id)}
+    >
       <div className="card-image">
         <figure className="image is-4by3">
           <img

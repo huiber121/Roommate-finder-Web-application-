@@ -18,6 +18,9 @@ import Register from "./pages/auth/register";
 import Navbar from "./components/navbar";
 import SearchRoommates from "./pages/search/search-roommates";
 import AddRoom from "./pages/add-room/add-room";
+import { RecoilRoot } from "recoil";
+import RoomBookmarks from "./pages/room-bookmarks/room-bookmarks";
+import RoomDetails from "./pages/room-details/room-details";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,43 +29,46 @@ ReactDOM.render(
         SFSU Software Engineering Project CSC 648-848, Fall 2021. For
         Demonstration Only
       </div>
-
-      <BrowserRouter>
-        <Navbar />
-        <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/register" exact component={Register} />
-          <Route path="/find-roommates" exact component={SearchRoommates} />
-          <Route path="/add-room" exact component={AddRoom} />
-          <Route path="/about/georgina" exact>
-            <Georgina />
-          </Route>
-          <Route path="/about/swetha" exact>
-            <Swetha />
-          </Route>
-          <Route path="/about/zhiling" exact>
-            <Zhiling />
-          </Route>
-          <Route path="/about/william" exact>
-            <William />
-          </Route>
-          <Route path="/about/sanket" exact>
-            <Sanket />
-          </Route>
-          <Route path="/about/gabriel" exact>
-            <Gabriel />
-          </Route>
-          <Route path="/about/eanguy" exact>
-            <Eanguy />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/">
-            <App />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <RecoilRoot>
+        <BrowserRouter>
+          <Navbar />
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/find-roommates" exact component={SearchRoommates} />
+            <Route path="/add-room" exact component={AddRoom} />
+            <Route path="/room-bookmarks" exact component={RoomBookmarks} />
+            <Route path="/room/:id" component={RoomDetails} />
+            <Route path="/about/georgina" exact>
+              <Georgina />
+            </Route>
+            <Route path="/about/swetha" exact>
+              <Swetha />
+            </Route>
+            <Route path="/about/zhiling" exact>
+              <Zhiling />
+            </Route>
+            <Route path="/about/william" exact>
+              <William />
+            </Route>
+            <Route path="/about/sanket" exact>
+              <Sanket />
+            </Route>
+            <Route path="/about/gabriel" exact>
+              <Gabriel />
+            </Route>
+            <Route path="/about/eanguy" exact>
+              <Eanguy />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/">
+              <App />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </RecoilRoot>
     </div>
   </React.StrictMode>,
 

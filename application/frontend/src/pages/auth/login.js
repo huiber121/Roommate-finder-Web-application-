@@ -1,12 +1,19 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
-import React from "react";
-import { useState } from "react/cjs/react.development";
+import React, { useState } from "react";
+import { atom, useRecoilState } from "recoil";
 import { string } from "yup";
 import { object } from "yup";
 import "./login.css";
 
-const Login = () => {
+const Login = (props) => {
+  const loginState = atom({
+    key: "loginState", // unique ID (with respect to other atoms/selectors)
+    default: false, // default value (aka initial value)
+  });
+
+  const [login, setLogin] = useRecoilState(loginState);
+
   const loginValidationSchema = object().shape({
     loginid: string()
       .required("The Login ID is required.")
@@ -22,6 +29,7 @@ const Login = () => {
   const [loginStatus, setLoginStatus] = useState(null);
 
   const submitLoginForm = async (values) => {
+    console.log("Login");
     const requestData = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/login`,
       { ...values },
@@ -31,6 +39,10 @@ const Login = () => {
     if (requestData.data.message) {
       setLoginStatus("SUCCESS");
       setLoginMessage(requestData.data.message);
+      setLogin(true);
+      setTimeout(() => {
+        props.history.push("/");
+      }, 2000);
     } else {
       setLoginStatus("ERROR");
       setLoginMessage("Error Logging in. Please try again.");
@@ -102,7 +114,7 @@ const Login = () => {
                     </div>
                   </div>
                 </div>
-                <button className="button is-link is-medium">
+                <button className="button is-link is-medium" type="submit">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="login-submit-icon"
