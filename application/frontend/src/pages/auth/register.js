@@ -39,15 +39,10 @@ const Register = () => {
     gender: Yup.number().nullable().required("Please indicate your gender"),
     ssn: Yup.string()
       .matches(/^[0-9]*$/, "Numbers only.")
-<<<<<<< HEAD
       .min(9, "SSN must be 9 digits long.")
       .max(9, "SSN must be 9 digits long.")
       .required('Please enter your SSN.'),
-=======
-      .min(7, "SSN must be 7 digits long.")
-      .max(7, "SSN must be 7 digits long.")
-      .required("Please enter your SSN."),
->>>>>>> 86ad74d32aeea3659b885055ae2de167132ca010
+
     school: Yup.string(),
     gradeLevel: Yup.string(),
     major: Yup.string()
@@ -68,30 +63,6 @@ const Register = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const submitForm = async (values) => {
-<<<<<<< HEAD
-    const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/users`,
-      { ...values},
-      {
-        username: values.username,
-        email: values.email,
-        password: values.password,
-        confirmPassword: values.confirmPassword,
-        terms: values.terms,
-        accountType: values.accountType,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        middleName: values.middleName,
-        gender: values.gender,
-        ssn: values.ssn,
-        school: values.school,
-        gradeLevel: values.gradeLevel,
-        major: values.major,
-        location: values.location,
-        zipCode: values.zipCode
-      },
-      { withCredentials: true })
-=======
     const requestData = await axios
       .post(
         `${process.env.REACT_APP_HOST_BASE}/api/users`,
@@ -118,7 +89,6 @@ const Register = () => {
       .catch((error) => {
         console.log(error);
       });
->>>>>>> 86ad74d32aeea3659b885055ae2de167132ca010
     if (requestData.data.message) {
       setSubmitStatus("SUCCESS");
       setSubmitMessage(requestData.data.message);
@@ -382,7 +352,7 @@ const Register = () => {
                           School
                           <Field name="school" as="select">
                             <option value={null}>Select School</option>
-                            <option value={0}>Bueiness</option>
+                            <option value={0}>Business</option>
                             <option value={1}>Education</option>
                             <option value={2}>Ethnic study</option>
                             <option value={3}>Health and Social Science</option>
