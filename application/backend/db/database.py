@@ -26,7 +26,7 @@ class Database:
                 cursor = connection_object.cursor()
                 cursor.execute(sql)
                 record = cursor.fetchall()
-                if (len(record) == 0):
+                if len(record) == 0:
                     #LOGGER.info('Data from DB: ' + str(len(record)))
                     return 0
                 else:
@@ -41,27 +41,26 @@ class Database:
         connection_object = self.connection_pool.get_connection()
         try:
             if connection_object.is_connected():
-                    cursor = connection_object.cursor()
-                    cursor.execute(sql)
-                    connection_object.commit()
-                    record = cursor.rowcount
-                    LOGGER.info(' Data to DB: ' + str(record)+ " row")
-                    return "Successfully added "
+                cursor = connection_object.cursor()
+                cursor.execute(sql)
+                connection_object.commit()
+                record = cursor.rowcount
+                LOGGER.info(' Data to DB: ' + str(record)+ " row")
+                return "Successfully added "
         except Error as error:
-            LOGGER.error(error)   
-            return "Error in adding "
+            LOGGER.error(error)
+            return "Error in adding"
     def delete_data(self,sql):
         """Delete data to DB using connection object from connection pool."""
         connection_object = self.connection_pool.get_connection()
         try:
             if connection_object.is_connected():
-                    cursor = connection_object.cursor()
-                    cursor.execute(sql)
-                    connection_object.commit()
-                    record = cursor.rowcount
-                    LOGGER.info(' Data to DB: ' + str(record)+ " row")
-                    return "Successfully deleted "
+                cursor = connection_object.cursor()
+                cursor.execute(sql)
+                connection_object.commit()
+                record = cursor.rowcount
+                LOGGER.info(' Data to DB: ' + str(record)+ " row")
+                return "Successfully deleted "
         except Error as error:
             LOGGER.error(error)   
-            return "Error in deleting "  
-
+            return "Error in deleting"  

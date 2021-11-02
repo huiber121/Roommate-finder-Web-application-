@@ -4,7 +4,7 @@ import os
 import json
 import ast
 from datetime import datetime
-from db.s3 import s3controller
+from db.s3 import S3Controller
 from db.database import Database
 sys.dont_write_bytecode = True
 db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -14,10 +14,14 @@ AWS_BUCKET_HEAD="https://group-4-bucket.s3.us-east-2.amazonaws.com/"
 
 class RoomHandler:
     """Handling any action to the Room."""
+
+
     def __init__(self):
         """Setting the init defult for the class."""
         self.dbinstall = Database()
-        self.s3install = s3controller()     
+        self.s3install = S3Controller() 
+
+
     def check_no_dup(self,body):
         """This Method check Duplicate Room and get a room id."""
         location = body["Location"]
@@ -35,6 +39,8 @@ class RoomHandler:
         else:       ## only one
             tup=room_id[0]
             return tup[0]
+
+
     def add_new_room(self,body):
         """Construct the queries to execute add room to the db."""
         today= datetime.now().strftime("%Y-%m-%d")
@@ -54,20 +60,29 @@ class RoomHandler:
         # use check_no_dup to find the room id
         room_id = self.check_no_dup(body)
         return room_id
+
+
     def add_media(self,room_id,file):
         """Construct the queries to execute add media the db and s3."""
+
         output = self.s3install.upload_file_to_s3(file)
         url = AWS_BUCKET_HEAD+output
         sql = f"INSERT INTO Test1.RoomMedia (RoomID,RoomPic) VALUES ({room_id},'{url}');"
         message=self.dbinstall.add_data(sql)
         return message
+
+
     def delete_room(self,room_id):
         """Construct the queries to execute delete room to db."""
+
         sql = f'DELETE FROM Test1.RoomListing WHERE Room_ID = {room_id};'
         room_listing_message = self.dbinstall.delete_data(sql)
         return room_listing_message
+
+
     def delet_media(self,room_id):
         """Construct the queries to execute delete meida to db and s3."""
+
         get_file_sql = f"SELECT M.RoomPic FROM Test1.RoomMedia M WHERE RoomID ={room_id};"
         media_name = self.dbinstall.get_data(get_file_sql)
         if media_name == 0:
@@ -79,6 +94,8 @@ class RoomHandler:
         del_sql = f'DELETE FROM Test1.RoomMedia WHERE RoomID = {room_id};'
         media_message =self.dbinstall.delete_data(del_sql)
         return {"Delete in db": media_message, "Delete in s3": output}
+
+
     def update_room(self,room_id,body):
         """Construct the queries to execute update room to db and s3."""
         today= datetime.now().strftime("%Y-%m-%d")
@@ -94,15 +111,21 @@ class RoomHandler:
         sql = f'UPDATE Test1.RoomListing SET {column} WHERE Room_ID={room_id};'
         record =self.dbinstall.add_data(sql)
         return record
+
+
     def delete_one_pic(self,url):
         """Construct the queries to execute delete one media to db and s3."""
+
         path_to_filename=url.replace(AWS_BUCKET_HEAD,"")
         s3_message = self.s3install.delete_file_from_s3(path_to_filename)
         sql = f"DELETE FROM Test1.RoomMedia WHERE RoomPic = '{url}'"
         db_message=self.dbinstall.delete_data(sql)
         return {"s3 Delete": s3_message, "db message" : db_message}
+
+
     def get_user_all_roomsid(self,userid):
         """Construct the queries to execute get all the room created by current user from db."""
+       
         sql = f"SELECT R.Room_ID FROM Test1.RoomListing R WHERE Lister={userid};"
         result=self.dbinstall.get_data(sql)
         rooms_ids=[]
@@ -111,8 +134,11 @@ class RoomHandler:
         for roomid in result:
             rooms_ids.append(roomid[0])
         return rooms_ids
+
+
     def show_room(self,roomid):
         """Construct the queries to execute get a room detail from db."""
+        
         sql = f"SELECT * FROM Test1.RoomListing  WHERE Room_ID={roomid};"
         output =self.dbinstall.get_data(sql)
         mediasql = f"SELECT * FROM Test1.RoomMedia R WHERE RoomID={roomid};"
