@@ -38,6 +38,7 @@ def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=1440)
 
+#User
 @app.route('/api/addUser', methods= ['POST'])
 def add_user():
     """Endpoint to add users."""
@@ -67,7 +68,14 @@ def logout():
     LOGGER.info('After popping '+str(session))
     return {"message":"Logged out successfully"}
 
+@app.route('/api/deleteUser', methods=['DELETE'])
+def delete_user():
+    """Endpoint to delete user."""
+    LOGGER.info(' Inside /api/deleteUser')
+    message = userscontroller.user_delete()
+    return {"message":  message}
 
+#Search
 @app.route('/api/getRooms', methods=['POST'])
 def get_rooms():
     """Endpoint to get all rooms for the given search conditions."""

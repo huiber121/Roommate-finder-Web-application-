@@ -45,8 +45,8 @@ class Database:
                     cursor.execute(sql)
                     connection_object.commit()
                     record = cursor.rowcount
-                    LOGGER.info('Data to DB: ' + str(record)+ " row")
-                    return "Successfully adding "
+                    LOGGER.info(' Data to DB: ' + str(record)+ " row")
+                    return "Successfully added "
         except Error as error:
             LOGGER.error(error)   
             return "Error in adding "
@@ -59,9 +59,9 @@ class Database:
                     cursor.execute(sql)
                     connection_object.commit()
                     record = cursor.rowcount
-                    LOGGER.info('Data to DB: ' + str(record)+ " row")
-                    return "Successfully deleting "
+                    LOGGER.info(' Data to DB: ' + str(record)+ " row")
+                    return "Successfully deleted "
         except Error as error:
             LOGGER.error(error)   
-            return "Error in adding "  
+            return "Error in deleting "  
 
