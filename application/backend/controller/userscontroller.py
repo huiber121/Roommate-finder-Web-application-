@@ -404,3 +404,33 @@ def get_prof_profile(data):
         'job_location': data[18],
         }
     return profile
+
+
+def user_delete():
+    """This method is used to delete the user given the id""" 
+    req_body = request.get_data()
+    body = json.loads(req_body)
+    uijson = ast.literal_eval(json.dumps(body))
+    LOGGER.info(uijson)
+    roomsql = 'SELECT count(*) FROM RoomListing WHERE Lister ='+str(uijson['userid'])+';'
+    lister_count = DBINSTANCE.get_data(roomsql)[0][0]
+    if lister_count == 0:
+            typesql = 'SELECT Type from Base_User where UserID='+str(uijson['userid'])+';'
+            result = DBINSTANCE.get_data(typesql)
+            user_type = (result[0][0])
+            if user_type == 'student':
+                student_sql = 'DELETE FROM Student_User WHERE StudentID='+str(uijson['userid'])+';'
+                msg = DBINSTANCE.delete_data(student_sql)
+                LOGGER.info("Deleting from student table {}".format(msg))
+                base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
+                message = DBINSTANCE.delete_data(base_user)
+                return message
+            if user_type == 'professor':
+                prof_sql = 'DELETE FROM Professional_User WHERE Prof_ID ='+str(uijson['userid'])+';'
+                msg = DBINSTANCE.delete_data(prof_sql)
+                LOGGER.info("Deleting from prof table {}".format(msg))
+                base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
+                message = DBINSTANCE.delete_data(base_user)
+                return message
+    else:
+            return "User is associated with rooms, hence cannot be deleted"
