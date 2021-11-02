@@ -1,3 +1,4 @@
+"""Importing necessary modules."""
 import json
 import ast
 import sys
@@ -6,15 +7,16 @@ import logging
 sys.dont_write_bytecode = True
 db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(db_dir)
-from flask import render_template, request,session
-from model.bookmarkhandler import bookmarkhandler
+from flask import request,session
+from model.bookmarkhandler import BookMarkHandler
 import sessioncontroller
 from model.roomhandler import roomhandler
 LOGGER = logging.getLogger(__name__)
 
 
-bookmark_modle = bookmarkhandler()
+bookmark_modle = BookMarkHandler()
 def room_bookmark():
+    """This Method is add room bookmark."""
     checker=sessioncontroller.check_loggedin()
     if(checker):
         id = session["userid"]
