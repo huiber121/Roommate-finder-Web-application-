@@ -23,7 +23,7 @@ def get_all_roommates():
     result_json = []
     if 'type' in uijson.keys():
         sql = get_sql(uijson, uijson['type'])
-        LOGGER.info('SQL statement: {}'.format(sql))
+        LOGGER.info('SQL statement: {%s}',sql)
         result = DBINSTANCE.get_data(sql)
         if result == 0:
             return {}
@@ -117,7 +117,7 @@ def get_sql(uijson, usertype):
             else:
                 schooljoin = schooljoin + 'and (schoolname like ' \
                     + "'%" + str(uijson['school']) + "%') "
-        LOGGER.info('Filter: {}'.format(userstudentfilter))
+        LOGGER.info('Filter: {%s}',userstudentfilter)
         studentsql = studentsql + userstudentfilter + schooljoin
         if len(uijson.keys()) == 1 and 'type' in uijson.keys():
             studentsql = \
@@ -172,7 +172,7 @@ def get_sql(uijson, usertype):
             else:
                 proffilter = proffilter + '( zipcode = ' \
                     + str(uijson['zipcode']) + ') '
-        LOGGER.info('Filter: {}'.format(proffilter))
+        LOGGER.info('Filter: {%s}',proffilter)
         profsql = profsql + proffilter
         sql = profsql
     return sql
@@ -287,7 +287,7 @@ def add_user():
             + uijson['loginid'] + "');"
         LOGGER.info('Base_User SQL: {}'.format(addusersql))
         result = DBINSTANCE.add_data(addusersql)
-        LOGGER.info('After adding to Base_User {}'.format(result))
+        LOGGER.info('After adding to Base_User {%s}',result)
         uid = \
             DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"+ uijson['loginid'] + "'")
         LOGGER.info('Uid {}'.format(str(uid[0][0])))
@@ -296,7 +296,7 @@ def add_user():
         LOGGER.info('School id '.format(str(schoolid)))
         finalres = schoolcontroller.add_student(uijson, uid, schoolid) \
             + ' ' + uijson['loginid']
-        LOGGER.info('Before returning from add student {}'.format(finalres))
+        LOGGER.info('Before returning from add student {%s}',finalres)
         return finalres
     elif uijson['type'] == 'professor':
         addusersql = \
@@ -323,7 +323,7 @@ def add_user():
             + uijson['loginid'] + "');"
         result = DBINSTANCE.add_data(addusersql)
         result = result + ' ' + uijson['loginid']
-        LOGGER.info(' Before returning from add prof {}'.format(result))
+        LOGGER.info(' Before returning from add prof {%s}',result)
         return result + uijson['loginid']
 
 
@@ -335,9 +335,9 @@ def login():
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
     sql = "SELECT Password,Admin, UserID FROM Base_User where LoginId='"+ uijson['loginid'] + "';"
-    LOGGER.info(' SQL to check logged in user {}'.format(sql))
+    LOGGER.info(' SQL to check logged in user {%s}', sql)
     result = DBINSTANCE.get_data(sql)
-    LOGGER.info('The userid is {}'.format(str(result[0][1])))
+    LOGGER.info('The userid is {%s}', result[0][1])
     if result == 0:
         return 'Incorrect credentials'
     elif uijson['password'] == result[0][0]:
@@ -415,22 +415,22 @@ def user_delete():
     roomsql = 'SELECT count(*) FROM RoomListing WHERE Lister ='+str(uijson['userid'])+';'
     lister_count = DBINSTANCE.get_data(roomsql)[0][0]
     if lister_count == 0:
-            typesql = 'SELECT Type from Base_User where UserID='+str(uijson['userid'])+';'
-            result = DBINSTANCE.get_data(typesql)
-            user_type = (result[0][0])
-            if user_type == 'student':
-                student_sql = 'DELETE FROM Student_User WHERE StudentID='+str(uijson['userid'])+';'
-                msg = DBINSTANCE.delete_data(student_sql)
-                LOGGER.info("Deleting from student table {}".format(msg))
-                base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
-                message = DBINSTANCE.delete_data(base_user)
-                return message
-            if user_type == 'professor':
-                prof_sql = 'DELETE FROM Professional_User WHERE Prof_ID ='+str(uijson['userid'])+';'
-                msg = DBINSTANCE.delete_data(prof_sql)
-                LOGGER.info("Deleting from prof table {}".format(msg))
-                base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
-                message = DBINSTANCE.delete_data(base_user)
-                return message
+        typesql = 'SELECT Type from Base_User where UserID='+str(uijson['userid'])+';'
+        result = DBINSTANCE.get_data(typesql)
+        user_type = (result[0][0])
+        if user_type == 'student':
+            student_sql = 'DELETE FROM Student_User WHERE StudentID='+str(uijson['userid'])+';'
+            msg = DBINSTANCE.delete_data(student_sql)
+            LOGGER.info("Deleting from student table {%s}", msg)
+            base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
+            message = DBINSTANCE.delete_data(base_user)
+            return message
+        if user_type == 'professor':
+            prof_sql = 'DELETE FROM Professional_User WHERE Prof_ID ='+str(uijson['userid'])+';'
+            msg = DBINSTANCE.delete_data(prof_sql)
+            LOGGER.info("Deleting from prof table {%s}", msg)
+            base_user = 'DELETE FROM Base_User WHERE UserID='+str(uijson['userid'])+';'
+            message = DBINSTANCE.delete_data(base_user)
+            return message
     else:
             return "User is associated with rooms, hence cannot be deleted"

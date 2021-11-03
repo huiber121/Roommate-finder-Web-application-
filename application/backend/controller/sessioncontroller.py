@@ -14,14 +14,14 @@ def create_session(userid):
     uijson = ast.literal_eval(json.dumps(body))
     session['loginid'] = uijson['loginid']
     session['userid'] = userid
-    LOGGER.info (' In create_session {}'.format(str(session)))
+    LOGGER.info (' In create_session {%s}', session)
 
 
 def check_loggedin():
     """This method validates if the session for that user exists or not."""
 
     check = False
-    LOGGER.info (' Inside check_loggedin {}'.format(str(session)))
+    LOGGER.info (' Inside check_loggedin {%s}',session)
     if 'loginid' in session:
         username = session['loginid']
         LOGGER.info(' '+username + ' exists')
@@ -29,5 +29,5 @@ def check_loggedin():
     else:
         LOGGER.info(' Anonymous user ')
         check = False
-    LOGGER.info(' Before return '.format(check))
+    LOGGER.info(' Before return {%s} ',check)
     return check
