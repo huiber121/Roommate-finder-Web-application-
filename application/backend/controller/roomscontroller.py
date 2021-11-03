@@ -15,8 +15,11 @@ import sessioncontroller
 LOGGER = logging.getLogger(__name__)
 DBINSTANCE = Database()
 rooms_media = DBINSTANCE.get_data("SELECT * FROM RoomMedia")
+
 def get_all_rooms():
     """Get all rooms for the given search attributes."""
+
+
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
@@ -53,8 +56,12 @@ def get_all_rooms():
     else:    
         result_json = get_room_json(result, uijson)
         return json.dumps(result_json)
+
+
 def get_room_media(roomid):
     """Get all room media."""
+
+
     media = []
     for i in rooms_media:
         if i[0] == roomid:
@@ -62,6 +69,8 @@ def get_room_media(roomid):
     return media
 def get_room_json(room_data, input_tags):
     """Construct JSON for the data fetched from DB."""
+
+
     if 'location' in input_tags.keys():
         input_tags.pop('location')
     if 'zipcode' in input_tags.keys():
@@ -102,8 +111,12 @@ def get_room_json(room_data, input_tags):
             room_json = ast.literal_eval(json.dumps(room_dict))
             room_list.append(room_json)
     return room_list
+
+
 def add_room():
     """add room for the given room attributes."""
+
+
     checker=sessioncontroller.check_loggedin()
     roomhandle = RoomHandler()
     if checker:
@@ -139,8 +152,12 @@ def add_room():
         LOGGER.error("Have same id and info in RoomListing")
         return "You have created a same Room"  
     return "please login first"
+
+
 def delete_room():
     """delete room for the given room id."""
+
+    
     checker=sessioncontroller.check_loggedin()
     if checker :
         req_id = request.args.get("RoomID")
@@ -149,10 +166,13 @@ def delete_room():
         deletemedia= delete.delet_media(req_id)
         deleteroom= delete.delete_room(req_id)
         return {"Room" : deleteroom ," Media" : deletemedia }
-    else:
-        return "please login first"
+    return "please login first"
+
+
 def update_a_room():
     """update room for the given room id."""
+
+
     checker=sessioncontroller.check_loggedin()
     update =RoomHandler()
     if checker :
@@ -174,9 +194,14 @@ def update_a_room():
                     filemessage = update.add_media(room_id,file)
         return { "json" : updatemessage, "update s3 and db":filemessage} 
     return "please login first"
+
+
 # delete one pic, use in update room info
+
 def delete_one_media():
     """delete room one file by given file url."""
+
+
     checker=sessioncontroller.check_loggedin()
     if checker :
         url =request.get_data()
@@ -190,13 +215,20 @@ def delete_one_media():
 # show one room
 def show_a_room():
     """show room by given room id."""
+
+
     roomid= request.args.get("RoomID")
     output=RoomHandler().show_room(roomid)
     LOGGER.info('show room_id {%s}',roomid)
     return output
+
+
 # get login user all rooms info
+
 def show_user_room():
     """show rooms by user logged in id."""
+
+
     checker=sessioncontroller.check_loggedin()
     getroom = RoomHandler()
     if checker:

@@ -285,15 +285,15 @@ def add_user():
             + str(uijson['userscore']) + "'," + "'" + uijson['gender'] \
             + "'," + "'" + uijson['type'] + "'," + "'0', '" \
             + uijson['loginid'] + "');"
-        LOGGER.info('Base_User SQL: {}'.format(addusersql))
+        LOGGER.info('Base_User SQL: {%s}', addusersql)
         result = DBINSTANCE.add_data(addusersql)
         LOGGER.info('After adding to Base_User {%s}',result)
         uid = \
             DBINSTANCE.get_data("SELECT UserID from Base_User where LoginId = '"+ uijson['loginid'] + "'")
-        LOGGER.info('Uid {}'.format(str(uid[0][0])))
+        LOGGER.info('Uid {%s}', uid[0][0])
         schoolid = schoolcontroller.add_school(uijson)
 
-        LOGGER.info('School id '.format(str(schoolid)))
+        LOGGER.info('School id {%s}',schoolid)
         finalres = schoolcontroller.add_student(uijson, uid, schoolid) \
             + ' ' + uijson['loginid']
         LOGGER.info('Before returning from add student {%s}',finalres)
