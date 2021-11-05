@@ -14,7 +14,6 @@ from model.roomhandler import RoomHandler
 import sessioncontroller
 LOGGER = logging.getLogger(__name__)
 DBINSTANCE = Database()
-rooms_media = DBINSTANCE.get_data("SELECT * FROM RoomMedia")
 
 def get_all_rooms(searchjson):
     """Get all rooms for the given search attributes."""
@@ -64,15 +63,15 @@ def get_all_rooms(searchjson):
 def get_room_media(roomid):
     """Get all room media."""
 
-
+    rooms_media = RoomHandler().get_media()
     media = []
     for i in rooms_media:
         if i[0] == roomid:
             media.append(i[1])
     return media
+
 def get_room_json(room_data, input_tags):
     """Construct JSON for the data fetched from DB."""
-
 
     if 'location' in input_tags.keys():
         input_tags.pop('location')
@@ -94,6 +93,7 @@ def get_room_json(room_data, input_tags):
         tag_db_list = tags.split(',')
         check = all(item in tag_db_list for item in input_tags.values())
         if check is True and room[12] == 0:
+            #print(room[0])
             room_media = get_room_media(room[0])
             room_dict = {
                 'room_id': room[0],
@@ -119,7 +119,7 @@ def get_room_json(room_data, input_tags):
 def add_room():
     """add room for the given room attributes."""
 
-
+    
     checker=sessioncontroller.check_loggedin()
     roomhandle = RoomHandler()
     if checker:
@@ -142,6 +142,8 @@ def add_room():
                             name = file.filename
                             LOGGER.info('Upload File {%s }to RoomId : {%s}',name,room_id)
                             filemessage = roomhandle.add_media(room_id,file)
+                            #self.rooms_media = 
+                            #print("Inside controller",self.rooms_media)
                     return {"Roominfo": "success added room info","Roomfile": filemessage}
 
                 LOGGER.info('Successfully Add Json info to Room_ID {%s}',room_id)

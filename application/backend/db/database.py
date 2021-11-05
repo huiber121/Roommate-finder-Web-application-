@@ -18,6 +18,7 @@ class Database:
         )
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
+        
         try:
             # Get connection object from a pool
             connection_object = self.connection_pool.get_connection()
@@ -60,8 +61,10 @@ class Database:
                 LOGGER.info(' Data to DB: ' + str(record)+ " row")
                 return "Successfully deleted "
         except Error as error:
-            LOGGER.error(error)   
+            LOGGER.error(error)  
+            connection_object.rollback() 
             return "Error in deleting"  
+    
     def update_data(self, sql):
         """Updates data from DB using connection object from connection pool."""
         try:

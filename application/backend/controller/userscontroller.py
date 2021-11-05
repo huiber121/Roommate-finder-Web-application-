@@ -214,6 +214,7 @@ def get_prof_json(prof):
         'userscore': prof[4],
         'joblocation': prof[5],
         'zipcode': prof[6],
+        'type':"professor",
         }
     rjson = ast.literal_eval(json.dumps(prof_json))
     prof_list.append(rjson)

@@ -59,6 +59,8 @@ class RoomHandler:
         self.dbinstall.add_data(sql)
         # use check_no_dup to find the room id
         room_id = self.check_no_dup(body)
+        
+        
         return room_id
 
 
@@ -71,6 +73,11 @@ class RoomHandler:
         message=self.dbinstall.add_data(sql)
         return message
 
+    def get_media(self):
+        """This method is used to get the room media."""
+
+        rooms_media = self.dbinstall.get_data("SELECT * FROM RoomMedia")
+        return rooms_media
 
     def delete_room(self,room_id):
         """Construct the queries to execute delete room to db."""
