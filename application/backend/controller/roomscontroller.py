@@ -16,14 +16,17 @@ LOGGER = logging.getLogger(__name__)
 DBINSTANCE = Database()
 rooms_media = DBINSTANCE.get_data("SELECT * FROM RoomMedia")
 
-def get_all_rooms():
+def get_all_rooms(searchjson):
     """Get all rooms for the given search attributes."""
 
-
-    req_body = request.get_data()
-    body = json.loads(req_body)
-    uijson = ast.literal_eval(json.dumps(body))
-    LOGGER.info(' JSON from frontend {%s}',uijson)
+    if len(searchjson)==0:
+            #Getting JSON from the request
+            req_body = request.get_data()
+            body = json.loads(req_body)
+            uijson = ast.literal_eval(json.dumps(body))
+            LOGGER.info(' JSON from frontend {}'.format(uijson))
+    else: 
+            uijson = searchjson  
     filter = ''
     sql = 'SELECT * FROM RoomListing WHERE (Available=0) and '
     if 'zipcode' in uijson.keys():

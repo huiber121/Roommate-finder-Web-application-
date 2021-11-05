@@ -12,9 +12,15 @@ DBINSTANCE = Database()
 LOGGER = logging.getLogger(__name__)
 
 
-def get_all_roommates():
+def get_all_roommates(searchjson):
     """This method returns the list of JSON's for the roommates"""
 
+    if len(searchjson)==0:
+        req_body = request.get_data()
+        body = json.loads(req_body)
+        uijson = ast.literal_eval(json.dumps(body))
+    else:
+        uijson = searchjson
     req_body = request.get_data()
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
@@ -29,7 +35,7 @@ def get_all_roommates():
             return {}
         result_json.append(get_roommate_json(result, uijson['type']))
     else:
-        LOGGER.info('When UI JSON is empty')
+        LOGGER.info('In else')
         if len(uijson) == 0:
             result = get_data_for_no_filters()
             result_json.append(result)

@@ -18,7 +18,6 @@ class Database:
         )
     def get_data(self, sql):
         """Gets data from DB using connection object from connection pool."""
-        #LOGGER.info(' Inside get data of database.py class')
         try:
             # Get connection object from a pool
             connection_object = self.connection_pool.get_connection()
@@ -27,7 +26,6 @@ class Database:
                 cursor.execute(sql)
                 record = cursor.fetchall()
                 if len(record) == 0:
-                    #LOGGER.info('Data from DB: ' + str(len(record)))
                     return 0
                 else:
                     return record    
@@ -64,3 +62,18 @@ class Database:
         except Error as error:
             LOGGER.error(error)   
             return "Error in deleting"  
+    def update_data(self, sql):
+        """Updates data from DB using connection object from connection pool."""
+        try:
+            # Get connection object from a pool
+            connection_object = self.connection_pool.get_connection()
+            if connection_object.is_connected():
+                cursor = connection_object.cursor()
+                cursor.execute(sql)
+                connection_object.commit()
+                return "Successfully updated"
+        except Error as error:
+            LOGGER.error(error)
+            return []
+        finally:
+            connection_object.close()

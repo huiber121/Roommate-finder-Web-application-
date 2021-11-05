@@ -18,6 +18,8 @@ import roomscontroller
 import userscontroller
 import sessioncontroller
 import bookmarkcontroller
+import preferencecontroller
+
 app = Flask(__name__)  # name of the module
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DEBUG'] = True
@@ -92,7 +94,7 @@ def get_rooms():
     """Endpoint to get all rooms for the given search conditions."""
 
     LOGGER.info(' Inside /api/getRooms')
-    rooms_list = roomscontroller.get_all_rooms()
+    rooms_list = roomscontroller.get_all_rooms("")
     return rooms_list
 
 
@@ -101,7 +103,7 @@ def get_roommates():
     """Endpoint to get all rooms for the given search conditions."""
 
     LOGGER.info(' Inside /api/getRoommates')
-    roommates_list = userscontroller.get_all_roommates()
+    roommates_list = userscontroller.get_all_roommates("")
     return roommates_list
 
 
@@ -206,6 +208,23 @@ def show_all_room_bookmark():
     LOGGER.info('Inside /api/showAllRoomBookmark')
     message = bookmarkcontroller.show_all_bookmark_rooms()
     return message
+
+# Preference
+
+@app.route('/api/getNotifications', methods=['POST'])
+def get_notifications():
+    """Endpoint to get user profile for the given id."""
+    LOGGER.info(' Inside /api/getNotifications')
+    preflist = preferencecontroller.get_all_notifications()
+    return preflist     
+
+@app.route('/api/addPreference', methods=['POST'])
+def add_preference():
+    """Endpoint to get user profile for the given id."""
+    LOGGER.info(' Inside /api/getNotifications')
+    message = preferencecontroller.add_user_preference()
+    return {"message":message} 
+
 if __name__ == '__main__':
     logging.basicConfig(filename='backend.log', level=logging.INFO)
     app.run('0.0.0.0', port=5000)
