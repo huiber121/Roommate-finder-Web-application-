@@ -28,27 +28,29 @@ def get_all_roommates(searchjson):
     sql = ''
     result_json = []
     if 'type' in uijson.keys():
+        LOGGER.info('Type exists in uijson: ')
         sql = get_sql(uijson, uijson['type'])
-        LOGGER.info('SQL statement: {%s}',sql)
+        LOGGER.info('SQL statement: %s',sql)
         result = DBINSTANCE.get_data(sql)
         if result == 0:
             return {}
-        result_json.append(get_roommate_json(result, uijson['type']))
+        result_json = get_roommate_json(result, uijson['type'])
     else:
-        LOGGER.info('In else')
         if len(uijson) == 0:
-            result = get_data_for_no_filters()
-            result_json.append(result)
+            LOGGER.info('When len(uijson) is 0')
+            result_json = get_data_for_no_filters()
         else:
             LOGGER.info('When UI JSON has no user type')
             data = get_data_for_no_filters()
             LOGGER.info(uijson)
+            uivalues = list(uijson.values())
             for x in data:
-                for xval in x:
-                    checkval = all(item in xval.values() for item in
-                                   uijson.values())
-                    if checkval == True:
-                        result_json.append(xval)
+                checkval = all(item in list(x.values()) for item in
+                                  uivalues)
+                LOGGER.info("Checkval {} ".format(checkval))                  
+                if checkval == True:
+                    LOGGER.info("If true, each data {} ".format(x))
+                    result_json.append(x)             
     return json.dumps(result_json)
 
 
@@ -190,7 +192,6 @@ def get_data_for_no_filters():
         'SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID '
     studentres = DBINSTANCE.get_data(allstudentsql)
     allstudentsresult = ast.literal_eval(json.dumps(studentres))
-    LOGGER.info(allstudentsresult)
     for student in allstudentsresult:
         result.append(get_student_json(student))
     allprofsql = \
@@ -205,7 +206,6 @@ def get_data_for_no_filters():
 def get_prof_json(prof):
     """This method returns the JSON of the professor object"""
 
-    prof_list = []
     prof_json = {
         'userid': prof[0],
         'username': prof[1],
@@ -216,15 +216,12 @@ def get_prof_json(prof):
         'zipcode': prof[6],
         'type':"professor",
         }
-    rjson = ast.literal_eval(json.dumps(prof_json))
-    prof_list.append(rjson)
-    return prof_list
+    return prof_json
 
 
 def get_student_json(student):
     """This method returns the JSON of the student object"""
 
-    student_list = []
     student_json = {
         'userid': student[0],
         'username': student[1],
@@ -236,9 +233,7 @@ def get_student_json(student):
         'major': student[7],
         'school': student[8],
         }
-    rjson = ast.literal_eval(json.dumps(student_json))
-    student_list.append(rjson)
-    return student_list
+    return student_json
 
 
 def get_roommate_json(roommate_data, type):

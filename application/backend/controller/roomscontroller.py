@@ -60,10 +60,9 @@ def get_all_rooms(searchjson):
         return json.dumps(result_json)
 
 
-def get_room_media(roomid):
+def get_room_media(roomid,rooms_media):
     """Get all room media."""
 
-    rooms_media = RoomHandler().get_media()
     media = []
     for i in rooms_media:
         if i[0] == roomid:
@@ -72,7 +71,7 @@ def get_room_media(roomid):
 
 def get_room_json(room_data, input_tags):
     """Construct JSON for the data fetched from DB."""
-
+    rooms_media = RoomHandler().get_media()
     if 'location' in input_tags.keys():
         input_tags.pop('location')
     if 'zipcode' in input_tags.keys():
@@ -93,8 +92,7 @@ def get_room_json(room_data, input_tags):
         tag_db_list = tags.split(',')
         check = all(item in tag_db_list for item in input_tags.values())
         if check is True and room[12] == 0:
-            #print(room[0])
-            room_media = get_room_media(room[0])
+            room_media = get_room_media(room[0],rooms_media)
             room_dict = {
                 'room_id': room[0],
                 'lister': room[1],
