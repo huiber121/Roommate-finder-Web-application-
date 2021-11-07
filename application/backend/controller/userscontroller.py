@@ -61,8 +61,8 @@ def get_sql(uijson, usertype):
     if usertype == 'student':
         userstudentfilter = ''
         studentsql = ''
-        if len(uijson.keys()) == 0 or 'school' in uijson.keys() \
-            and len(uijson.keys()) == 1:
+        if len(uijson.keys())-1 == 0 or 'school' in uijson.keys() \
+            and len(uijson.keys())-1 == 1:
             studentsql = \
                 ' SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and hidden = 0'
         else:
@@ -74,7 +74,7 @@ def get_sql(uijson, usertype):
         param_len = len(uijson) - 1
         if 'major' in uijson.keys():
             check_param = check_param + 1
-            if check_param < param_len:
+            if check_param <= param_len:
                 userstudentfilter = userstudentfilter + '( major like ' \
                     + "'%" + uijson['major'] + "%') and"
             else:
@@ -123,9 +123,10 @@ def get_sql(uijson, usertype):
                 schooljoin = schooljoin + 'and (schoolname like ' \
                     + "'%" + str(uijson['school']) + "%') and "
             else:
-                schooljoin = schooljoin + 'and (schoolname like ' \
+                schooljoin = schooljoin + ' (schoolname like ' \
                     + "'%" + str(uijson['school']) + "%') "
         LOGGER.info('Filter: {%s}',userstudentfilter)
+        LOGGER.info('School filter: {%s}',schooljoin)
         studentsql = studentsql + userstudentfilter + schooljoin
         if len(uijson.keys()) == 1 and 'type' in uijson.keys():
             studentsql = \
