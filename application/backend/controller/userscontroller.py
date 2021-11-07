@@ -61,8 +61,8 @@ def get_sql(uijson, usertype):
     if usertype == 'student':
         userstudentfilter = ''
         studentsql = ''
-        if len(uijson.keys())-1 == 0 or 'school' in uijson.keys() \
-            and len(uijson.keys())-1 == 1:
+        if len(uijson.keys()) == 0 \
+            or len(uijson.keys()) == 1:
             studentsql = \
                 ' SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and hidden = 0'
         else:
@@ -118,13 +118,14 @@ def get_sql(uijson, usertype):
                 userstudentfilter = userstudentfilter \
                     + '( userscore = ' + str(uijson['userscore']) + ') '
         if 'school' in uijson.keys():
-            check_param = check_param + 1
-            if check_param < param_len:
-                schooljoin = schooljoin + 'and (schoolname like ' \
-                    + "'%" + str(uijson['school']) + "%') and "
+            userstudentfilter = userstudentfilter+"-"
+            userstudentfilter = userstudentfilter.replace('and -','')
+            if check_param <= param_len:
+                schooljoin = schooljoin + ' and (schoolname like ' \
+                    + "'%" + str(uijson['school']) + "%')  "
             else:
                 schooljoin = schooljoin + ' (schoolname like ' \
-                    + "'%" + str(uijson['school']) + "%') "
+                    + "'%" + str(uijson['school']) + "%') "    
         LOGGER.info('Filter: {%s}',userstudentfilter)
         LOGGER.info('School filter: {%s}',schooljoin)
         studentsql = studentsql + userstudentfilter + schooljoin
@@ -152,11 +153,11 @@ def get_sql(uijson, usertype):
         if 'gender' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
-                proffilter = proffilter + '( gender like ' + "'%" \
-                    + str(uijson['gender']) + "%') and "
+                proffilter = proffilter + '( gender = ' + "'" \
+                    + str(uijson['gender']) + "') and "
             else:
-                proffilter = proffilter + '( gender like ' + "'%" \
-                    + str(uijson['gender']) + "%') "
+                proffilter = proffilter + '( gender = ' + "'" \
+                    + str(uijson['gender']) + "') "
         if 'userscore' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
