@@ -70,7 +70,7 @@ def get_sql(uijson, usertype):
                 ' SELECT distinct(Base_User.UserID),Base_User.Name, Base_User.type, Base_User.UserScore, Base_User.Age, Base_User.Gender, Student_User.Grad_Level, Student_User.Major, Schools.SchoolName FROM Base_User INNER JOIN Student_User on Student_User.StudentID = Base_User.UserID and hidden = 0 and '
         schooljoin = \
             ' INNER JOIN Schools on Schools.SchoolID = Student_User.SchoolID '
-        check_param = 1
+        check_param = 0
         param_len = len(uijson) - 1
         if 'major' in uijson.keys():
             check_param = check_param + 1
@@ -102,12 +102,12 @@ def get_sql(uijson, usertype):
             check_param = check_param + 1
             if check_param < param_len:
                 userstudentfilter = userstudentfilter \
-                    + '( gender like ' + "'%" + str(uijson['gender']) \
-                    + "%') and "
+                    + '( gender = ' +"'" +str(uijson['gender']) \
+                    + "') and "
             else:
                 userstudentfilter = userstudentfilter \
-                    + '( gender like ' + "'%" + str(uijson['gender']) \
-                    + "%') "
+                    + '( gender = '+ "'"+ str(uijson['gender']) \
+                    + "') "
         if 'userscore' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
