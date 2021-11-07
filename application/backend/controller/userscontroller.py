@@ -75,11 +75,11 @@ def get_sql(uijson, usertype):
         if 'major' in uijson.keys():
             check_param = check_param + 1
             if check_param <= param_len:
-                userstudentfilter = userstudentfilter + '( major like ' \
-                    + "'%" + uijson['major'] + "%') and"
+                userstudentfilter = userstudentfilter + '( major = ' \
+                    + "'" + uijson['major'] + "') and"
             else:
-                userstudentfilter = userstudentfilter + '( major like ' \
-                    + "'%" + uijson['major'] + "%') "
+                userstudentfilter = userstudentfilter + '( major = ' \
+                    + "'" + uijson['major'] + "') "
         if 'gradlevel' in uijson.keys():
             check_param = check_param + 1
             if check_param < param_len:
@@ -118,8 +118,9 @@ def get_sql(uijson, usertype):
                 userstudentfilter = userstudentfilter \
                     + '( userscore = ' + str(uijson['userscore']) + ') '
         if 'school' in uijson.keys():
-            userstudentfilter = userstudentfilter+"-"
-            userstudentfilter = userstudentfilter.replace('and -','')
+            if len(userstudentfilter) !=0:
+                userstudentfilter = userstudentfilter+"-"
+                userstudentfilter = userstudentfilter.replace('and -',' ')
             if check_param <= param_len:
                 schooljoin = schooljoin + ' and (schoolname like ' \
                     + "'%" + str(uijson['school']) + "%')  "
