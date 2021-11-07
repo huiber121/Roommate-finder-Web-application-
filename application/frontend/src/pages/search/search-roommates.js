@@ -24,6 +24,8 @@ const SearchRoommates = () => {
 
   // This function calls the `getRooms` API endpoint and passes the search query to
   const fetchData = async () => {
+    setLoading(true);
+    setRoommateData([]);
     // Regexp that only accepts numbers from 0-9
     const zipRegex = "^[0-9]*$";
     // This flag is used to pass either the location or zipCode based on the input.
@@ -45,14 +47,12 @@ const SearchRoommates = () => {
       ...(gradSelect !== "" && { gradlevel: gradSelect }),
       ...(schoolSelect !== "" && { school: schoolSelect }),
     };
-    console.log(queryObj);
-    setLoading(true);
+    console.log("Query Object => ", queryObj);
     const data = await axios.post(
-
       `${process.env.REACT_APP_HOST_BASE}/api/getRoommates`,
       queryObj
     );
-    console.log(data.data);
+    console.info("Response Data =>", data.data);
     setRoommateData(data.data);
     setLoading(false);
   };
@@ -278,14 +278,12 @@ const SearchRoommates = () => {
         </div>
       ) : (
         <div className="columns is-mobile is-centered is-multiline is-2">
-          {/* <p className="m-5">{JSON.stringify(roommateData)}</p> */}
-          {roommateData[0].length > 0 && typeSelect === "" ? (
-            roommateData[0].map((roommate) => (
-              <RoommateCard key={roommate.username} roommate={roommate[0]} />
-            ))
-          ) : roommateData[0].length > 0 && typeSelect !== "" ? (
-            roommateData[0].map((roommate) => (
-              <RoommateCard key={roommate.username} roommate={roommate} />
+          {roommateData.length > 0 ? (
+            roommateData.map((roommate) => (
+              <RoommateCard
+                key={roommate.username + Math.random() * 1000}
+                roommate={roommate}
+              />
             ))
           ) : (
             <div>

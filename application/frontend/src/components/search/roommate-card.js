@@ -1,7 +1,6 @@
 import React from "react";
 
 const RoommateCard = ({ roommate }) => {
-  console.log(roommate);
   return (
     <div className="m-3 column is-fullscreen-mobile is-half-tablet is-one-quarter-desktop card">
       <div className="card-content">

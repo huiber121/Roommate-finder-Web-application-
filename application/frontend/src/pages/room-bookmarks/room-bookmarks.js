@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import NoRoomsFound from "../../assets/images/no-rooms-found.png";
+import axiosInstance from "../../axios-config";
 import RoomCard from "../../components/search/room-card";
 
 const RoomBookmarks = () => {
@@ -8,12 +8,11 @@ const RoomBookmarks = () => {
   const [isLoading, setLoading] = useState(true);
 
   const getBookmarks = async () => {
-    const data = await axios.get(
-      `${process.env.REACT_APP_HOST_BASE}/api/showAllRoomBookmark`,
-      { withCredentials: true }
-    );
+    const data = await axiosInstance.get(`/api/showAllRoomBookmark`, {
+      withCredentials: true,
+    });
     console.log(data);
-    if (data.data) {
+    if (data.data !== "please login") {
       setRoomData(data.data);
       setLoading(false);
     } else {
@@ -52,7 +51,7 @@ const RoomBookmarks = () => {
         </div>
       ) : (
         <div className="columns is-mobile is-centered is-multiline is-2">
-          {roomData.length > 0 ? (
+          {roomData && roomData.length > 0 ? (
             roomData.map((room) => (
               <RoomCard
                 room={room}
@@ -63,7 +62,7 @@ const RoomBookmarks = () => {
             <div>
               <img src={NoRoomsFound} className="mt-5 mb-3" />
               <div className="has-text-danger has-text-weight-semibold is-size-5">
-                No Rooms found. Please update your search preferences.
+                No Bookmarks found. Bookmark rooms to see them here.
               </div>
             </div>
           )}

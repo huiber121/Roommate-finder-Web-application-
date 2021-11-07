@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./search-rooms.css";
 import RoomCard from "../../components/search/room-card";
 import NoRoomsFound from "../../assets/images/no-rooms-found.png";
 import FilterPanel from "../../components/search/filter-panel";
+import axiosInstance from "../../axios-config";
 
 const SearchRooms = () => {
   // This stores and sets the search input field's value
@@ -56,11 +56,8 @@ const SearchRooms = () => {
     };
     console.log(queryObj);
     setLoading(true);
-    const data = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/getRooms`,
-      queryObj
-    );
-    // console.log(data.data);
+    const data = await axiosInstance.post(`/api/getRooms`, queryObj);
+    console.log(data.data);
     setRoomData(data.data);
     setLoading(false);
   };

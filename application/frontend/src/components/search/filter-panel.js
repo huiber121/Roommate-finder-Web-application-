@@ -10,7 +10,9 @@ const FilterPanel = ({ select, setSelect, options }) => {
             onChange={(event) => setSelect(event.target.value)}
           >
             {options.map((option) => (
-              <option value={option.value}>{option.name}</option>
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </select>
         </div>

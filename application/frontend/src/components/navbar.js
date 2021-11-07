@@ -1,16 +1,33 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { atom, useRecoilState } from "recoil";
+import { Link, useHistory } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import axiosInstance from "../axios-config";
+import {
+  checkAdminState,
+  checkLoginState,
+  loginState,
+} from "../pages/auth/login";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [isNavBarActive, setNavbarActive] = useState(false);
 
-  const loginState = atom({
-    key: "loginState",
-    default: false,
-  });
-
+  const isLoggedIn = useRecoilValue(checkLoginState);
+  const isAdmin = useRecoilValue(checkAdminState);
   const [login, setLogin] = useRecoilState(loginState);
+  let history = useHistory();
+
+  const logout = async () => {
+    const data = await axiosInstance.post(
+      `/api/logout`,
+      {},
+      { withCredentials: true }
+    );
+    console.log(data);
+    if (data.data.message === "Logged out successfully") {
+      setLogin(false);
+      history.push("/");
+    }
+  };
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -47,43 +64,49 @@ const Navbar = () => {
           <Link to="/find-roommates" className="navbar-item">
             Find Roommates
           </Link>
-          {login === true ? (
+          {isLoggedIn && !isAdmin ? (
             <Link to="/room-bookmarks" className="navbar-item">
               Bookmarks
             </Link>
+          ) : isLoggedIn && isAdmin ? (
+            <React.Fragment>
+              <Link to="/admin/manage-rooms" className="navbar-item">
+                Manage Rooms
+              </Link>
+            </React.Fragment>
           ) : null}
           <Link to="/about" className="navbar-item">
             About
           </Link>
-
-          {/* <div className="navbar-item has-dropdown is-hoverable">
-            <a className="navbar-link">More</a>
-
-            <div className="navbar-dropdown">
-              <a className="navbar-item">About</a>
-              <a className="navbar-item">Jobs</a>
-              <a className="navbar-item">Contact</a>
-              <hr className="navbar-divider" />
-              <a className="navbar-item">Report an issue</a>
-            </div>
-          </div> */}
         </div>
 
         <div className="navbar-end">
           <div className="navbar-item">
-            {login === false ? (
+            {isLoggedIn && !isAdmin ? (
+              <div className="buttons">
+                <Link to="/add-room" className="button is-link">
+                  <strong>Add Room</strong>
+                </Link>
+                <button onClick={() => logout()} className="button">
+                  <strong>Logout</strong>
+                </button>
+              </div>
+            ) : isLoggedIn && isAdmin ? (
+              <div className="buttons">
+                <Link to="/register" className="button is-link">
+                  <strong>Add User</strong>
+                </Link>
+                <button onClick={() => logout()} className="button">
+                  <strong>Logout</strong>
+                </button>
+              </div>
+            ) : (
               <div className="buttons">
                 <Link to="/register" className="button is-link">
                   <strong>Register</strong>
                 </Link>
                 <Link to="/login" className="button is-light">
                   Log in
-                </Link>
-              </div>
-            ) : (
-              <div className="buttons">
-                <Link to="/add-room" className="button is-link">
-                  <strong>Add Room</strong>
                 </Link>
               </div>
             )}

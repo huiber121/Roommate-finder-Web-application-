@@ -1,18 +1,34 @@
-import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
-import { atom, useRecoilState } from "recoil";
+import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { string } from "yup";
 import { object } from "yup";
+import axiosInstance from "../../axios-config";
 import "./login.css";
 
-const Login = (props) => {
-  const loginState = atom({
-    key: "loginState", // unique ID (with respect to other atoms/selectors)
-    default: false, // default value (aka initial value)
-  });
+export const loginState = atom({
+  key: "loginState", // unique ID (with respect to other atoms/selectors)
+  default: false, // default value (aka initial value)
+});
 
+export const checkLoginState = selector({
+  key: "getLoginState",
+  get: ({ get }) => get(loginState),
+});
+
+export const adminState = atom({
+  key: "adminState",
+  default: false,
+});
+
+export const checkAdminState = selector({
+  key: "getAdminState",
+  get: ({ get }) => get(adminState),
+});
+
+const Login = (props) => {
   const [login, setLogin] = useRecoilState(loginState);
+  const [admin, setAdmin] = useRecoilState(adminState);
 
   const loginValidationSchema = object().shape({
     loginid: string()
@@ -30,16 +46,19 @@ const Login = (props) => {
 
   const submitLoginForm = async (values) => {
     console.log("Login");
-    const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/login`,
+    const requestData = await axiosInstance.post(
+      `/api/login`,
       { ...values },
       { withCredentials: true }
     );
-    console.log(requestData.headers);
+    console.log(requestData.data);
     if (requestData.data.message) {
       setLoginStatus("SUCCESS");
       setLoginMessage(requestData.data.message);
       setLogin(true);
+      if (requestData.data.roleid == 1) {
+        setAdmin(true);
+      }
       setTimeout(() => {
         props.history.push("/");
       }, 2000);
