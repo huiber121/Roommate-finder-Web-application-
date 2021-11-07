@@ -20,26 +20,8 @@ import {
   WhatsappShareButton,
 } from "react-share";
 import mapboxGl from "mapbox-gl";
-
-// const RoomData = {
-//   available: 0,
-//   description: "Has not rats",
-//   lister: 1,
-//   listtime: "2021-09-01",
-//   location: "SOmewhere Apartment",
-//   numbathrooms: 1,
-//   numbedrooms: 3,
-//   price: 1200,
-//   room_id: 1,
-//   roommedia: [
-//     "https://group-4-bucket.s3.us-east-2.amazonaws.com/public/title_images/r0_jasmine-huang-TZPeoM7uKfc-unsplash.jpg",
-//     "https://group-4-bucket.s3.us-east-2.amazonaws.com/public/title_images/r1_blake-woolwine-3mlg5BRUifM-unsplash.jpg",
-//   ],
-//   size: "1700.00",
-//   tags: "no pets,yes smoking,yes disability friendly,no college oriented,yes parking availability",
-//   type: "Apartment",
-//   zipcode: 92300,
-// };
+import axiosInstance from "../../axios-config";
+import RoomPlaceholder from "../../assets/images/room-placeholder.png";
 
 const RoomDetails = () => {
   const { id } = useParams();
@@ -55,8 +37,11 @@ const RoomDetails = () => {
 
   const updateMap = async (zipCode) => {
     mapboxGl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-    const mapboxZipData = await axios.get(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${zipCode}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+    const mapboxZipData = await axiosInstance.get(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${zipCode}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`,
+      {
+        withCredentials: false,
+      }
     );
     if (mapboxZipData.status == 200) {
       const center = mapboxZipData.data.features[0].center;
@@ -76,11 +61,10 @@ const RoomDetails = () => {
     );
     if (data.data) {
       setRoomData(data.data);
-
+      console.log(data.data);
       setTimeout(() => {
         updateMap(data.data.zipcode);
-        setCurrentSlide(0);
-      }, 500);
+      }, 1000);
     }
   };
 
@@ -95,11 +79,17 @@ const RoomDetails = () => {
         <div className="is-11-mobile is-three-quarters-tablet is-half-desktop">
           <div className="navigation-wrapper">
             <div ref={sliderRef} className="keen-slider">
-              {RoomData.roommedia.map((image) => (
+              {RoomData.roommedia.length > 0 ? (
+                RoomData.roommedia.map((image) => (
+                  <div className="keen-slider__slide slider-slide">
+                    <img src={image} />
+                  </div>
+                ))
+              ) : (
                 <div className="keen-slider__slide slider-slide">
-                  <img src={image} />
+                  <img src={RoomPlaceholder} />
                 </div>
-              ))}
+              )}
             </div>
             {slider && (
               <>

@@ -1,27 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import RoomPlaceholder from "../../assets/images/room-placeholder.png";
-import axiosInstance from "../../axios-config";
 
-const RoomCard = ({ room }) => {
-  const bookmarkRoom = async (room) => {
-    console.log(room);
-    const data = await axiosInstance.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/bookmarkRoom`,
-      { RoomID: room.room_id },
-      { withCredentials: true }
-    );
-    console.log(data);
-  };
-  let history = useHistory();
-
-  const handleClick = (roomID) => {
-    history.push(`/room/${roomID}`);
-  };
-
+const ManageRoomCard = ({ room, deleteRoom }) => {
   return (
     <div className="m-3 column is-fullscreen-mobile is-half-tablet is-one-quarter-desktop card">
-      <div className="card-image" onClick={() => handleClick(room.room_id)}>
+      <div className="card-image">
         <figure className="image is-4by3">
           <img
             src={room.roommedia[0] ? room.roommedia[0] : RoomPlaceholder}
@@ -30,33 +13,22 @@ const RoomCard = ({ room }) => {
         </figure>
       </div>
       <div className="card-content">
-        <div className="media mb-4" onClick={() => handleClick(room.room_id)}>
+        <div className="media mb-4">
           <div className="media-content">
             <p className="title is-4">{room.location}</p>
             <p className="subtitle is-6">Zipcode: {room.zipcode}</p>
           </div>
         </div>
-        <div
-          className="is-size-5 has-text-weight-bold mb-1"
-          onClick={() => handleClick(room.room_id)}
-        >
+        <div className="is-size-5 has-text-weight-bold mb-1">
           Rent: ${room.price}
         </div>
-        <div
-          className="is-size-6 has-text-weight-semibold"
-          onClick={() => handleClick(room.room_id)}
-        >
+        <div className="is-size-6 has-text-weight-semibold">
           {room.numbedrooms}Bed / {room.numbathrooms}Bath
         </div>
-        <div className="content" onClick={() => handleClick(room.room_id)}>
-          {room.description}
-        </div>
+        <div className="content">{room.description}</div>
         <div className="is-flex is-flex-direction-row is-justify-content-flex-end">
-          <button
-            className="button is-pulled-right"
-            onClick={() => bookmarkRoom(room)}
-          >
-            <span className="icon is-small">
+          <button className="button is-danger" onClick={() => deleteRoom(room)}>
+            <span className="icon is-small mr-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ height: "1.25rem", width: "1.25rem" }}
@@ -68,10 +40,11 @@ const RoomCard = ({ room }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                 />
               </svg>
             </span>
+            <span className="has-text-weight-semibold">Delete</span>
           </button>
         </div>
       </div>
@@ -79,4 +52,4 @@ const RoomCard = ({ room }) => {
   );
 };
 
-export default RoomCard;
+export default ManageRoomCard;
