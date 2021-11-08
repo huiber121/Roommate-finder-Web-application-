@@ -17,4 +17,4 @@ class config:
     aws_bucket_name = os.environ.get("AWS_BUCKET_NAME")
     aws_bucket_head = os.environ.get("AWS_BUCKET_HEAD")
     aws_access_keyid = os.environ.get("AWS_ACCESS_KEYID")
-    aws_seceret_key = os.environ.get("AWS_SECERET_KEY")
+    aws_secret_key = os.environ.get("AWS_SECRET_KEY")

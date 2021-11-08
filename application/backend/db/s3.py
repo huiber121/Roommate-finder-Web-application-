@@ -20,7 +20,7 @@ class S3Controller:
     s3 = boto3.client(
         "s3",
         aws_access_key_id=config.aws_access_keyid,
-        aws_secret_access_key=config.aws_seceret_key,
+        aws_secret_access_key=config.aws_secret_key,
     )
     # upload file to S3
     def upload_file_to_s3(self, file, acl="public-read"):
