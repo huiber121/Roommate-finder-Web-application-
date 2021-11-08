@@ -18,6 +18,7 @@ import roomscontroller
 import userscontroller
 import sessioncontroller
 import bookmarkcontroller
+import chatcontroller
 app = Flask(__name__)  # name of the module
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DEBUG'] = True
@@ -206,6 +207,22 @@ def show_all_room_bookmark():
     LOGGER.info('Inside /api/showAllRoomBookmark')
     message = bookmarkcontroller.show_all_bookmark_rooms()
     return message
+
+#chat
+@app.route("/api/sendMessage", methods=['POST'])
+def send_message():
+    """Endpoint to send message."""
+    LOGGER.info('Inside /api/sendMessage')
+    chat = chatcontroller.chat_message()
+    return {"message " : chat}
+
+@app.route("/api/getMessages", methods=['GET'])
+def get_messages():
+    """Endpoint to get message."""
+    LOGGER.info('Inside /api/getMessage')
+    chat = chatcontroller.get_message()
+    return chat
+
 if __name__ == '__main__':
     logging.basicConfig(filename='backend.log', level=logging.INFO)
     app.run('0.0.0.0', port=5000)
