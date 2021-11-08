@@ -9,5 +9,6 @@ How to run the main.py
 5. python main.py
 
 ### create .env file
-Location: inside the backend folder
-content: In discord
+
+1. Location: inside the backend folder
+2. content: In discord
