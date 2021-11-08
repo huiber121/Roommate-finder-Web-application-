@@ -1,10 +1,15 @@
 """Importing necessary modules"""
 import logging
 import sys
+import os
 from mysql.connector import Error
 from mysql.connector import pooling
 
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(db_dir)
 sys.dont_write_bytecode = True
+from config.config import config
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -15,10 +20,10 @@ class Database:
         pool_name="db_pool",
         pool_size=10,
         pool_reset_session=True,
-        host="group4-db.czpwr5igmvey.us-west-1.rds.amazonaws.com",
+        host=config.host,
         database="Test1",
-        user="admin",
-        password="admin1234",
+        user=config.user,
+        password=config.password,
     )
 
     def get_data(self, sql):

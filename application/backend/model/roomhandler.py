@@ -10,8 +10,7 @@ db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(db_dir)
 from db.s3 import S3Controller
 from db.database import Database
-
-AWS_BUCKET_HEAD = "https://group-4-bucket.s3.us-east-2.amazonaws.com/"
+from config.config import config
 
 
 class RoomHandler:
@@ -66,7 +65,7 @@ class RoomHandler:
         """Construct the queries to execute add media the db and s3."""
 
         output = self.s3install.upload_file_to_s3(file)
-        url = AWS_BUCKET_HEAD + output
+        url = config.aws_bucket_head + output
         sql = f"INSERT INTO Test1.RoomMedia (RoomID,RoomPic) \
                  VALUES ({room_id},'{url}');"
         message = self.dbinstall.add_data(sql)
@@ -90,7 +89,7 @@ class RoomHandler:
             return "no meidafile in db"
         for filename in media_name:
             url = filename[0]
-            path_to_filename = url.replace(AWS_BUCKET_HEAD, "")
+            path_to_filename = url.replace(config.aws_bucket_head, "")
             output = self.s3install.delete_file_from_s3(path_to_filename)
         del_sql = f"DELETE FROM Test1.RoomMedia WHERE RoomID = {room_id};"
         media_message = self.dbinstall.delete_data(del_sql)
@@ -115,7 +114,7 @@ class RoomHandler:
     def delete_one_pic(self, url):
         """Construct the queries to execute delete one media to db and s3."""
 
-        path_to_filename = url.replace(AWS_BUCKET_HEAD, "")
+        path_to_filename = url.replace(config.aws_bucket_head, "")
         s3_message = self.s3install.delete_file_from_s3(path_to_filename)
         sql = f"DELETE FROM Test1.RoomMedia WHERE RoomPic = '{url}'"
         db_message = self.dbinstall.delete_data(sql)
