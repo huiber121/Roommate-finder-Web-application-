@@ -22,6 +22,7 @@ import { RecoilRoot } from "recoil";
 import RoomBookmarks from "./pages/room-bookmarks/room-bookmarks";
 import RoomDetails from "./pages/room-details/room-details";
 import ManageRooms from "./pages/admin/manage-rooms/manage-rooms";
+import UserPreferences from "./pages/user-preferences/user-preferences";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,6 +41,7 @@ ReactDOM.render(
             <Route path="/add-room" exact component={AddRoom} />
             <Route path="/room-bookmarks" exact component={RoomBookmarks} />
             <Route path="/room/:id" component={RoomDetails} />
+            <Route path="/my-preferences" component={UserPreferences} />
             {/* ADMIN ROUTES */}
             <Route path="/admin/manage-rooms" component={ManageRooms} />
             <Route path="/about/georgina" exact>

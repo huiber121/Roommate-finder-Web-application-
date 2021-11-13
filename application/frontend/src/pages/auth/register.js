@@ -75,7 +75,7 @@ const Register = (props) => {
         ...(values.school !== "" && { school: values.school }),
         ...(values.gradeLevel !== "" && { gradlevel: values.gradeLevel }),
         ...(values.major !== "" && { major: values.major }),
-        ...(values.location !== "" && { location: values.location }),
+        ...(values.location !== "" && { joblocation: values.location }),
         ...(values.zipCode !== "" && { zipcode: values.zipCode }),
       },
       { withCredentials: true }

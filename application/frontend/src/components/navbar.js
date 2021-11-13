@@ -87,6 +87,9 @@ const Navbar = (props) => {
                 <Link to="/add-room" className="button is-link">
                   <strong>Add Room</strong>
                 </Link>
+                <Link to="/my-preferences" className="navbar-item">
+                  <strong>My Preferences</strong>
+                </Link>
                 <button onClick={() => logout()} className="button">
                   <strong>Logout</strong>
                 </button>
