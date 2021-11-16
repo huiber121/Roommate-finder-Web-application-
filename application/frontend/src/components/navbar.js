@@ -73,6 +73,9 @@ const Navbar = (props) => {
               <Link to="/admin/manage-rooms" className="navbar-item">
                 Manage Rooms
               </Link>
+              <Link to="/admin/manage-users" className="navbar-item">
+                Manage Users
+              </Link>
             </React.Fragment>
           ) : null}
           <Link to="/about" className="navbar-item">

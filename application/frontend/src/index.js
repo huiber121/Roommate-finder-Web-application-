@@ -23,6 +23,7 @@ import RoomBookmarks from "./pages/room-bookmarks/room-bookmarks";
 import RoomDetails from "./pages/room-details/room-details";
 import ManageRooms from "./pages/admin/manage-rooms/manage-rooms";
 import UserPreferences from "./pages/user-preferences/user-preferences";
+import ManageUsers from "./pages/admin/manage-users/manage-users";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -44,6 +45,7 @@ ReactDOM.render(
             <Route path="/my-preferences" component={UserPreferences} />
             {/* ADMIN ROUTES */}
             <Route path="/admin/manage-rooms" component={ManageRooms} />
+            <Route path="/admin/manage-users" component={ManageUsers} />
             <Route path="/about/georgina" exact>
               <Georgina />
             </Route>
