@@ -20,6 +20,7 @@ import userscontroller
 import sessioncontroller
 import bookmarkcontroller
 import chatcontroller
+import preferencecontroller
 
 app = Flask(__name__)  # name of the module
 app.config["CORS_HEADERS"] = "Content-Type"
@@ -100,8 +101,8 @@ def delete_user():
 def get_rooms():
     """Endpoint to get all rooms for the given search conditions."""
 
-    LOGGER.info(" Inside /api/getRooms")
-    rooms_list = roomscontroller.get_all_rooms()
+    LOGGER.info(' Inside /api/getRooms')
+    rooms_list = roomscontroller.get_all_rooms("")
     return rooms_list
 
 
@@ -109,8 +110,8 @@ def get_rooms():
 def get_roommates():
     """Endpoint to get all rooms for the given search conditions."""
 
-    LOGGER.info(" Inside /api/getRoommates")
-    roommates_list = userscontroller.get_all_roommates()
+    LOGGER.info(' Inside /api/getRoommates')
+    roommates_list = userscontroller.get_all_roommates("")
     return roommates_list
 
 
@@ -243,7 +244,24 @@ def get_chat_room():
     chat_room = chatcontroller.get_all_chat_room()
     return chat_room
 
+    
+# Preference
 
-if __name__ == "__main__":
-    logging.basicConfig(filename="backend.log", level=logging.INFO)
-    app.run("0.0.0.0", port=5000)
+@app.route('/api/getNotifications', methods=['POST'])
+def get_notifications():
+    """Endpoint to get user profile for the given id."""
+    LOGGER.info(' Inside /api/getNotifications')
+    preflist = preferencecontroller.get_all_notifications()
+    return preflist     
+
+@app.route('/api/addPreference', methods=['POST'])
+def add_preference():
+    """Endpoint to get user profile for the given id."""
+    LOGGER.info(' Inside /api/getNotifications')
+    message = preferencecontroller.add_user_preference()
+    return {"message":message} 
+
+if __name__ == '__main__':
+    logging.basicConfig(filename='backend.log', level=logging.INFO)
+    app.run('0.0.0.0', port=5000)
+    

@@ -20,6 +20,8 @@ import SearchRoommates from "./pages/search/search-roommates";
 import AddRoom from "./pages/add-room/add-room";
 import { RecoilRoot } from "recoil";
 import RoomBookmarks from "./pages/room-bookmarks/room-bookmarks";
+import RoomDetails from "./pages/room-details/room-details";
+import ManageRooms from "./pages/admin/manage-rooms/manage-rooms";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -37,6 +39,9 @@ ReactDOM.render(
             <Route path="/find-roommates" exact component={SearchRoommates} />
             <Route path="/add-room" exact component={AddRoom} />
             <Route path="/room-bookmarks" exact component={RoomBookmarks} />
+            <Route path="/room/:id" component={RoomDetails} />
+            {/* ADMIN ROUTES */}
+            <Route path="/admin/manage-rooms" component={ManageRooms} />
             <Route path="/about/georgina" exact>
               <Georgina />
             </Route>
