@@ -90,9 +90,20 @@ const Navbar = (props) => {
                 <Link to="/add-room" className="button is-link">
                   <strong>Add Room</strong>
                 </Link>
-                <Link to="/my-preferences" className="navbar-item">
-                  <strong>My Preferences</strong>
-                </Link>
+                <div class="navbar-item button has-dropdown is-hoverable">
+                  <a class="navbar-link">Preferences</a>
+
+                  <div class="navbar-dropdown">
+                    <Link to="/room-preferences" className="navbar-item">
+                      <strong>Room Preferences</strong>
+                    </Link>
+                    <Link to="/roommate-preferences" className="navbar-item">
+                      <strong>Roommate Preferences</strong>
+                    </Link>
+                    {/* <hr class="navbar-divider" /> */}
+                  </div>
+                </div>
+
                 <button onClick={() => logout()} className="button">
                   <strong>Logout</strong>
                 </button>
