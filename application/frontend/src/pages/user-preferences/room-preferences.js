@@ -24,7 +24,7 @@ const RoomPreferences = (props) => {
 
   const submitForm = async (values) => {
     const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/addPreference`,
+      `${process.env.REACT_APP_HOST_BASE}/api/addRoomPreference`,
       {
         preftype: "room",
         type: values.type,
