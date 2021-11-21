@@ -2,6 +2,8 @@
 import json
 import ast
 import logging
+from os import confstr
+import bcrypt
 from flask import request
 import schoolcontroller
 import sessioncontroller
@@ -281,10 +283,12 @@ def add_user():
     body = json.loads(req_body)
     uijson = ast.literal_eval(json.dumps(body))
     LOGGER.info(uijson)
+    psw_encode = encrypt_psw(uijson['password'])
+
     if uijson['type'] == 'student':
         addusersql = \
             "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
-            + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
+            + uijson['email'] + "', " + "'" + psw_encode + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
             + str(uijson['userscore']) + "'," + "'" + uijson['gender'] \
@@ -306,7 +310,7 @@ def add_user():
     elif uijson['type'] == 'professor':
         addusersql = \
             "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
-            + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
+            + uijson['email'] + "', " + "'" + psw_encode + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
             + str(uijson['userscore']) + "'," + "'" + uijson['gender'] \
@@ -320,7 +324,7 @@ def add_user():
     else:
         addusersql = \
             "INSERT INTO Base_User (`Email`, `Password`, `Name`, `Age`, `SocialSecurity`, `UserScore`, `Gender`, `Type`, `Hidden`, `LoginId`) VALUES ('" \
-            + uijson['email'] + "', " + "'" + uijson['password'] + "'," \
+            + uijson['email'] + "', " + "'" + psw_encode + "'," \
             + "'" + uijson['name'] + "'," + "'" + str(uijson['age']) \
             + "'," + "'" + str(uijson['ssn']) + "'," + "'" \
             + str(uijson['userscore']) + "'," + "'" + uijson['gender'] \
@@ -342,13 +346,16 @@ def login():
     sql = "SELECT Password,Admin, UserID FROM Base_User where LoginId='"+ uijson['loginid'] + "';"
     LOGGER.info(' SQL to check logged in user {%s}', sql)
     result = DBINSTANCE.get_data(sql)
-    LOGGER.info('The userid is {%s}', result[0][1])
     if result == 0:
         return 'Incorrect credentials'
-    elif uijson['password'] == result[0][0]:
-            sessioncontroller.create_session(result[0][2])
-            response = {'message': "Logged in successfully'"+ uijson['loginid'], 'roleid': result[0][1]}
-            return response
+    db_passwd = result[0][0]
+    pass_wd = uijson['password']
+    checker = check_psw(pass_wd,db_passwd)
+    LOGGER.info('The userid is {%s}', result[0][1])
+    if checker:
+        sessioncontroller.create_session(result[0][2])
+        response = {'message': "Logged in successfully'"+ uijson['loginid'], 'roleid': result[0][1]}
+        return response
 
 def get_user_profile():
     """This method returns the user profile given the id"""
@@ -439,3 +446,23 @@ def user_delete():
             return message
     else:
             return "User is associated with rooms, hence cannot be deleted"
+
+
+def encrypt_psw(psw):
+    """This function is used fro create a hased password."""
+
+    passwd = bytes(psw,'utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(passwd, salt)
+    str_hashed = hashed.decode('UTF-8')
+    return str_hashed
+    
+def check_psw(psw,db_psw):
+    """This function is used for check check hased password."""
+
+    
+    byte_password = bytes(psw,"utf-8")
+    byte_hashed_db = db_psw.encode(encoding='UTF-8')
+    return bcrypt.checkpw(byte_password,byte_hashed_db)
+
+    
