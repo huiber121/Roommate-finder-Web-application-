@@ -27,6 +27,8 @@ def get_all_rooms(searchjson):
             LOGGER.info(' JSON from frontend {}'.format(uijson))
     else: 
             uijson = searchjson  
+            del uijson['preftype'] 
+            
     filter = ''
     sql = 'SELECT * FROM RoomListing WHERE (Available=0) and '
     if 'zipcode' in uijson.keys():
