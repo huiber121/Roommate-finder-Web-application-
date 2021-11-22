@@ -21,10 +21,13 @@ def get_all_roommates(searchjson):
         uijson = ast.literal_eval(json.dumps(body))
     else:
         uijson = searchjson
-    req_body = request.get_data()
-    body = json.loads(req_body)
-    uijson = ast.literal_eval(json.dumps(body))
-    LOGGER.info(uijson)
+        if uijson['preftype'] == 'professor':
+            uijson['type'] = 'professor'
+        elif uijson['preftype'] == 'student':
+             uijson['type'] = 'student'
+        del uijson['preftype']
+    LOGGER.info("Roommates JSON "+str(uijson))
+
     sql = ''
     result_json = []
     if 'type' in uijson.keys():
