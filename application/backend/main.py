@@ -229,7 +229,7 @@ def send_message():
     return {"message ": chat}
 
 
-@app.route("/api/getMessages", methods=["GET"])
+@app.route("/api/getMessages", methods=["POST"])
 def get_messages():
     """Endpoint to get message."""
     LOGGER.info("Inside /api/getMessage")
