@@ -18,31 +18,29 @@ def add_user_preference():
 
     loggedin = sessioncontroller.check_loggedin()
     if loggedin:
-
+    
         # Getting the JSON from request
         req_body = request.get_data()
         body = json.loads(req_body)
+        LOGGER.info("body ",body)
         uijson = ast.literal_eval(json.dumps(body))
         jsonstr = str(uijson).replace("'", '"')
-
         # Adding room preference
         if uijson['preftype'] == 'room':
             resultmsg = ''
             # Check if user exists in table
-            checksql = 'SELECT UserID FROM Test1.Preferences;'
+            checksql = 'SELECT UserID FROM Test1.Preferences where UserID = '+str(session['userid'])+';'
             result = DBINSTANCE.get_data(checksql)
             if result != 0:
-                for i in result:
-                    for j in i:
-                        # If yes, update the room preference
-                        if j == session['userid']:
-                            roomprefsql = \
-                                "UPDATE Preferences SET roompreference='" \
-                                + jsonstr + "' where UserId=" \
-                                + str(session['userid']) + ';'
-                            LOGGER.info('SQL to update room preference if user is in table{}'.format(roomprefsql))
-                            resultmsg = \
-                                DBINSTANCE.update_data(roomprefsql)
+                # If yes, update the room preference
+                if result[0][0] == session['userid']:
+                    roomprefsql = \
+                        "UPDATE Preferences SET roompreference='" \
+                        + jsonstr + "' where UserId=" \
+                        + str(session['userid']) + ';'
+                    LOGGER.info('SQL to update room preference if user is in table{}'.format(roomprefsql))
+                    resultmsg = \
+                        DBINSTANCE.update_data(roomprefsql)
             else:
                 # If not, inserting a new row with userid & the room preference
                 addroompref = \
@@ -55,26 +53,24 @@ def add_user_preference():
         # Adding roommate preference
             resultmsg = ''
             # Check if user exists in table
-            checksql = 'SELECT UserID FROM Test1.Preferences;'
+            checksql = 'SELECT UserID FROM Test1.Preferences where UserID = '+str(session['userid'])+';'
             result = DBINSTANCE.get_data(checksql)
             if result != 0:
-                for i in result:
-                    for j in i:
-                        # If yes, update the roommate preference
-                        if j == session['userid']:
-                            roommateprefsql = \
-                                "UPDATE Preferences SET roommatepreference='" \
-                                + jsonstr + "' where UserId=" \
-                                + str(session['userid']) + ';'
-                            LOGGER.info('SQL to update room preference if user is in table{}'.format(roommateprefsql))
-                            resultmsg = \
-                                DBINSTANCE.update_data(roommateprefsql)
+                # If yes, update the roommate preference
+                if result[0][0] == session['userid']:
+                        roommateprefsql = \
+                            "UPDATE Preferences SET roommatepreference='" \
+                            + jsonstr + "' where UserId=" \
+                            + str(session['userid']) + ';'
+                        LOGGER.info('SQL to update room preference if user is in table{} '.format(roommateprefsql))
+                        resultmsg = \
+                            DBINSTANCE.update_data(roommateprefsql)
             else:
                 # If not, inserting a new row with userid & the roommate preference
                 addroommatepref = \
                     'INSERT INTO Preferences (`UserID`, `roommatepreference`) VALUES (' \
                     + str(session['userid']) + ", '" + jsonstr + "');"
-                LOGGER.info('SQL to add room preference if user is not in table{}'.format(addroommatepref))
+                LOGGER.info('SQL to add room preference if user is not in table {}'.format(addroommatepref))
                 resultmsg = DBINSTANCE.add_data(addroommatepref)
             return resultmsg
     else:
