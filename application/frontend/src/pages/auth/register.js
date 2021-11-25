@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./register.css";
+import { logEvent } from "firebase/analytics";
 
 const Register = (props) => {
   const registrationValidationSchema = Yup.object().shape({
@@ -84,6 +85,7 @@ const Register = (props) => {
     if (requestData.data.message) {
       setSubmitStatus("SUCCESS");
       setSubmitMessage(requestData.data.message);
+      logEvent(props.analytics, "sign_up");
       setTimeout(() => {
         props.history.push("/login");
       }, 2000);

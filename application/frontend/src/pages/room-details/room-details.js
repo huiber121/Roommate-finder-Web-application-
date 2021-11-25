@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./room-details.css";
@@ -31,9 +31,11 @@ const RoomDetails = () => {
     slideChanged(s) {
       setCurrentSlide(s.details().relativeSlide);
     },
+    slidesPerView: 3,
+    centered: true,
     loop: true,
   });
-  const [RoomData, setRoomData] = useState();
+  const [RoomData, setRoomData] = useState(null);
 
   const updateMap = async (zipCode) => {
     mapboxGl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -73,37 +75,43 @@ const RoomDetails = () => {
       fetchData();
     }
   }, [id]);
+
   if (RoomData) {
     return (
       <div className="columns is-mobile is-gapless is-centered">
         <div className="is-11-mobile is-three-quarters-tablet is-half-desktop">
-          <div className="navigation-wrapper">
-            <div ref={sliderRef} className="keen-slider">
-              {RoomData.roommedia.length > 0 ? (
-                RoomData.roommedia.map((image) => (
+          {RoomData.roommedia.length > 0 ? (
+            <div className="navigation-wrapper">
+              <div ref={sliderRef} className="keen-slider">
+                {RoomData.roommedia.length > 0 ? (
+                  RoomData.roommedia.map((image) => (
+                    <div
+                      className="keen-slider__slide slider-slide"
+                      key={image}
+                    >
+                      <img src={image} />
+                    </div>
+                  ))
+                ) : (
                   <div className="keen-slider__slide slider-slide">
-                    <img src={image} />
+                    <img src={RoomPlaceholder} />
                   </div>
-                ))
-              ) : (
-                <div className="keen-slider__slide slider-slide">
-                  <img src={RoomPlaceholder} />
-                </div>
+                )}
+              </div>
+              {slider && (
+                <>
+                  <ArrowLeft
+                    onClick={(e) => e.stopPropagation() || slider.prev()}
+                    disabled={currentSlide === 0}
+                  />
+                  <ArrowRight
+                    onClick={(e) => e.stopPropagation() || slider.next()}
+                    disabled={currentSlide === slider.details().size - 1}
+                  />
+                </>
               )}
             </div>
-            {slider && (
-              <>
-                <ArrowLeft
-                  onClick={(e) => e.stopPropagation() || slider.prev()}
-                  disabled={currentSlide === 0}
-                />
-                <ArrowRight
-                  onClick={(e) => e.stopPropagation() || slider.next()}
-                  disabled={currentSlide === slider.details().size - 1}
-                />
-              </>
-            )}
-          </div>
+          ) : null}
           {slider && (
             <div className="dots">
               {[...Array(slider.details().size).keys()].map((idx) => {
@@ -120,8 +128,36 @@ const RoomDetails = () => {
             </div>
           )}
           <div>
-            <div className="has-background-link has-text-white type-tag has-text-weight-bold is-size-6">
-              {RoomData.type}
+            <div className="is-flex is-flex-direction-row	is-flex-wrap-nowrap">
+              <div className="has-background-link has-text-white type-tag has-text-weight-bold is-size-6">
+                {RoomData.type}
+              </div>
+              <div className="ml-4">
+                <Link
+                  to={`/message-room/${RoomData.lister}`}
+                  className="button is-info"
+                >
+                  <span className="icon is-small">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ height: "1.2rem", width: "1.2rem" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                      />
+                    </svg>
+                  </span>
+                  <span className="ml-3 has-text-weight-bold">
+                    Message Lister
+                  </span>
+                </Link>
+              </div>
             </div>
             <h1 className="is-size-2 has-text-weight-bold	">
               {RoomData.location} - {RoomData.zipcode}

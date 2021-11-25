@@ -25,6 +25,25 @@ import ManageRooms from "./pages/admin/manage-rooms/manage-rooms";
 import RoomPreferences from "./pages/user-preferences/room-preferences";
 import ManageUsers from "./pages/admin/manage-users/manage-users";
 import RoommatePreferences from "./pages/user-preferences/roommate-preferences";
+import Alerts from "./pages/alerts/alerts";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import MessageRooms from "./pages/messaging/message-rooms";
+import MessageRoom from "./pages/messaging/message-room";
+import "./pages/search/search-rooms.css";
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -37,8 +56,16 @@ ReactDOM.render(
         <BrowserRouter>
           <Navbar />
           <Switch>
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
+            <Route
+              path="/login"
+              exact
+              render={(props) => <Login {...props} analytics={analytics} />}
+            />
+            <Route
+              path="/register"
+              exact
+              render={(props) => <Register {...props} analytics={analytics} />}
+            />
             <Route path="/find-roommates" exact component={SearchRoommates} />
             <Route path="/add-room" exact component={AddRoom} />
             <Route path="/room-bookmarks" exact component={RoomBookmarks} />
@@ -48,6 +75,9 @@ ReactDOM.render(
               path="/roommate-preferences"
               component={RoommatePreferences}
             />
+            <Route path="/alerts" component={Alerts} />
+            <Route path="/message-room/:id" component={MessageRoom} />
+            <Route path="/message-rooms" component={MessageRooms} />
             {/* ADMIN ROUTES */}
             <Route path="/admin/manage-rooms" component={ManageRooms} />
             <Route path="/admin/manage-users" component={ManageUsers} />
@@ -75,9 +105,10 @@ ReactDOM.render(
             <Route path="/about">
               <About />
             </Route>
-            <Route path="/">
-              <App />
-            </Route>
+            <Route
+              path="/"
+              render={(props) => <App {...props} analytics={analytics} />}
+            />
           </Switch>
         </BrowserRouter>
       </RecoilRoot>

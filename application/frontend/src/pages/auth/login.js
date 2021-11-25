@@ -5,6 +5,7 @@ import { string } from "yup";
 import { object } from "yup";
 import axiosInstance from "../../axios-config";
 import "./login.css";
+import { logEvent } from "firebase/analytics";
 
 export const loginState = atom({
   key: "loginState", // unique ID (with respect to other atoms/selectors)
@@ -59,6 +60,7 @@ const Login = (props) => {
       if (requestData.data.roleid == 1) {
         setAdmin(true);
       }
+      logEvent(props.analytics, "login");
       setTimeout(() => {
         props.history.push("/");
       }, 2000);

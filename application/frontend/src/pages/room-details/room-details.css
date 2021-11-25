@@ -1,6 +1,9 @@
 .navigation-wrapper {
   position: relative;
 }
+.keen-slider {
+  width: 100%;
+}
 
 .slider-slide {
   max-height: 400px;
