@@ -105,3 +105,47 @@ def delete_user_bookmark():
         )
         return message
     return "please login"
+
+def show_all_bookmark_users():
+    """This Method is show all room bookmark."""
+    checker = sessioncontroller.check_loggedin()
+    if checker:
+        user_id = session["userid"]
+        boommark_users = bookmark_modle.get_all_userbookmark(user_id)
+        bookmark_users_list = []
+        if boommark_users == 0:
+            return {}
+        for user in boommark_users:
+            user_info = bookmark_modle.get_user_profile(user)[0]
+            user_type = user_info[8]
+            roommate_json = None
+            if user_type == 'student':
+                roommate_json = {
+                    'userid': user_info[0],
+                    'username': user_info[3],
+                    'type': user_info[8],
+                    'userscore': user_info[6],
+                    'age': int(user_info[4]),
+                    'gender': user_info[7],
+                    'gradlevel': user_info[13],
+                    'major': user_info[12],
+                    'school': user_info[14],
+                    'school_zipcode': user_info[15],
+                    }
+
+            if user_type == 'professor':
+                roommate_json = {
+                    'userid': user_info[0],
+                    'username': user_info[3],
+                    'age': user_info[4],
+                    'gender': user_info[7],
+                    'userscore': user_info[6],
+                    'joblocation': user_info[18],
+                    'job_location': user_info[17],
+                    'type': 'professor',
+                    }
+            rjson = ast.literal_eval(json.dumps(roommate_json))
+            bookmark_users_list.append(rjson)
+        return json.dumps(bookmark_users_list)
+    return "please login"
+

@@ -219,6 +219,14 @@ def show_all_room_bookmark():
     message = bookmarkcontroller.show_all_bookmark_rooms()
     return message
 
+@app.route("/api/showAllUserBookmark", methods=["GET"])
+def show_all_user_bookmark():
+    """Endpoint to show all room bookmark."""
+
+    LOGGER.info("Inside /api/showAllRoomBookmark")
+    message=bookmarkcontroller.show_all_bookmark_users()
+    return message
+
 
 # chat
 @app.route("/api/sendMessage", methods=["POST"])
