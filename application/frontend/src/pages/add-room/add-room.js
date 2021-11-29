@@ -101,19 +101,12 @@ const AddRoom = () => {
       formData.append("files", images[i], images[i].name);
     }
 
-    console.log(formData.get("files"));
-    setLoading(false);
     const data = await axios.post(
       `${process.env.REACT_APP_HOST_BASE}/api/addRoom`,
       formData,
       {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
-        // headers: {
-        //   "Access-Control-Allow-Origin": "*",
-        //   "Access-Control-Allow-Credentials": true,
-        //   "Content-Type": "application/json",
-        // },
       }
     );
     console.log(data);
@@ -629,6 +622,15 @@ const AddRoom = () => {
                     </div>
                   ))}
                 </div>
+                {uploadStatus === "SUCCESS" ? (
+                  <div className="m-3 is-size-5 has-text-weight-bold text-success">
+                    Room Added Successfully
+                  </div>
+                ) : uploadStatus === "ERROR" ? (
+                  <div className="m-3 is-size-5 has-text-weight-bold text-danger">
+                    There was an error. Please try again.
+                  </div>
+                ) : null}
                 {isLoading ? (
                   <div className="sk-circle">
                     <div className="sk-circle1 sk-child"></div>
@@ -646,8 +648,9 @@ const AddRoom = () => {
                   </div>
                 ) : (
                   <button
-                    className="button is-link is-medium mt-5"
+                    className="button is-link is-medium mt-5 mb-5"
                     type="submit"
+                    disabled={isLoading}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -666,15 +669,6 @@ const AddRoom = () => {
                     Add Room
                   </button>
                 )}
-                {uploadStatus === "SUCCESS" ? (
-                  <div className="m-3 text-success">
-                    Room Added Successfully
-                  </div>
-                ) : uploadStatus === "ERROR" ? (
-                  <div className="m-3 text-danger">
-                    There was an error. Please try again.
-                  </div>
-                ) : null}
               </Form>
             )}
           </Formik>

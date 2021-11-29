@@ -56,7 +56,7 @@ const MessageRooms = () => {
         </div>
       ) : null}
       {chatData.length > 0 && !isLoading ? (
-        <div className="columns is-mobile is-centered is-gapless">
+        <div className="columns is-mobile is-centered is-multiline is-3">
           {chatData.map((chat) => (
             <div
               key={chat.Roomid}

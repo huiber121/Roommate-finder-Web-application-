@@ -8,6 +8,7 @@ import "./room-preferences.css";
 const RoomPreferences = (props) => {
   const RoomPreferencesValidationSchema = Yup.object().shape({
     type: Yup.string(),
+    locZip: Yup.string(),
     bedrooms: Yup.string(),
     bathrooms: Yup.string(),
     smoking: Yup.string(),
@@ -23,20 +24,35 @@ const RoomPreferences = (props) => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const submitForm = async (values) => {
-    const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/addRoomPreference`,
-      {
-        preftype: "room",
-        type: values.type,
-        numbedrooms: values.bedrooms,
-        smoking: values.smoking,
-        pets: values.pets,
-        parking: values.parking,
-        college: values.college,
-        disability: values.disability,
-        negotiation: values.negotiation,
+    const zipRegex = "^[0-9]*$";
+    // This flag is used to pass either the location or zipCode based on the input.
+    let hasProvidedZipCode = false;
+
+    if (values.locZip.match(zipRegex) && values.locZip !== "") {
+      hasProvidedZipCode = true;
+    }
+
+    const queryObj = {
+      preftype: "room",
+      ...(values.type !== "" && { type: values.type }),
+      ...(hasProvidedZipCode === true && { zipcode: values.locZip }),
+      ...(!hasProvidedZipCode && { location: values.locZip }),
+      ...(values.bedrooms !== "" && { numbedrooms: values.bedrooms }),
+      ...(values.bathrooms !== "" && { numbathrooms: values.bathrooms }),
+      ...(values.smoking !== "" && { smoking: values.smoking }),
+      ...(values.pets !== "" && { pets: values.pets }),
+      ...(values.parking !== "" && { parking: values.parking }),
+      ...(values.college !== "" && { college: values.college }),
+      ...(values.disability !== "" && { disability: values.disability }),
+      ...(values.negotiation !== "" && { negotiation: values.negotiation }),
+      ...(values.restroomPrivacy !== "" && {
         restroom: values.restroomPrivacy,
-      },
+      }),
+    };
+    console.log(queryObj);
+    const requestData = await axios.post(
+      `${process.env.REACT_APP_HOST_BASE}/api/addPreference`,
+      queryObj,
       { withCredentials: true }
     );
     console.log(requestData);
@@ -64,6 +80,7 @@ const RoomPreferences = (props) => {
           <Formik
             initialValues={{
               type: "",
+              locZip: "",
               bedrooms: "",
               bathrooms: "",
               smoking: "",
@@ -84,6 +101,28 @@ const RoomPreferences = (props) => {
               <Form>
                 <div className="field is-horizontal">
                   <div className="field-label is-normal">
+                    <label className="label">Location/ZipCode</label>
+                  </div>
+                  <div className="field-body">
+                    <div className="field">
+                      <input
+                        className="input is-normal"
+                        name="locZip"
+                        value={values.locZip}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="Location or ZipCode Preference"
+                      />
+                      {errors.locZip && touched.locZip ? (
+                        <div className="has-text-danger has-text-weight-semibold">
+                          {errors.locZip}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+                <div className="field is-horizontal">
+                  <div className="field-label is-normal">
                     <label className="label">Type</label>
                   </div>
                   <div className="field-body">
@@ -97,9 +136,9 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">Select property type</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="house">House</option>
-                            <option value="mobile home">Mobile Home</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="House">House</option>
+                            <option value="Mobile Home">Mobile Home</option>
                           </select>
                         </div>
                       </p>
@@ -131,7 +170,7 @@ const RoomPreferences = (props) => {
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
-                            <option value="6+">6+</option>
+                            <option value="6">6+</option>
                           </select>
                         </div>
                       </p>
@@ -161,7 +200,7 @@ const RoomPreferences = (props) => {
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
-                            <option value="4+">4+</option>
+                            <option value="4">4+</option>
                           </select>
                         </div>
                       </p>
@@ -189,7 +228,7 @@ const RoomPreferences = (props) => {
                           >
                             <option value="">Select smoking options</option>
                             <option value="no smoking">No Smoking</option>
-                            <option value="smoking friendly">
+                            <option value="yes smoking">
                               Smoking Friendly
                             </option>
                           </select>
@@ -219,7 +258,7 @@ const RoomPreferences = (props) => {
                           >
                             <option value="">None</option>
                             <option value="no pets">No Pets</option>
-                            <option value="pets friendly">Pets Friendly</option>
+                            <option value="yes pets">Pets Friendly</option>
                           </select>
                         </div>
                       </p>
@@ -246,8 +285,10 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">None</option>
-                            <option value="no parking">No Parking</option>
-                            <option value="parking included">
+                            <option value="no parking availability">
+                              No Parking
+                            </option>
+                            <option value="yes parking availability">
                               Parking Included
                             </option>
                           </select>
@@ -276,10 +317,10 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">None</option>
-                            <option value="not college oriented">
+                            <option value="no college oriented">
                               Not College Oriented
                             </option>
-                            <option value="college oriented">
+                            <option value="yes college oriented">
                               College oriented
                             </option>
                           </select>
@@ -308,10 +349,10 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">None</option>
-                            <option value="disability friendly">
+                            <option value="yes disability friendly">
                               Disability Friendly
                             </option>
-                            <option value="not disability friendly">
+                            <option value="no disability friendly">
                               Not Disability Friendly
                             </option>
                           </select>
@@ -340,10 +381,10 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">None</option>
-                            <option value="rent not negotiatable">
+                            <option value="no negotiable">
                               Rent Not Negotiable
                             </option>
-                            <option value="rent negotiatable">
+                            <option value="yes negotiable">
                               Rent Negotiatable
                             </option>
                           </select>
@@ -372,7 +413,7 @@ const RoomPreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">None</option>
-                            <option value="private restroom">
+                            <option value="yes private restroom">
                               Private Restroom
                             </option>
                             <option value="no private restroom">

@@ -31,6 +31,7 @@ import { getAnalytics } from "firebase/analytics";
 import MessageRooms from "./pages/messaging/message-rooms";
 import MessageRoom from "./pages/messaging/message-room";
 import "./pages/search/search-rooms.css";
+import RoommateBookmarks from "./pages/roommate-bookmarks/roommate-bookmarks";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -69,6 +70,11 @@ ReactDOM.render(
             <Route path="/find-roommates" exact component={SearchRoommates} />
             <Route path="/add-room" exact component={AddRoom} />
             <Route path="/room-bookmarks" exact component={RoomBookmarks} />
+            <Route
+              path="/roommate-bookmarks"
+              exact
+              component={RoommateBookmarks}
+            />
             <Route path="/room/:id" component={RoomDetails} />
             <Route path="/room-preferences" component={RoomPreferences} />
             <Route

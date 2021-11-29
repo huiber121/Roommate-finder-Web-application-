@@ -65,9 +65,17 @@ const Navbar = (props) => {
             Find Roommates
           </Link>
           {isLoggedIn && !isAdmin ? (
-            <Link to="/room-bookmarks" className="navbar-item">
-              Bookmarks
-            </Link>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Bookmarks</a>
+              <div class="navbar-dropdown">
+                <Link to="/room-bookmarks" className="navbar-item">
+                  Room Bookmarks
+                </Link>
+                <Link to="/roommate-bookmarks" className="navbar-item">
+                  Roommate Bookmarks
+                </Link>
+              </div>
+            </div>
           ) : isLoggedIn && isAdmin ? (
             <React.Fragment>
               <Link to="/admin/manage-rooms" className="navbar-item">
