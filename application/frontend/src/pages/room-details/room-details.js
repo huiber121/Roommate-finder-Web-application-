@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
 import "./room-details.css";
 import RoomBadge from "../../components/room-details/badge";
 import axios from "axios";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 import {
   EmailIcon,
   EmailShareButton,
@@ -25,16 +25,6 @@ import RoomPlaceholder from "../../assets/images/room-placeholder.png";
 
 const RoomDetails = () => {
   const { id } = useParams();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [sliderRef, slider] = useKeenSlider({
-    initial: 0,
-    slideChanged(s) {
-      setCurrentSlide(s.details().relativeSlide);
-    },
-    slidesPerView: 3,
-    centered: true,
-    loop: true,
-  });
   const [RoomData, setRoomData] = useState(null);
 
   const updateMap = async (zipCode) => {
@@ -80,53 +70,21 @@ const RoomDetails = () => {
     return (
       <div className="columns is-mobile is-gapless is-centered">
         <div className="is-11-mobile is-three-quarters-tablet is-half-desktop">
-          {RoomData.roommedia.length > 0 ? (
-            <div className="navigation-wrapper">
-              <div ref={sliderRef} className="keen-slider">
-                {RoomData.roommedia.length > 0 ? (
-                  RoomData.roommedia.map((image) => (
-                    <div
-                      className="keen-slider__slide slider-slide"
-                      key={image}
-                    >
-                      <img src={image} />
-                    </div>
-                  ))
-                ) : (
-                  <div className="keen-slider__slide slider-slide">
-                    <img src={RoomPlaceholder} />
+          {RoomData ? (
+            <Carousel className="carousel">
+              {RoomData.roommedia.length > 0 ? (
+                RoomData.roommedia.map((image) => (
+                  <div key={image}>
+                    <img src={image} />
                   </div>
-                )}
-              </div>
-              {slider && (
-                <>
-                  <ArrowLeft
-                    onClick={(e) => e.stopPropagation() || slider.prev()}
-                    disabled={currentSlide === 0}
-                  />
-                  <ArrowRight
-                    onClick={(e) => e.stopPropagation() || slider.next()}
-                    disabled={currentSlide === slider.details().size - 1}
-                  />
-                </>
+                ))
+              ) : (
+                <div className="">
+                  <img src={RoomPlaceholder} />
+                </div>
               )}
-            </div>
+            </Carousel>
           ) : null}
-          {slider && (
-            <div className="dots">
-              {[...Array(slider.details().size).keys()].map((idx) => {
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      slider.moveToSlideRelative(idx);
-                    }}
-                    className={"dot" + (currentSlide === idx ? " active" : "")}
-                  />
-                );
-              })}
-            </div>
-          )}
           <div>
             <div className="is-flex is-flex-direction-row	is-flex-wrap-nowrap">
               <div className="has-background-link has-text-white type-tag has-text-weight-bold is-size-6">
@@ -183,7 +141,6 @@ const RoomDetails = () => {
               ))}
             </div>
           </div>
-
           <div>
             <h3 className="mt-5 is-size-3 has-text-weight-semibold">
               More Information
