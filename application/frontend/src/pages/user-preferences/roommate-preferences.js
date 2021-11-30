@@ -1,18 +1,23 @@
 import axios from "axios";
 // import { useState } from "react/cjs/react.development";
 import React, { useState } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./roommate-preferences.css";
 
 const RoommatePreferences = (props) => {
   const RoommatePreferencesValidationSchema = Yup.object().shape()({
     type: Yup.string(),
-    gender: Yup.string()
+    gender: Yup.string(),
+    location: Yup.string().max(180, "Please enter a valid location."),
+    zipCode: Yup.string()
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .max(5, "Must be exactly 5 digits"),
   });
 
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [type, setType] = useState("");
 
   const submitForm = async (values) => {
     const requestData = await axios.post(
@@ -20,7 +25,12 @@ const RoommatePreferences = (props) => {
       {
         preftype: "roommate",
         type: values.type,
-        gender: values.gender
+        gender: values.gender,
+        ...(values.school !== "" && { school: values.school }),
+        ...(values.gradeLevel !== "" && { gradlevel: values.gradeLevel }),
+        ...(values.major !== "" && { major: values.major }),
+        ...(values.location !== "" && { joblocation: values.location }),
+        ...(values.zipCode !== "" && { zipcode: values.zipCode }),
       },
       { withCredentials: true }
     );
@@ -49,7 +59,9 @@ const RoommatePreferences = (props) => {
           <Formik
               initialValues={{
                 type: "",
-                gender: ""
+                gender: "",
+                location: "",
+                zipCode: "",
               }}
               validationSchema={RoommatePreferencesValidationSchema}
               onSubmit={(values) => {
@@ -69,7 +81,10 @@ const RoommatePreferences = (props) => {
                         <select
                               name="type"
                               value={values.type}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                setType(e.target.value);
+                                handleChange(e);
+                              }}
                               onBlur={handleBlur}
                             >
                             <option value="">Select type</option>
@@ -123,6 +138,143 @@ const RoommatePreferences = (props) => {
                     </div>
                   </div>
                 </div>
+                {type == "student" ? (
+                  <React.Fragment>
+                    <div className="field is-horizontal">
+                      <div className="field-label is-normal">
+                        <label className="label">School</label>
+                      </div>
+                      <div className="field-body">
+                        <div className="field">
+                          <p className="control">
+                            <div className="select is-pulled-left">
+                              <select
+                                name="school"
+                                value={values.school}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              >
+                                <option value="">Select School</option>
+                                <option value="SF State">SF State</option>
+                                <option value="USF">USF</option>
+                                <option value="UCD">UCD</option>
+                              </select>
+                            </div>
+                          </p>
+                          {errors.school && touched.school ? (
+                            <div className="has-text-danger has-text-weight-semibold">
+                              {errors.school}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="field is-horizontal">
+                      <div className="field-label is-normal">
+                        <label className="label">Grad Level</label>
+                      </div>
+                      <div className="field-body">
+                        <div className="field">
+                          <p className="control">
+                            <div className="select is-pulled-left">
+                              <select
+                                name="gradeLevel"
+                                value={values.gradeLevel}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              >
+                                <option value="">Select Grad Level</option>
+                                <option value="Senior">Senior</option>
+                                <option value="Junior">Junior</option>
+                                <option value="Graduate">Graduate</option>
+                              </select>
+                            </div>
+                          </p>
+                          {errors.gradeLevel && touched.gradeLevel ? (
+                            <div className="has-text-danger has-text-weight-semibold">
+                              {errors.gradeLevel}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="field is-horizontal">
+                      <div className="field-label is-normal">
+                        <label className="label">Major</label>
+                      </div>
+                      <div className="field-body">
+                        <div className="field">
+                          <p className="control">
+                            <div className="select is-pulled-left">
+                              <select
+                                name="major"
+                                value={values.major}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              >
+                                <option value="">Select Your Major</option>
+                                <option value="Math">Math</option>
+                                <option value="CS">CS</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Med">Med</option>
+                              </select>
+                            </div>
+                          </p>
+                          {errors.major && touched.major ? (
+                            <div className="has-text-danger has-text-weight-semibold">
+                              {errors.major}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                  ) : type == "professor" ? (
+                    <React.Fragment>
+                      <div className="field is-horizontal">
+                        <div className="field-label is-normal">
+                          <label className="label">Location/Job Location</label>
+                        </div>
+                        <div className="field-body">
+                          <div className="field">
+                            <p className="control">
+                              <Field
+                                className="input is-normal"
+                                name="location"
+                                placeholder="Enter your location/job location"
+                              />
+                            </p>
+                            {errors.location && touched.location ? (
+                              <div className="has-text-danger has-text-weight-semibold">
+                                {errors.location}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="field is-horizontal">
+                        <div className="field-label is-normal">
+                          <label className="label">Zip Code</label>
+                        </div>
+                        <div className="field-body">
+                          <div className="field">
+                            <p className="control">
+                              <Field
+                                className="input is-normal"
+                                name="zipCode"
+                                placeholder="Enter your zipcode"
+                              />
+                            </p>
+                            {errors.zipCode && touched.zipCode ? (
+                              <div className="has-text-danger has-text-weight-semibold">
+                                {errors.zipCode}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ) : null}
                 <button className="button is-link is-medium">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
