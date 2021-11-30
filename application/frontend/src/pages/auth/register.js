@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./register.css";
+import { logEvent } from "firebase/analytics";
 
 const Register = (props) => {
   const registrationValidationSchema = Yup.object().shape({
@@ -75,7 +76,7 @@ const Register = (props) => {
         ...(values.school !== "" && { school: values.school }),
         ...(values.gradeLevel !== "" && { gradlevel: values.gradeLevel }),
         ...(values.major !== "" && { major: values.major }),
-        ...(values.location !== "" && { location: values.location }),
+        ...(values.location !== "" && { joblocation: values.location }),
         ...(values.zipCode !== "" && { zipcode: values.zipCode }),
       },
       { withCredentials: true }
@@ -84,6 +85,7 @@ const Register = (props) => {
     if (requestData.data.message) {
       setSubmitStatus("SUCCESS");
       setSubmitMessage(requestData.data.message);
+      logEvent(props.analytics, "sign_up");
       setTimeout(() => {
         props.history.push("/login");
       }, 2000);

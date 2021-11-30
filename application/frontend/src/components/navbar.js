@@ -65,13 +65,24 @@ const Navbar = (props) => {
             Find Roommates
           </Link>
           {isLoggedIn && !isAdmin ? (
-            <Link to="/room-bookmarks" className="navbar-item">
-              Bookmarks
-            </Link>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Bookmarks</a>
+              <div class="navbar-dropdown">
+                <Link to="/room-bookmarks" className="navbar-item">
+                  Room Bookmarks
+                </Link>
+                <Link to="/roommate-bookmarks" className="navbar-item">
+                  Roommate Bookmarks
+                </Link>
+              </div>
+            </div>
           ) : isLoggedIn && isAdmin ? (
             <React.Fragment>
               <Link to="/admin/manage-rooms" className="navbar-item">
                 Manage Rooms
+              </Link>
+              <Link to="/admin/manage-users" className="navbar-item">
+                Manage Users
               </Link>
             </React.Fragment>
           ) : null}
@@ -87,6 +98,56 @@ const Navbar = (props) => {
                 <Link to="/add-room" className="button is-link">
                   <strong>Add Room</strong>
                 </Link>
+                <Link to="/alerts" className="button is-success">
+                  <span className="icon is-small">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ height: "1.2rem", width: "1.2rem" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+                <Link to="/message-rooms" className="button is-info">
+                  <span className="icon is-small">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ height: "1.2rem", width: "1.2rem" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+                <div class="navbar-item button has-dropdown is-hoverable">
+                  <a class="navbar-link">Preferences</a>
+
+                  <div class="navbar-dropdown">
+                    <Link to="/room-preferences" className="navbar-item">
+                      <strong>Room Preferences</strong>
+                    </Link>
+                    <Link to="/roommate-preferences" className="navbar-item">
+                      <strong>Roommate Preferences</strong>
+                    </Link>
+                    {/* <hr class="navbar-divider" /> */}
+                  </div>
+                </div>
+
                 <button onClick={() => logout()} className="button">
                   <strong>Logout</strong>
                 </button>

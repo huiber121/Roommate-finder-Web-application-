@@ -87,7 +87,20 @@ const RoomBadge = ({ roomTag }) => {
           No Private Restroom
         </div>
       );
+    case "yes guest overnight":
+      return (
+        <div className="column has-text-centered has-background-success has-text-white badge has-text-weight-semibold">
+          Guests allowed overnight
+        </div>
+      );
+    case "no guest overnight":
+      return (
+        <div className="column has-text-centered has-background-danger has-text-white badge has-text-weight-semibold">
+          No Guests allowed overnight
+        </div>
+      );
     default:
+      return null;
       break;
   }
 };
