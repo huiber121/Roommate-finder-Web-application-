@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import "./roommate-preferences.css";
 
 const RoommatePreferences = (props) => {
-  const RoommatePreferencesValidationSchema = Yup.object().shape()({
+  const RoommatePreferencesValidationSchema = Yup.object().shape({
     type: Yup.string(),
     gender: Yup.string(),
     location: Yup.string().max(180, "Please enter a valid location."),
@@ -21,11 +21,11 @@ const RoommatePreferences = (props) => {
 
   const submitForm = async (values) => {
     const requestData = await axios.post(
-      `${process.env.REACT_APP_HOST_BASE}/api/addRoommatePreference`,
+      `${process.env.REACT_APP_HOST_BASE}/api/addPreference`,
       {
         preftype: "roommate",
-        type: values.type,
-        gender: values.gender,
+        ...(values.type !== "" && { type: values.type }),
+        ...(values.gender !== "" && { gender: values.gender }),
         ...(values.school !== "" && { school: values.school }),
         ...(values.gradeLevel !== "" && { gradlevel: values.gradeLevel }),
         ...(values.major !== "" && { major: values.major }),
@@ -51,56 +51,57 @@ const RoommatePreferences = (props) => {
     <div className="preferences-root-container">
       <div className="columns is-mobile is-centered is-gapless">
         <div className="column is-11-mobile is-three-quarters-tablet is-half-desktop has-text-centered">
-          <h1 className="is-size-1 has-text-weight-bold">Roommate Preferences</h1>
+          <h1 className="is-size-1 has-text-weight-bold">
+            Roommate Preferences
+          </h1>
         </div>
       </div>
       <div className="columns is-mobile is-centered is-gapless">
         <div className="column is-11-mobile is-three-quarters-tablet is-half-desktop has-text-centered ">
           <Formik
-              initialValues={{
-                type: "",
-                gender: "",
-                location: "",
-                zipCode: "",
-              }}
-              validationSchema={RoommatePreferencesValidationSchema}
-              onSubmit={(values) => {
-                console.log(values);
-                submitForm(values);
-              }}
-            >
+            initialValues={{
+              type: "",
+              gender: "",
+              location: "",
+              zipCode: "",
+            }}
+            validationSchema={RoommatePreferencesValidationSchema}
+            onSubmit={(values) => {
+              console.log(values);
+              submitForm(values);
+            }}
+          >
             {({ errors, touched, values, handleChange, handleBlur }) => (
               <Form>
                 <div className="field is-horizontal">
                   <div className="field-label is-normal">
-                      <label className="label">Type</label>
+                    <label className="label">Type</label>
                   </div>
                   <div className="field-body">
-                      <p className="control">
+                    <p className="control">
                       <div className="select is-pulled-left">
                         <select
-                              name="type"
-                              value={values.type}
-                              onChange={(e) => {
-                                setType(e.target.value);
-                                handleChange(e);
-                              }}
-                              onBlur={handleBlur}
-                            >
-                            <option value="">Select type</option>
-                            <option value="student">Student</option>
-                            <option value="professor">Professor</option>
-                            <option value="professional">Professional</option>
+                          name="type"
+                          value={values.type}
+                          onChange={(e) => {
+                            setType(e.target.value);
+                            handleChange(e);
+                          }}
+                          onBlur={handleBlur}
+                        >
+                          <option value="">Select type</option>
+                          <option value="student">Student</option>
+                          <option value="professor">Professor</option>
+                          <option value="professional">Professional</option>
                         </select>
                       </div>
-                      </p>
-                      {errors.type && touched.type ? (
-                        <div className="has-text-danger has-text-weight-semibold">
-                          {errors.type}
-                        </div>
-                      ) : null}
-                  <div className="field">
-                    </div>
+                    </p>
+                    {errors.type && touched.type ? (
+                      <div className="has-text-danger has-text-weight-semibold">
+                        {errors.type}
+                      </div>
+                    ) : null}
+                    <div className="field"></div>
                   </div>
                 </div>
                 <div className="field is-horizontal">
@@ -118,15 +119,9 @@ const RoommatePreferences = (props) => {
                             onBlur={handleBlur}
                           >
                             <option value="">Select Gender</option>
-                            <option value="male">
-                              Male
-                            </option>
-                            <option value="female">
-                              Female
-                            </option>
-                            <option value="other">
-                              Other
-                            </option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
                           </select>
                         </div>
                       </p>
@@ -216,7 +211,7 @@ const RoommatePreferences = (props) => {
                                 <option value="Math">Math</option>
                                 <option value="CS">CS</option>
                                 <option value="Physics">Physics</option>
-                                <option value="Med">Med</option>
+                                <option value="MED">Med</option>
                               </select>
                             </div>
                           </p>
@@ -229,52 +224,52 @@ const RoommatePreferences = (props) => {
                       </div>
                     </div>
                   </React.Fragment>
-                  ) : type == "professor" ? (
-                    <React.Fragment>
-                      <div className="field is-horizontal">
-                        <div className="field-label is-normal">
-                          <label className="label">Location/Job Location</label>
-                        </div>
-                        <div className="field-body">
-                          <div className="field">
-                            <p className="control">
-                              <Field
-                                className="input is-normal"
-                                name="location"
-                                placeholder="Enter your location/job location"
-                              />
-                            </p>
-                            {errors.location && touched.location ? (
-                              <div className="has-text-danger has-text-weight-semibold">
-                                {errors.location}
-                              </div>
-                            ) : null}
-                          </div>
+                ) : type == "professor" ? (
+                  <React.Fragment>
+                    <div className="field is-horizontal">
+                      <div className="field-label is-normal">
+                        <label className="label">Location/Job Location</label>
+                      </div>
+                      <div className="field-body">
+                        <div className="field">
+                          <p className="control">
+                            <Field
+                              className="input is-normal"
+                              name="location"
+                              placeholder="Enter your location/job location"
+                            />
+                          </p>
+                          {errors.location && touched.location ? (
+                            <div className="has-text-danger has-text-weight-semibold">
+                              {errors.location}
+                            </div>
+                          ) : null}
                         </div>
                       </div>
-                      <div className="field is-horizontal">
-                        <div className="field-label is-normal">
-                          <label className="label">Zip Code</label>
-                        </div>
-                        <div className="field-body">
-                          <div className="field">
-                            <p className="control">
-                              <Field
-                                className="input is-normal"
-                                name="zipCode"
-                                placeholder="Enter your zipcode"
-                              />
-                            </p>
-                            {errors.zipCode && touched.zipCode ? (
-                              <div className="has-text-danger has-text-weight-semibold">
-                                {errors.zipCode}
-                              </div>
-                            ) : null}
-                          </div>
+                    </div>
+                    <div className="field is-horizontal">
+                      <div className="field-label is-normal">
+                        <label className="label">Zip Code</label>
+                      </div>
+                      <div className="field-body">
+                        <div className="field">
+                          <p className="control">
+                            <Field
+                              className="input is-normal"
+                              name="zipCode"
+                              placeholder="Enter your zipcode"
+                            />
+                          </p>
+                          {errors.zipCode && touched.zipCode ? (
+                            <div className="has-text-danger has-text-weight-semibold">
+                              {errors.zipCode}
+                            </div>
+                          ) : null}
                         </div>
                       </div>
-                    </React.Fragment>
-                  ) : null}
+                    </div>
+                  </React.Fragment>
+                ) : null}
                 <button className="button is-link is-medium">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -309,7 +304,7 @@ const RoommatePreferences = (props) => {
           </Formik>
         </div>
       </div>
-    </div> 
+    </div>
   );
 };
 
